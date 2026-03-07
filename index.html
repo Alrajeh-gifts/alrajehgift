@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -11,224 +10,219 @@
     <style>
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
 
-```
-    html, body { height: 100%; margin: 0; }
+        html, body { height: 100%; margin: 0; }
 
-    /* ===== ACCENT (ثابت في كلا الوضعين) ===== */
-    :root {
-        --accent:        #6366f1;
-        --accent-light:  #818cf8;
-        --accent-dim:    rgba(99,102,241,0.15);
-        --accent-border: rgba(99,102,241,0.35);
-    }
-
-    /* ========================================
-       🌙 الثيم الداكن (افتراضي)
-    ======================================== */
-    :root {
-        --bg:           #0d1117;
-        --glow-1:       rgba(99,102,241,0.18);
-        --glow-2:       rgba(139,92,246,0.14);
-        --glow-3:       rgba(59,130,246,0.08);
-
-        --glass-bg:     rgba(255,255,255,0.07);
-        --glass-border: rgba(255,255,255,0.13);
-        --glass-shadow: rgba(0,0,0,0.35);
-        --glass-shine:  rgba(255,255,255,0.10);
-
-        --text-primary:   #ffffff;
-        --text-secondary: rgba(255,255,255,0.45);
-        --text-muted:     rgba(255,255,255,0.25);
-
-        --input-bg:       rgba(255,255,255,0.06);
-        --input-border:   rgba(255,255,255,0.13);
-        --input-color:    #ffffff;
-        --input-ph:       rgba(255,255,255,0.30);
-
-        --row-bg:         rgba(255,255,255,0.04);
-        --row-border:     rgba(255,255,255,0.08);
-
-        --wish-bg:        rgba(255,255,255,0.05);
-        --wish-border:    rgba(255,255,255,0.10);
-        --wish-color:     rgba(255,255,255,0.50);
-        --wish-hover-b:   rgba(255,255,255,0.25);
-        --wish-hover-c:   rgba(255,255,255,0.80);
-
-        --constraints-bg: rgba(0,0,0,0.25);
-        --save-btn-bg:    rgba(255,255,255,0.07);
-        --save-btn-b:     rgba(255,255,255,0.12);
-        --save-btn-c:     rgba(255,255,255,0.60);
-
-        --result-bg:      rgba(99,102,241,0.10);
-        --result-border:  rgba(99,102,241,0.25);
-    }
-
-    /* ========================================
-       ☀️ الثيم الفاتح
-    ======================================== */
-    @media (prefers-color-scheme: light) {
+        /* ===== ACCENT ===== */
         :root {
-            --bg:           #f0f2ff;
-            --glow-1:       rgba(99,102,241,0.12);
-            --glow-2:       rgba(139,92,246,0.09);
-            --glow-3:       rgba(59,130,246,0.06);
-
-            --glass-bg:     rgba(255,255,255,0.65);
-            --glass-border: rgba(99,102,241,0.18);
-            --glass-shadow: rgba(99,102,241,0.12);
-            --glass-shine:  rgba(255,255,255,0.90);
-
-            --text-primary:   #1e1b4b;
-            --text-secondary: rgba(30,27,75,0.55);
-            --text-muted:     rgba(30,27,75,0.35);
-
-            --input-bg:       rgba(255,255,255,0.80);
-            --input-border:   rgba(99,102,241,0.25);
-            --input-color:    #1e1b4b;
-            --input-ph:       rgba(30,27,75,0.35);
-
-            --row-bg:         rgba(255,255,255,0.55);
-            --row-border:     rgba(99,102,241,0.15);
-
-            --wish-bg:        rgba(255,255,255,0.60);
-            --wish-border:    rgba(99,102,241,0.18);
-            --wish-color:     rgba(30,27,75,0.55);
-            --wish-hover-b:   rgba(99,102,241,0.40);
-            --wish-hover-c:   #4338ca;
-
-            --constraints-bg: rgba(99,102,241,0.06);
-            --save-btn-bg:    rgba(255,255,255,0.70);
-            --save-btn-b:     rgba(99,102,241,0.20);
-            --save-btn-c:     rgba(30,27,75,0.65);
-
-            --result-bg:      rgba(99,102,241,0.08);
-            --result-border:  rgba(99,102,241,0.22);
+            --accent:        #6366f1;
+            --accent-light:  #818cf8;
+            --accent-dim:    rgba(99,102,241,0.15);
+            --accent-border: rgba(99,102,241,0.40);
         }
-    }
 
-    /* ===== BODY ===== */
-    body {
-        min-height: 100vh;
-        background: var(--bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-        position: relative;
-        overflow-x: hidden;
-        transition: background 0.3s;
-    }
+        /* ===== 🌙 الثيم الداكن (احترافي وعميق) ===== */
+        :root {
+            --bg:           #08090d;
+            --glow-1:       rgba(99,102,241,0.22);
+            --glow-2:       rgba(139,92,246,0.18);
+            --glow-3:       rgba(59,130,246,0.12);
+            
+            /* تأثير الزجاج العميق */
+            --glass-bg:         linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 100%);
+            --glass-border:     rgba(255,255,255,0.04);
+            --glass-border-top: rgba(255,255,255,0.15);
+            --glass-border-left:rgba(255,255,255,0.10);
+            --glass-shadow:     rgba(0,0,0,0.50);
+            --glass-inset:      rgba(255,255,255,0.02);
 
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background:
-            radial-gradient(circle 600px at 15% 25%, var(--glow-1) 0%, transparent 70%),
-            radial-gradient(circle 500px at 85% 75%, var(--glow-2) 0%, transparent 65%),
-            radial-gradient(circle 400px at 50% 50%, var(--glow-3) 0%, transparent 60%);
-        pointer-events: none;
-        z-index: 0;
-    }
+            --text-primary:   #ffffff;
+            --text-secondary: rgba(255,255,255,0.70);
+            --text-muted:     rgba(255,255,255,0.35);
+            
+            --input-bg:       rgba(0,0,0,0.25);
+            --input-border:   rgba(255,255,255,0.08);
+            --input-color:    #ffffff;
+            --input-ph:       rgba(255,255,255,0.30);
+            
+            --row-bg:         linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            --row-border:     rgba(255,255,255,0.08);
+            
+            --wish-bg:        rgba(255,255,255,0.03);
+            --wish-border:    rgba(255,255,255,0.08);
+            --wish-color:     rgba(255,255,255,0.65);
+            --wish-hover-b:   rgba(99,102,241,0.50);
+            --wish-hover-c:   #ffffff;
+            
+            --constraints-bg: rgba(0,0,0,0.35);
+            --save-btn-bg:    rgba(255,255,255,0.05);
+            
+            --result-bg:      linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
+            --result-border:  rgba(99,102,241,0.35);
+        }
 
-    body > div, body > canvas {
-        position: relative;
-        z-index: 1;
-    }
+        /* ===== ☀️ الثيم الفاتح (احترافي وعميق) ===== */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg:           #f4f5fa;
+                --glow-1:       rgba(99,102,241,0.15);
+                --glow-2:       rgba(139,92,246,0.12);
+                --glow-3:       rgba(59,130,246,0.08);
+                
+                --glass-bg:         linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.40) 100%);
+                --glass-border:     rgba(255,255,255,0.40);
+                --glass-border-top: #ffffff;
+                --glass-border-left:#ffffff;
+                --glass-shadow:     rgba(30,27,75,0.08);
+                --glass-inset:      rgba(255,255,255,0.80);
 
-    /* ===== GLASS ===== */
-    .glass {
-        background: var(--glass-bg);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 4px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
-    }
+                --text-primary:   #1e1b4b;
+                --text-secondary: rgba(30,27,75,0.70);
+                --text-muted:     rgba(30,27,75,0.40);
+                
+                --input-bg:       rgba(255,255,255,0.90);
+                --input-border:   rgba(99,102,241,0.25);
+                --input-color:    #1e1b4b;
+                --input-ph:       rgba(30,27,75,0.40);
+                
+                --row-bg:         linear-gradient(90deg, rgba(255,255,255,0.80), rgba(255,255,255,0.40));
+                --row-border:     rgba(99,102,241,0.15);
+                
+                --wish-bg:        rgba(255,255,255,0.70);
+                --wish-border:    rgba(99,102,241,0.20);
+                --wish-color:     rgba(30,27,75,0.70);
+                --wish-hover-b:   rgba(99,102,241,0.60);
+                --wish-hover-c:   #4338ca;
+                
+                --constraints-bg: rgba(99,102,241,0.05);
+                --save-btn-bg:    rgba(255,255,255,0.80);
+                
+                --result-bg:      linear-gradient(135deg, rgba(99,102,241,0.12), rgba(99,102,241,0.03));
+                --result-border:  rgba(99,102,241,0.25);
+            }
+        }
 
-    /* ===== BUTTONS ===== */
-    .btn-primary {
-        background: linear-gradient(135deg, #6366f1, #4338ca);
-        border: 1px solid rgba(99,102,241,0.5);
-        box-shadow: 0 4px 20px rgba(99,102,241,0.35);
-        transition: transform 0.2s, box-shadow 0.2s;
-        cursor: pointer;
-    }
-    .btn-primary:hover  { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(99,102,241,0.5); }
-    .btn-primary:active { transform: translateY(0); }
-    .btn-primary:disabled { opacity: 0.45; transform: none; cursor: not-allowed; }
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.4s ease;
+        }
 
-    /* ===== RESULT CARD ===== */
-    .result-card {
-        background: var(--result-bg);
-        border: 1px solid var(--result-border);
-    }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle 700px at 10% 20%, var(--glow-1) 0%, transparent 60%),
+                radial-gradient(circle 600px at 90% 80%, var(--glow-2) 0%, transparent 60%),
+                radial-gradient(circle 500px at 50% 50%, var(--glow-3) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bg-breathe 10s ease-in-out infinite alternate;
+        }
 
-    /* ===== MEMBER ROW ===== */
-    .member-row {
-        background: var(--row-bg);
-        border: 1px solid var(--row-border);
-    }
+        @keyframes bg-breathe {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
 
-    /* ===== WISH BUTTON ===== */
-    .wish-btn {
-        background: var(--wish-bg);
-        border: 1px solid var(--wish-border);
-        color: var(--wish-color);
-        transition: all 0.15s;
-        cursor: pointer;
-    }
-    .wish-btn:hover { border-color: var(--wish-hover-b); color: var(--wish-hover-c); }
-    .wish-btn-active {
-        background: var(--accent-dim) !important;
-        border-color: var(--accent-border) !important;
-        color: var(--accent-light) !important;
-    }
+        body > div, body > canvas { position: relative; z-index: 1; }
 
-    /* ===== INPUT ===== */
-    .code-input {
-        width: 100%;
-        text-align: center;
-        padding: 1rem;
-        border-radius: 1rem;
-        font-size: 1.1rem;
-        font-weight: 700;
-        background: var(--input-bg);
-        border: 1px solid var(--input-border);
-        color: var(--input-color);
-        outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        font-family: 'Cairo', sans-serif;
-    }
-    .code-input:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
-    }
-    .code-input::placeholder { color: var(--input-ph); }
+        /* ===== الزجاج العميق 💎 ===== */
+        .glass {
+            background: var(--glass-bg);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%);
+            
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-border-top);
+            border-left: 1px solid var(--glass-border-left);
+            
+            box-shadow: 
+                0 16px 40px -8px var(--glass-shadow),
+                inset 0 1px 0 var(--glass-inset);
+                
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { animation: fadeUp 0.4s ease forwards; }
+        /* لمعة متحركة تمر على الزجاج كل 8 ثواني لإعطاء فخامة */
+        .glass::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 40%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent);
+            transform: skewX(-25deg);
+            animation: glass-shine 8s infinite;
+            pointer-events: none;
+        }
+        @keyframes glass-shine {
+            0%, 80% { left: -100%; }
+            100% { left: 200%; }
+        }
 
-    @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 4px 20px rgba(99,102,241,0.35); }
-        50%       { box-shadow: 0 4px 32px rgba(99,102,241,0.65); }
-    }
-    .pulse { animation: pulse-glow 2s ease-in-out infinite; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4338ca);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 2px solid rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px -4px rgba(99,102,241,0.5);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .btn-primary:hover  { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 28px -4px rgba(99,102,241,0.6); 
+            filter: brightness(1.1);
+        }
+        .btn-primary:active { transform: translateY(1px); box-shadow: 0 4px 12px -4px rgba(99,102,241,0.4); border-bottom-width: 1px; }
+        .btn-primary:disabled { opacity: 0.5; transform: none; cursor: not-allowed; filter: grayscale(50%); }
 
-    .confetti-canvas {
-        position: fixed; inset: 0;
-        pointer-events: none; z-index: 999;
-    }
-</style>
-```
+        .result-card { background: var(--result-bg); border: 1px solid var(--result-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
+        .member-row { background: var(--row-bg); border: 1px solid var(--row-border); }
 
+        .wish-btn {
+            background: var(--wish-bg);
+            border: 1px solid var(--wish-border);
+            color: var(--wish-color);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .wish-btn:hover { border-color: var(--wish-hover-b); color: var(--wish-hover-c); transform: translateY(-1px); }
+        .wish-btn-active {
+            background: var(--accent-dim) !important;
+            border-color: var(--accent-border) !important;
+            color: var(--accent-light) !important;
+            box-shadow: 0 4px 12px var(--glow-1);
+        }
+
+        .code-input {
+            width: 100%; text-align: center; padding: 1rem; border-radius: 1rem;
+            font-size: 1.1rem; font-weight: 700; background: var(--input-bg);
+            border: 1px solid var(--input-border); color: var(--input-color);
+            outline: none; transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .code-input:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2), inset 0 2px 4px rgba(0,0,0,0.1); 
+            transform: scale(1.02);
+        }
+        .code-input::placeholder { color: var(--input-ph); font-weight: 400; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        .fade-in { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 8px 20px -4px rgba(99,102,241,0.5); } 50% { box-shadow: 0 12px 32px -4px rgba(99,102,241,0.8); } }
+        .pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
+        .confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    </style>
 </head>
 <body>
-
-<!-- شاشة الدخول -->
 
 <div id="login-screen" class="max-w-sm w-full fade-in" style="position:relative;z-index:1">
     <div class="text-center mb-10">
@@ -237,125 +231,116 @@
         <p style="color:var(--text-secondary);margin-top:.5rem;font-size:.9rem">أدخل رمزك السري للدخول</p>
     </div>
     <div class="glass" style="border-radius:1.5rem;padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
-        <input
-            type="text" id="access-code"
-            placeholder="رمز الدخول"
-            class="code-input"
-            onkeydown="if(event.key==='Enter') login()"
-        >
+        <input type="text" id="access-code" placeholder="رمز الدخول" class="code-input" onkeydown="if(event.key==='Enter') login()">
         <button onclick="login()" id="login-btn" class="btn-primary" style="width:100%;color:var(--text-primary);font-weight:900;padding:1rem;border-radius:1rem;font-size:1.1rem;border:none">
             دخول ←
         </button>
     </div>
 </div>
 
-<!-- شاشة العضو -->
-
 <div id="member-screen" class="fade-in" style="position:relative;z-index:1;display:none;flex-direction:column;gap:1rem;width:100%;max-width:24rem">
+    <div class="glass" style="border-radius:1.5rem;padding:2rem;text-align:center">
+        <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .25rem">أهلاً وسهلاً</p>
+        <h2 id="user-welcome" style="color:var(--text-primary);font-size:1.4rem;font-weight:900;margin:0 0 1.5rem"></h2>
 
-```
-<!-- بطاقة القرعة -->
-<div class="glass" style="border-radius:1.5rem;padding:2rem;text-align:center">
-    <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .25rem">أهلاً وسهلاً</p>
-    <h2 id="user-welcome" style="color:var(--text-primary);font-size:1.4rem;font-weight:900;margin:0 0 1.5rem"></h2>
+        <div id="result-card" class="result-card" style="display:none;border-radius:1rem;padding:1.5rem">
+            <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .5rem">🎯 ستُهدي هذا الشهر</p>
+            <div id="target-name" style="font-size:2.5rem;font-weight:900;color:var(--accent-light);margin:.75rem 0"></div>
+            <button onclick="toggleWishes()" style="font-size:.8rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--text-secondary);padding:.4rem 1rem;border-radius:.75rem;cursor:pointer;font-family:Cairo,sans-serif">
+                🎁 عرض رغبات الهدية
+            </button>
+            <div id="wishes-box" style="display:none;margin-top:1rem"></div>
+            <p style="color:var(--text-muted);font-size:.75rem;margin:1rem 0 0">🤫 سرّك الخاص، لا تخبر أحداً!</p>
+            
+            <div id="delivery-section" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--wish-border)">
+                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" style="display:none;width:100%;padding:.75rem;border-radius:.75rem;font-weight:700;font-size:.9rem;font-family:Cairo,sans-serif;border:none">
+                    📦 تأكيد تسليم الهدية
+                </button>
+                <div id="delivered-msg" style="display:none;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:#4ade80;padding:.75rem;border-radius:.75rem;font-size:.85rem;font-weight:700">
+                    ✅ تم تسليم الهدية بنجاح!
+                </div>
+            </div>
+        </div>
 
-    <div id="result-card" class="result-card" style="display:none;border-radius:1rem;padding:1.5rem">
-        <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .5rem">🎯 ستُهدي هذا الشهر</p>
-        <div id="target-name" style="font-size:2.5rem;font-weight:900;color:var(--accent-light);margin:.75rem 0"></div>
-        <button onclick="toggleWishes()" style="font-size:.8rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--text-secondary);padding:.4rem 1rem;border-radius:.75rem;cursor:pointer;font-family:Cairo,sans-serif">
-            🎁 عرض رغبات الهدية
+        <div id="no-draw-msg" style="display:none;padding:2rem 0">
+            <div style="font-size:3rem;margin-bottom:.75rem">⏳</div>
+            <p style="color:var(--text-secondary);font-weight:700;margin:0">لم تُجرَ القرعة بعد</p>
+            <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">انتظر إشعاراً من المشرف</p>
+        </div>
+    </div>
+
+    <div class="glass" style="border-radius:1.5rem;padding:1.5rem">
+        <h3 style="color:var(--text-primary);font-weight:900;margin:0 0 .25rem">🌟 رغباتي في الهدية</h3>
+        <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 1rem">اختر ما يعجبك أو اكتب هديتك</p>
+        
+        <div id="wishes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem"></div>
+        
+        <input type="text" id="custom-wish-input" placeholder="أو اكتب هديتك المفضلة هنا... ✍️" class="code-input" style="margin-bottom:1.25rem;font-size:.9rem;padding:.75rem;background:var(--wish-bg);border:1px solid var(--wish-border);color:var(--text-primary)">
+        
+        <button onclick="saveWishes()" id="save-wishes-btn" style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:var(--text-secondary);font-weight:700;padding:.75rem;border-radius:1rem;cursor:pointer;font-size:.9rem;font-family:Cairo,sans-serif;transition:all .2s">
+            💾 حفظ اختياراتي
         </button>
-        <div id="wishes-box" style="display:none;margin-top:1rem"></div>
-        <p style="color:var(--text-muted);font-size:.75rem;margin:1rem 0 0">🤫 سرّك الخاص، لا تخبر أحداً!</p>
+        <p id="save-msg" style="display:none;color:#4ade80;font-size:.8rem;text-align:center;margin:.5rem 0 0">✅ تم الحفظ!</p>
     </div>
 
-    <div id="no-draw-msg" style="display:none;padding:2rem 0">
-        <div style="font-size:3rem;margin-bottom:.75rem">⏳</div>
-        <p style="color:var(--text-secondary);font-weight:700;margin:0">لم تُجرَ القرعة بعد</p>
-        <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">انتظر إشعاراً من المشرف</p>
-    </div>
-</div>
-
-<!-- بطاقة رغباتي -->
-<div class="glass" style="border-radius:1.5rem;padding:1.5rem">
-    <h3 style="color:var(--text-primary);font-weight:900;margin:0 0 .25rem">🌟 رغباتي في الهدية</h3>
-    <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 1rem">اختر ما يعجبك وسيراه من سيُهديك</p>
-    <div id="wishes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem"></div>
-    <button onclick="saveWishes()" id="save-wishes-btn"
-        style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:var(--text-secondary);font-weight:700;padding:.75rem;border-radius:1rem;cursor:pointer;font-size:.9rem;font-family:Cairo,sans-serif;transition:all .2s">
-        💾 حفظ اختياراتي
+    <button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
+        ← تسجيل خروج
     </button>
-    <p id="save-msg" style="display:none;color:#4ade80;font-size:.8rem;text-align:center;margin:.5rem 0 0">✅ تم الحفظ!</p>
 </div>
-
-<button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
-    ← تسجيل خروج
-</button>
-```
-
-</div>
-
-<!-- لوحة المشرف -->
 
 <div id="admin-screen" style="display:none;flex-direction:column;gap:1rem;width:100%;max-width:24rem;position:relative;z-index:1" class="fade-in">
-
-```
-<div class="glass" style="border-radius:1.5rem;padding:1.25rem">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem">
-        <span style="font-size:1.5rem">👑</span>
-        <span id="current-month" style="color:var(--accent-light);font-size:.85rem;font-weight:700"></span>
-    </div>
-    <h2 style="color:var(--text-primary);font-size:1.2rem;font-weight:900;margin:0">لوحة المشرف</h2>
-    <p style="color:var(--text-secondary);font-size:.8rem;margin:.25rem 0 0">أجرِ أو أعِد القرعة في أي وقت</p>
-</div>
-
-<div class="glass" style="border-radius:1.5rem;padding:1.5rem;text-align:center">
-    <p id="draw-status-text" style="color:var(--text-secondary);font-size:.85rem;margin:0 0 1rem">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
-
-    <div style="background:var(--constraints-bg);border-radius:1rem;padding:1rem;margin-bottom:1rem;text-align:right">
-        <p style="color:var(--text-secondary);font-size:.8rem;font-weight:700;margin:0 0 .75rem">⚙️ قيود القرعة</p>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
-            <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
-                <input type="checkbox" id="fawaz-toggle" checked onchange="updateToggle(this,'fawaz-track')" style="opacity:0;width:0;height:0;position:absolute">
-                <span id="fawaz-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
-                    <span style="width:18px;height:18px;background:white;border-radius:50%;transition:.2s;margin-right:auto"></span>
-                </span>
-            </label>
-            <span style="color:var(--text-secondary);font-size:.85rem">فواز لا يُهدي نواف</span>
+    <div class="glass" style="border-radius:1.5rem;padding:1.25rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem">
+            <span style="font-size:1.5rem">👑</span>
+            <span id="current-month" style="color:var(--accent-light);font-size:.85rem;font-weight:700"></span>
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-            <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
-                <input type="checkbox" id="sameera-toggle" checked onchange="updateToggle(this,'sameera-track')" style="opacity:0;width:0;height:0;position:absolute">
-                <span id="sameera-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
-                    <span style="width:18px;height:18px;background:white;border-radius:50%;transition:.2s;margin-right:auto"></span>
-                </span>
-            </label>
-            <span style="color:var(--text-secondary);font-size:.85rem">سميرة تُهدى من طارق أو فواز فقط</span>
-        </div>
+        <h2 style="color:var(--text-primary);font-size:1.2rem;font-weight:900;margin:0">لوحة المشرف</h2>
+        <p style="color:var(--text-secondary);font-size:.8rem;margin:.25rem 0 0">أجرِ أو أعِد القرعة في أي وقت</p>
     </div>
 
-    <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse"
-        style="width:100%;color:var(--text-primary);font-weight:900;padding:1.2rem;border-radius:1rem;font-size:1.2rem;font-family:Cairo,sans-serif">
-        🎲 إجراء القرعة
+    <div class="glass" style="border-radius:1.5rem;padding:1.5rem;text-align:center">
+        <p id="draw-status-text" style="color:var(--text-secondary);font-size:.85rem;margin:0 0 1rem">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
+
+        <div style="background:var(--constraints-bg);border-radius:1rem;padding:1rem;margin-bottom:1rem;text-align:right">
+            <p style="color:var(--text-secondary);font-size:.8rem;font-weight:700;margin:0 0 .75rem">⚙️ قيود القرعة</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+                <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
+                    <input type="checkbox" id="fawaz-toggle" checked onchange="updateToggle(this,'fawaz-track')" style="opacity:0;width:0;height:0;position:absolute">
+                    <span id="fawaz-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
+                        <span style="width:18px;height:18px;background:white;border-radius:50%;transition:.2s;margin-right:auto"></span>
+                    </span>
+                </label>
+                <span style="color:var(--text-secondary);font-size:.85rem">فواز لا يُهدي نواف</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+                <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
+                    <input type="checkbox" id="sameera-toggle" checked onchange="updateToggle(this,'sameera-track')" style="opacity:0;width:0;height:0;position:absolute">
+                    <span id="sameera-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
+                        <span style="width:18px;height:18px;background:white;border-radius:50%;transition:.2s;margin-right:auto"></span>
+                    </span>
+                </label>
+                <span style="color:var(--text-secondary);font-size:.85rem">سميرة تُهدى من طارق أو فواز فقط</span>
+            </div>
+        </div>
+
+        <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse"
+            style="width:100%;color:var(--text-primary);font-weight:900;padding:1.2rem;border-radius:1rem;font-size:1.2rem;font-family:Cairo,sans-serif">
+            🎲 إجراء القرعة
+        </button>
+        <p style="color:var(--text-muted);font-size:.75rem;margin:.75rem 0 0">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
+    </div>
+
+    <div id="assignments-section" style="display:none">
+        <div class="glass" style="border-radius:1.5rem;padding:1.5rem">
+            <h3 style="color:var(--text-primary);font-weight:900;text-align:center;margin:0 0 1rem">📋 نتائج القرعة</h3>
+            <div id="assignments-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
+        </div>
+    </div>
+
+    <button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
+        ← تسجيل خروج
     </button>
-    <p style="color:var(--text-muted);font-size:.75rem;margin:.75rem 0 0">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
 </div>
-
-<div id="assignments-section" style="display:none">
-    <div class="glass" style="border-radius:1.5rem;padding:1.5rem">
-        <h3 style="color:var(--text-primary);font-weight:900;text-align:center;margin:0 0 1rem">📋 نتائج القرعة</h3>
-        <div id="assignments-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
-    </div>
-</div>
-
-<button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
-    ← تسجيل خروج
-</button>
-```
-
-</div>
-
-<!-- الكونفيتي -->
 
 <canvas id="confetti-canvas" class="confetti-canvas" style="display:none"></canvas>
 
@@ -366,6 +351,20 @@
 
     const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
                     'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+    // قائمة الهدايا العامة والمختصرة
+    const GIFT_OPTIONS = [
+        { emoji: '🌸', label: 'عطور وعناية' },
+        { emoji: '👕', label: 'ملابس وإكسسوارات' },
+        { emoji: '📱', label: 'تقنية وأجهزة' },
+        { emoji: '☕', label: 'قهوة وحلويات' },
+        { emoji: '💳', label: 'بطاقة هدية' },
+        { emoji: '📚', label: 'كتب وقرطاسية' }
+    ];
+
+    let currentUser = null;
+    let receiverWishes = [];
+    let currentAssignmentId = null;
 
     // ===== الدخول =====
     async function login() {
@@ -389,27 +388,6 @@
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
-    // قائمة الهدايا الجاهزة
-    const GIFT_OPTIONS = [
-        { emoji: '🌸', label: 'عطر' },
-        { emoji: '📚', label: 'كتاب' },
-        { emoji: '⌚', label: 'ساعة' },
-        { emoji: '👜', label: 'محفظة' },
-        { emoji: '🎮', label: 'ألعاب' },
-        { emoji: '🍫', label: 'حلويات' },
-        { emoji: '🌿', label: 'عناية بالبشرة' },
-        { emoji: '🎧', label: 'سماعات' },
-        { emoji: '👗', label: 'ملابس' },
-        { emoji: '🕯️', label: 'ديكور منزلي' },
-        { emoji: '💳', label: 'بطاقة هدية' },
-        { emoji: '🏋️', label: 'رياضة وصحة' },
-        { emoji: '✈️', label: 'تجربة وسفر' },
-        { emoji: '🎨', label: 'هواية وفن' },
-    ];
-
-    let currentUser = null;
-    let receiverWishes = [];
-
     // ===== شاشة العضو =====
     async function showMemberScreen(user) {
         currentUser = user;
@@ -417,10 +395,8 @@
         show('member-screen');
         document.getElementById('user-welcome').innerText = `${user.name} 👋`;
 
-        // بناء شبكة الرغبات
         buildWishesGrid(user.wishes || '');
 
-        // جلب القرعة — مع fallback إذا لم يكن عمود wishes موجوداً بعد
         try {
             const { data: assignments, error } = await db
                 .from('assignments')
@@ -431,9 +407,25 @@
             if (error) throw error;
 
             if (assignments && assignments.length > 0) {
-                const receiver = assignments[0].receiver;
+                const assignment = assignments[0];
+                currentAssignmentId = assignment.id;
+                const receiver = assignment.receiver;
                 document.getElementById('target-name').innerText = receiver.name;
-                receiverWishes = (receiver.wishes || '').split(',').filter(Boolean);
+                
+                if(receiver.wishes !== undefined) {
+                     receiverWishes = (receiver.wishes || '').split(',').filter(Boolean);
+                } else {
+                     receiverWishes = [];
+                }
+
+                if (assignment.is_delivered) {
+                    show('delivered-msg');
+                    hide('deliver-btn');
+                } else {
+                    hide('delivered-msg');
+                    show('deliver-btn');
+                }
+
                 document.getElementById('result-card').style.display = 'block';
                 document.getElementById('no-draw-msg').style.display = 'none';
             } else {
@@ -441,7 +433,6 @@
                 document.getElementById('no-draw-msg').style.display = 'block';
             }
         } catch {
-            // fallback بدون wishes
             const { data: assignments } = await db
                 .from('assignments')
                 .select('*, receiver:users!receiver_id(name)')
@@ -449,8 +440,19 @@
                 .limit(1);
 
             if (assignments && assignments.length > 0) {
-                document.getElementById('target-name').innerText = assignments[0].receiver.name;
+                const assignment = assignments[0];
+                currentAssignmentId = assignment.id;
+                document.getElementById('target-name').innerText = assignment.receiver.name;
                 receiverWishes = [];
+
+                if (assignment.is_delivered) {
+                    show('delivered-msg');
+                    hide('deliver-btn');
+                } else {
+                    hide('delivered-msg');
+                    show('deliver-btn');
+                }
+
                 document.getElementById('result-card').style.display = 'block';
                 document.getElementById('no-draw-msg').style.display = 'none';
             } else {
@@ -461,19 +463,34 @@
     }
 
     function buildWishesGrid(savedWishes) {
-        const saved = savedWishes ? savedWishes.split(',').filter(Boolean) : [];
+        const savedArray = savedWishes ? savedWishes.split(',').filter(Boolean) : [];
+        const predefinedLabels = GIFT_OPTIONS.map(o => o.label);
+
+        let customWish = '';
+        const activePredefined = [];
+
+        savedArray.forEach(wish => {
+            if (predefinedLabels.includes(wish)) {
+                activePredefined.push(wish);
+            } else {
+                customWish = wish;
+            }
+        });
+
         const grid = document.getElementById('wishes-grid');
         grid.innerHTML = GIFT_OPTIONS.map(opt => `
             <button onclick="toggleWish(this, '${opt.label}')"
                 data-wish="${opt.label}"
                 class="wish-btn flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition
-                       ${saved.includes(opt.label)
+                       ${activePredefined.includes(opt.label)
                            ? 'wish-btn-active'
                            : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20'}">
                 <span>${opt.emoji}</span>
                 <span>${opt.label}</span>
             </button>
         `).join('');
+
+        document.getElementById('custom-wish-input').value = customWish;
     }
 
     function toggleWish(btn, wish) {
@@ -493,6 +510,11 @@
         const selected = [...document.querySelectorAll('.wish-btn')]
             .filter(b => b.classList.contains('wish-btn-active'))
             .map(b => b.dataset.wish);
+
+        const customWish = document.getElementById('custom-wish-input').value.trim();
+        if (customWish) {
+            selected.push(customWish.replace(/,/g, ' '));
+        }
 
         btn.innerText = '...جاري الحفظ';
         btn.disabled = true;
@@ -538,6 +560,31 @@
         }
     }
 
+    // ===== تأكيد تسليم الهدية =====
+    async function markAsDelivered() {
+        const confirmDelivery = confirm('هل أنت متأكد أنك سلمت الهدية؟ لا يمكن التراجع عن هذا الإجراء.');
+        if (!confirmDelivery) return;
+
+        const btn = document.getElementById('deliver-btn');
+        btn.innerText = '⏳ جاري التحديث...';
+        btn.disabled = true;
+
+        const { error } = await db
+            .from('assignments')
+            .update({ is_delivered: true })
+            .eq('id', currentAssignmentId);
+
+        if (error) {
+            alert('حدث خطأ! تأكد من إضافة عمود is_delivered في قاعدة بيانات Supabase.');
+            btn.innerText = '📦 تأكيد تسليم الهدية';
+            btn.disabled = false;
+        } else {
+            hide('deliver-btn');
+            show('delivered-msg');
+            fireConfetti();
+        }
+    }
+
     // ===== لوحة المشرف =====
     async function showAdminScreen() {
         hide('login-screen'); show('admin-screen');
@@ -569,7 +616,14 @@
         document.getElementById('assignments-list').innerHTML = assignments.map(a => `
             <div class="member-row" style="border-radius:.75rem;padding:.75rem;display:flex;align-items:center;justify-content:space-between">
                 <span style="color:var(--text-primary);font-weight:700;font-size:.9rem">${a.giver.name}</span>
-                <span style="color:var(--accent-light);font-size:1rem">← 🎁</span>
+                
+                <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem">
+                    <span style="color:var(--accent-light);font-size:1rem">← 🎁</span>
+                    <span style="font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;${a.is_delivered ? 'background:rgba(74,222,128,0.15);color:#4ade80' : 'background:rgba(255,255,255,0.05);color:var(--text-muted)'}">
+                        ${a.is_delivered ? '✅ سُلِّمت' : '⏳ بالانتظار'}
+                    </span>
+                </div>
+
                 <span style="color:var(--accent-light);font-weight:700;font-size:.9rem">${a.receiver.name}</span>
             </div>
         `).join('');
@@ -584,7 +638,6 @@
         btn.classList.remove('pulse');
 
         try {
-            // 1. جلب الأعضاء
             const { data: members, error: mErr } = await db
                 .from('users').select('*').eq('role', 'member');
 
@@ -593,13 +646,12 @@
                 resetBtn(btn); return;
             }
 
-            // 2. جلب آخر قرعتين (السجل) لتجنب التكرار
             const { data: recentDraws } = await db
                 .from('draws').select('id')
                 .order('created_at', { ascending: false })
                 .limit(2);
 
-            let recentPairs = []; // [{ giver: 'اسم', receiver: 'اسم' }]
+            let recentPairs = [];
             if (recentDraws && recentDraws.length > 0) {
                 const recentIds = recentDraws.map(d => d.id);
                 const { data: recentAssignments } = await db
@@ -614,22 +666,20 @@
                 }
             }
 
-            // 3. توليد القرعة مع كل القيود
             const sameeraConstraint = document.getElementById('sameera-toggle').checked;
             const fawazConstraint = document.getElementById('fawaz-toggle').checked;
             const shuffled = makeDerangement(members, sameeraConstraint, fawazConstraint, recentPairs);
+            
             if (!shuffled) {
                 alert('تعذّر توليد قرعة تحترم جميع القيود، جرّب تخفيف بعض القيود وأعد المحاولة');
                 resetBtn(btn); return;
             }
 
-            // 4. حذف القرعات الأقدم من شهرين (الاحتفاظ بآخر 2 فقط)
             const { data: allDraws } = await db
                 .from('draws').select('id')
                 .order('created_at', { ascending: true });
 
             if (allDraws && allDraws.length >= 2) {
-                // احذف كل شيء ماعدا آخر قرعتين
                 const toDelete = allDraws.slice(0, allDraws.length - 1).map(d => d.id);
                 if (toDelete.length > 0) {
                     await db.from('assignments').delete().in('draw_id', toDelete);
@@ -637,7 +687,6 @@
                 }
             }
 
-            // 5. إنشاء قرعة جديدة
             const now = new Date();
             const monthName = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
             const { data: newDraw, error: dErr } = await db
@@ -650,7 +699,6 @@
                 resetBtn(btn); return;
             }
 
-            // 6. حفظ التوزيع
             const newAssignments = members.map((giver, i) => ({
                 draw_id: newDraw.id,
                 giver_id: giver.id,
@@ -663,7 +711,6 @@
                 resetBtn(btn); return;
             }
 
-            // 6. عرض النتائج
             const { data: final } = await db
                 .from('assignments')
                 .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
@@ -680,24 +727,19 @@
         }
     }
 
-    // ===== خوارزمية القرعة مع القيود =====
     function makeDerangement(arr, sameeraConstraint = false, fawazConstraint = false, recentPairs = []) {
         for (let attempt = 0; attempt < 1000; attempt++) {
             const shuffled = [...arr].sort(() => Math.random() - 0.5);
 
-            // القيد الأساسي: لا أحد يُهدي نفسه
             if (shuffled.some((item, i) => item.id === arr[i].id)) continue;
 
-            // بناء خريطة: من يُهدي من
             const giverToReceiver = {};
             arr.forEach((giver, i) => {
                 giverToReceiver[giver.name] = shuffled[i].name;
             });
 
-            // ✅ قيد اختياري: فواز لا يُهدي نواف
             if (fawazConstraint && giverToReceiver['فواز'] === 'نواف') continue;
 
-            // ✅ قيد اختياري: سميرة تُهدى فقط من طارق أو فواز
             if (sameeraConstraint) {
                 const giverOfSameera = Object.keys(giverToReceiver)
                     .find(giver => giverToReceiver[giver] === 'سميرة');
@@ -705,7 +747,6 @@
                 if (!['طارق', 'فواز'].includes(giverOfSameera)) continue;
             }
 
-            // ✅ قيد التاريخ: لا تكرار نفس الزوج من آخر شهرين
             const hasRepeat = recentPairs.some(pair =>
                 giverToReceiver[pair.giver] === pair.receiver
             );
@@ -764,12 +805,10 @@
         el.style.display = isScreen ? 'flex' : 'block';
     }
     function hide(id) { document.getElementById(id).style.display = 'none'; }
-
     function updateToggle(checkbox, trackId) {
         const track = document.getElementById(trackId);
         track.style.background = checkbox.checked ? '#4f46e5' : '#374151';
     }
-
     function resetBtn(btn) {
         btn.innerText = '🎲 إجراء القرعة';
         btn.disabled = false;
