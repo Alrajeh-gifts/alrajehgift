@@ -414,25 +414,49 @@
     async function showMemberScreen(user) {
         currentUser = user;
         hide('login-screen');
-        show('member-screen'); = `${user.name} 👋`;
+        show('member-screen');
+        document.getElementById('user-welcome').innerText = `${user.name} 👋`;
 
         // بناء شبكة الرغبات
         buildWishesGrid(user.wishes || '');
 
-        // جلب القرعة
-        const { data: assignments } = await db
-            .from('assignments')
-            .select('*, receiver:users!receiver_id(name, wishes)')
-            .eq('giver_id', user.id)
-            .limit(1);
+        // جلب القرعة — مع fallback إذا لم يكن عمود wishes موجوداً بعد
+        try {
+            const { data: assignments, error } = await db
+                .from('assignments')
+                .select('*, receiver:users!receiver_id(name, wishes)')
+                .eq('giver_id', user.id)
+                .limit(1);
 
-        if (assignments && assignments.length > 0) {
-            const receiver = assignments[0].receiver;
-            document.getElementById('target-name').innerText = receiver.name;
-            receiverWishes = receiver.wishes ? receiver.wishes.split(',').filter(Boolean) : [];
-            show('result-card'); hide('no-draw-msg');
-        } else {
-            hide('result-card'); show('no-draw-msg');
+            if (error) throw error;
+
+            if (assignments && assignments.length > 0) {
+                const receiver = assignments[0].receiver;
+                document.getElementById('target-name').innerText = receiver.name;
+                receiverWishes = (receiver.wishes || '').split(',').filter(Boolean);
+                document.getElementById('result-card').style.display = 'block';
+                document.getElementById('no-draw-msg').style.display = 'none';
+            } else {
+                document.getElementById('result-card').style.display = 'none';
+                document.getElementById('no-draw-msg').style.display = 'block';
+            }
+        } catch {
+            // fallback بدون wishes
+            const { data: assignments } = await db
+                .from('assignments')
+                .select('*, receiver:users!receiver_id(name)')
+                .eq('giver_id', user.id)
+                .limit(1);
+
+            if (assignments && assignments.length > 0) {
+                document.getElementById('target-name').innerText = assignments[0].receiver.name;
+                receiverWishes = [];
+                document.getElementById('result-card').style.display = 'block';
+                document.getElementById('no-draw-msg').style.display = 'none';
+            } else {
+                document.getElementById('result-card').style.display = 'none';
+                document.getElementById('no-draw-msg').style.display = 'block';
+            }
         }
     }
 
