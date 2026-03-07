@@ -16,7 +16,7 @@
     
     <style>
         /* ================================================================
-           💎 نظام الكريستال السائل المشرق (Fresh Crystal V13.1)
+           💎 نظام الكريستال السائل المشرق (Fresh Crystal V13.2)
         ================================================================ */
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -30,7 +30,7 @@
             min-height: 100dvh; color: var(--text-main); position: relative;
         }
 
-        /* --- متغيرات الوضع الداكن (الفخم والمشرق) --- */
+        /* --- متغيرات الوضع الداكن --- */
         :root {
             --bg-app: #07080d; 
             --text-main: #ffffff;
@@ -55,7 +55,7 @@
             --wish-active: #37ebf3;
         }
 
-        /* --- متغيرات الوضع النهاري (Apple Milky Crystal) --- */
+        /* --- متغيرات الوضع النهاري --- */
         @media (prefers-color-scheme: light) {
             :root {
                 --bg-app: #f1f6fa;
@@ -83,7 +83,7 @@
             .admin-row { background: #ffffff !important; border: 1px solid rgba(55,235,243,0.15) !important; }
         }
 
-        /* --- الخلفية السائلة المنعشة --- */
+        /* --- الخلفية السائلة --- */
         .liquid-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .blob { position: absolute; border-radius: 50%; filter: blur(100px); }
         .blob-1 { width: 550px; height: 550px; background: var(--liquid-1); animation: float1 22s infinite alternate; mix-blend-mode: screen; }
@@ -92,14 +92,12 @@
         @keyframes float1 { 0% { transform: translate(20%, -15%) scale(1); } 100% { transform: translate(-15%, 20%) scale(1.1); } }
         @keyframes float2 { 0% { transform: translate(-20%, 15%) scale(1.05); } 100% { transform: translate(15%, -20%) scale(0.95); } }
 
-        /* --- الحاوية الرئيسية --- */
         .main-wrapper {
             width: 100%; max-width: 24rem; z-index: 10;
             display: flex; flex-direction: column; gap: 1.25rem;
             flex: 1; justify-content: center;
         }
 
-        /* --- البطاقة الكريستالية الراقية --- */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(30px) saturate(180%);
@@ -119,7 +117,6 @@
         }
         @keyframes shine { 0% { left: -150%; } 15% { left: 250%; } 100% { left: 250%; } }
 
-        /* --- المربعات المحفورة الناعمة --- */
         .inner-box {
             background: var(--inner-bg);
             border: 1px solid var(--inner-border);
@@ -128,7 +125,6 @@
             padding: 1.25rem;
         }
 
-        /* --- الأزرار والحقول --- */
         .btn-primary {
             background: var(--btn-primary); color: var(--btn-text) !important;
             border: none;
@@ -142,7 +138,7 @@
         .btn-primary:disabled {
             background: var(--inner-bg); color: var(--text-sub) !important;
             border: 1px solid var(--inner-border); box-shadow: var(--inner-shadow);
-            cursor: not-allowed;
+            cursor: not-allowed; opacity: 0.7;
         }
 
         .input-field {
@@ -155,7 +151,6 @@
         .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(55,235,243,0.15), var(--inner-shadow); }
         .input-field::placeholder { color: var(--text-sub); font-weight: 600; opacity: 0.6; font-size: 0.95rem; }
 
-        /* --- الرغبات --- */
         .wish-chip {
             background: var(--wish-bg); border: 1px solid var(--inner-border);
             color: var(--text-sub); border-radius: 1rem; padding: 0.9rem 0.5rem;
@@ -189,7 +184,7 @@
     <div class="glass-card flex flex-col gap-4">
         <input type="password" id="access-code" placeholder=" ( تاريخ ميلادك بالهجري ) " class="input-field tracking-widest">
         <button onclick="login()" id="login-btn" class="btn-primary flex-row">
-            <span id="login-btn-text">اكتشف هديتك ←</span>
+            <span id="login-btn-text">الدخول للقرعة ←</span>
         </button>
     </div>
 </div>
@@ -217,8 +212,8 @@
             </div>
 
             <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" disabled>
-                <span id="deliver-btn-title" class="font-black">🔒 يفتح يوم العيد</span>
-                <span id="deliver-btn-sub" class="text-[11px] font-bold opacity-70 tracking-widest">جاري العد التنازلي...</span>
+                <span id="deliver-btn-title" class="font-black">📦 تأكيد تسليم الهدية</span>
+                <span id="deliver-btn-sub" class="text-[11px] font-bold opacity-70 tracking-widest">جاري حساب الوقت...</span>
             </button>
             
             <div id="delivered-msg" class="hidden-el inner-box font-black text-sm text-center" style="background: rgba(34, 197, 94, 0.08); color: #22c55e; border-color: rgba(34, 197, 94, 0.2);">
@@ -294,7 +289,7 @@
     const arabicMonths = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
     window.onload = async () => {
-        const savedCode = localStorage.getItem('rajeh_gift_fresh_v13');
+        const savedCode = localStorage.getItem('rajeh_gift_fresh_v13_1');
         if (savedCode) {
             document.getElementById('access-code').value = savedCode;
             login(true);
@@ -316,20 +311,20 @@
         const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
 
         if (error || !user) {
-            if (!isAuto) { haptic([50, 100, 50]); alert('عذراً، الرمز غير صحيح! تأكد من كتابة تاريخ الميلاد بالهجري بشكل صحيح.'); }
-            localStorage.removeItem('rajeh_gift_fresh_v13');
-            btnText.innerText = 'اكتشف هديتك ←';
+            if (!isAuto) { haptic([50, 100, 50]); alert('عذراً، الرمز غير صحيح! تأكد من تاريخ الميلاد بالهجري.'); }
+            localStorage.removeItem('rajeh_gift_fresh_v13_1');
+            btnText.innerText = 'الدخول للقرعة ←';
             return;
         }
 
-        localStorage.setItem('rajeh_gift_fresh_v13', code);
+        localStorage.setItem('rajeh_gift_fresh_v13_1', code);
         currentUser = user;
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
     function logout() {
         if(confirm('هل أنت متأكد من تسجيل الخروج؟ سيتم مسح الجلسة وآثارها.') == true){
-            localStorage.removeItem('rajeh_gift_fresh_v13');
+            localStorage.removeItem('rajeh_gift_fresh_v13_1');
             location.reload();
         }
     }
@@ -384,11 +379,11 @@
         }
     }
 
+    // --- نظام المؤقت الذي يترك النص الأساسي للزر بدون تغيير ---
     let countdownInterval;
     function initCountdown() {
         const eidDate = new Date("2026-03-20T00:00:00").getTime();
         const deliverBtn = document.getElementById('deliver-btn');
-        const btnTitle = document.getElementById('deliver-btn-title');
         const btnSub = document.getElementById('deliver-btn-sub');
 
         countdownInterval = setInterval(() => {
@@ -399,9 +394,7 @@
                 clearInterval(countdownInterval);
                 if(deliverBtn) {
                     deliverBtn.disabled = false; 
-                    if(btnTitle) btnTitle.innerText = "📦 تأكيد تسليم الهدية";
-                    if(btnSub) btnSub.innerText = "اضغط هنا لتأكيد التسليم الرسمي بالنظام";
-                    deliverBtn.style.opacity = '1';
+                    if(btnSub) btnSub.innerText = "✨ متاح الآن، اضغط لتسجيل التسليم";
                 }
                 return; 
             }
@@ -411,9 +404,7 @@
             
             if(deliverBtn) {
                 deliverBtn.disabled = true; 
-                if(btnTitle) btnTitle.innerText = "🔒 يفتح يوم العيد";
-                if(btnSub) btnSub.innerText = `باقي: ${d} يوم و ${h} ساعة`;
-                deliverBtn.style.opacity = '0.7';
+                if(btnSub) btnSub.innerText = `🔒 مقفل حتى يوم العيد (باقي: ${d} يوم و ${h} ساعة)`;
             }
         }, 1000);
     }
@@ -566,13 +557,6 @@
             else canvas.style.display = 'none';
         })();
     }
-
-    const manifestObj = {
-        "name": "هدايا العيد الراجح", "short_name": "هدايا", "start_url": ".", "display": "standalone",
-        "background_color": "#07080d", "theme_color": "#37ebf3",
-        "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>", "sizes": "192x192", "type": "image/svg+xml"}]
-    };
-    document.getElementById('manifest-link').href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj));
 </script>
 
 </body>
