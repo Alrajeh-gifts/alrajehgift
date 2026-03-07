@@ -1,574 +1,587 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>هدايا العائلة 🎁</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#09090b">
-    <link rel="manifest" id="manifest-link">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>هدايا العيد 🎁</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#050714">
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+:root{
+  --bg:#050714;
+  --la:#6366f1;--lb:#06b6d4;--lc:#8b5cf6;--ld:#0ea5e9;
+  --glass:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.11);
+  --border-hi:rgba(255,255,255,0.22);
+  --shadow:0 20px 60px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.14);
+  --t1:#f0f4ff;--t2:rgba(200,210,255,0.6);--t3:rgba(200,210,255,0.32);
+  --btn:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#06b6d4 100%);
+  --btn-sh:0 10px 30px rgba(99,102,241,0.45);
+  --inner:rgba(0,0,12,0.38);--ib:rgba(255,255,255,0.055);
+}
+html,body{height:100%;background:var(--bg);font-family:'Cairo',sans-serif;color:var(--t1);overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;
+  padding:max(2rem,env(safe-area-inset-top)) 1rem max(2rem,env(safe-area-inset-bottom));
+  min-height:100dvh;position:relative}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ================================================================
-           💎 نظام التصميم الحديث والفخم (Midnight Elegance V14)
-           خالي من الألوان المشعة، يركز على الرقي والراحة البصرية.
-        ================================================================ */
-        * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        html, body { height: 100%; margin: 0; padding: 0; background-color: var(--bg-app); transition: background-color 0.4s ease; }
-        
-        body {
-            display: flex; flex-direction: column; align-items: center;
-            padding-top: max(2.5rem, env(safe-area-inset-top)); 
-            padding-bottom: max(2rem, env(safe-area-inset-bottom));
-            padding-left: 1rem; padding-right: 1rem;
-            min-height: 100dvh; color: var(--text-main); position: relative;
-        }
+.lbg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(72px);mix-blend-mode:screen;opacity:0.5;will-change:transform}
+.b1{width:520px;height:520px;background:radial-gradient(circle,var(–la),transparent 70%);top:-10%;right:-12%;animation:b1 22s ease-in-out infinite alternate}
+.b2{width:420px;height:420px;background:radial-gradient(circle,var(–lb),transparent 70%);bottom:-8%;left:-10%;animation:b2 27s ease-in-out infinite alternate}
+.b3{width:340px;height:340px;background:radial-gradient(circle,var(–lc),transparent 70%);top:38%;left:18%;animation:b3 18s ease-in-out infinite alternate-reverse}
+.b4{width:260px;height:260px;background:radial-gradient(circle,var(–ld),transparent 70%);top:18%;left:-6%;animation:b4 24s ease-in-out infinite alternate}
+@keyframes b1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-8%,12%) scale(1.1)}}
+@keyframes b2{0%{transform:translate(0,0) scale(1.05)}100%{transform:translate(10%,-8%) scale(0.92)}}
+@keyframes b3{0%{transform:translate(0,0) scale(0.95)}100%{transform:translate(-10%,8%) scale(1.12)}}
+@keyframes b4{0%{transform:translate(0,0) scale(1)}100%{transform:translate(8%,14%) scale(1.08)}}
+.lbg::after{content:’’;position:absolute;inset:0;
+background:radial-gradient(ellipse 100% 55% at 50% 0%,rgba(5,7,20,.35),transparent),
+radial-gradient(ellipse 100% 55% at 50% 100%,rgba(5,7,20,.42),transparent)}
 
-        /* --- متغيرات الوضع الداكن (فخم ورسمي) --- */
-        :root {
-            --bg-app: #09090b; /* لون ليلي عميق جداً ومريح (Zinc 950) */
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8; /* رمادي هادئ */
-            --text-accent: #818cf8; /* نيلي ناعم جداً */
-            
-            /* سوائل خلفية هادئة جداً (بدون نيون) */
-            --liquid-1: rgba(79, 70, 229, 0.12); /* نيلي خافت */
-            --liquid-2: rgba(56, 189, 248, 0.08); /* أزرق سماوي خافت جداً */
-            
-            /* زجاج أنيق وغير مزعج */
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.05);
-            --glass-edge: rgba(255, 255, 255, 0.1); 
-            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            
-            /* عناصر محفورة ناعمة */
-            --inner-bg: rgba(0, 0, 0, 0.25);
-            --inner-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
-            --inner-border: rgba(255, 255, 255, 0.02);
-            
-            /* أزرار رسمية (أزرق ملكي متدرج) */
-            --btn-primary: linear-gradient(135deg, #4f46e5, #3b82f6);
-            --btn-text: #ffffff; 
-            --wish-bg: rgba(255, 255, 255, 0.02);
-            --wish-active: #4f46e5;
-        }
+.wrap{width:100%;max-width:22rem;z-index:10;display:flex;flex-direction:column;gap:1.05rem;flex:1;justify-content:center}
 
-        /* --- متغيرات الوضع النهاري (نظيف وواضح) --- */
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg-app: #f8fafc; /* رمادي مائل للبياض النقي (Slate 50) */
-                --text-main: #0f172a; 
-                --text-sub: #64748b;
-                --text-accent: #4f46e5; 
-                
-                --liquid-1: rgba(79, 70, 229, 0.08);
-                --liquid-2: rgba(56, 189, 248, 0.08);
-                
-                --glass-bg: rgba(255, 255, 255, 0.7);
-                --glass-border: rgba(15, 23, 42, 0.05);
-                --glass-edge: rgba(255, 255, 255, 0.8);
-                --glass-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
-                
-                --inner-bg: rgba(15, 23, 42, 0.03);
-                --inner-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.02);
-                --inner-border: rgba(15, 23, 42, 0.05);
-                
-                --btn-primary: linear-gradient(135deg, #4f46e5, #3b82f6);
-                --btn-text: #ffffff; 
-                --wish-bg: rgba(15, 23, 42, 0.02);
-                --wish-active: #4f46e5;
-            }
-            .admin-row { background: #ffffff !important; border: 1px solid rgba(15, 23, 42, 0.05) !important; }
-        }
+.card{background:var(–glass);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);
+border:1px solid var(–border);border-top-color:var(–border-hi);border-radius:1.6rem;
+padding:1.45rem 1.35rem;box-shadow:var(–shadow);position:relative;overflow:hidden}
+.card::before{content:’’;position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,.055) 0%,transparent 60%);
+border-radius:inherit;pointer-events:none}
+.card::after{content:’’;position:absolute;top:0;left:-120%;width:50%;height:100%;
+background:linear-gradient(to right,transparent,rgba(255,255,255,.065),transparent);
+transform:skewX(-18deg);animation:glint 14s infinite;pointer-events:none}
+@keyframes glint{0%{left:-120%}10%{left:220%}100%{left:220%}}
 
-        /* --- الخلفية السائلة الهادئة --- */
-        .liquid-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-        .blob { position: absolute; border-radius: 50%; filter: blur(90px); }
-        .blob-1 { width: 600px; height: 600px; background: var(--liquid-1); animation: float1 30s infinite alternate; }
-        .blob-2 { width: 500px; height: 500px; background: var(--liquid-2); animation: float2 25s infinite alternate-reverse; }
-        @keyframes float1 { 0% { transform: translate(10%, -10%) scale(1); } 100% { transform: translate(-10%, 10%) scale(1.05); } }
-        @keyframes float2 { 0% { transform: translate(-10%, 10%) scale(1.05); } 100% { transform: translate(10%, -10%) scale(0.95); } }
+.inner{background:var(–inner);border:1px solid var(–ib);border-radius:1.05rem;
+padding:.95rem;box-shadow:inset 0 2px 8px rgba(0,0,0,.4)}
 
-        /* --- الحاوية الرئيسية --- */
-        .main-wrapper {
-            width: 100%; max-width: 24rem; z-index: 10;
-            display: flex; flex-direction: column; gap: 1.25rem;
-            flex: 1; justify-content: center;
-        }
+.divl{height:1px;background:linear-gradient(to left,transparent,var(–border-hi),transparent);margin:.85rem 0}
 
-        /* --- البطاقة الزجاجية الراقية --- */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--glass-border);
-            border-top: 1px solid var(--glass-edge); 
-            border-radius: 2rem;
-            padding: 1.5rem;
-            box-shadow: var(--glass-shadow);
-            position: relative; overflow: hidden;
-        }
+.btn{width:100%;background:var(–btn);border:none;border-radius:1.05rem;padding:.95rem 1rem;
+color:#fff!important;font-family:‘Cairo’,sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;
+box-shadow:var(–btn-sh);transition:transform .2s cubic-bezier(.175,.885,.32,1.275),box-shadow .2s;
+position:relative;overflow:hidden}
+.btn::after{content:’’;position:absolute;inset:0;
+background:linear-gradient(to bottom,rgba(255,255,255,.12),transparent);
+border-radius:inherit;pointer-events:none}
+.btn:active:not(:disabled){transform:scale(.97);box-shadow:0 5px 15px rgba(99,102,241,.3)}
+.btn:disabled{background:var(–inner)!important;color:var(–t3)!important;
+border:1px solid var(–ib);box-shadow:none;cursor:not-allowed}
+.btn.row{flex-direction:row;gap:.4rem}
 
-        /* لمعة زجاجية خفيفة جداً */
-        .glass-card::after {
-            content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
-            transform: skewX(-20deg); animation: shine 15s infinite; pointer-events: none;
-        }
-        @keyframes shine { 0% { left: -150%; } 15% { left: 250%; } 100% { left: 250%; } }
+.inp{width:100%;background:var(–inner);border:1px solid var(–ib);border-radius:1.05rem;
+padding:.88rem 1rem;color:var(–t1);font-family:‘Cairo’,sans-serif;font-weight:700;
+font-size:.9rem;text-align:center;outline:none;
+transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 2px 8px rgba(0,0,0,.35)}
+.inp:focus{border-color:rgba(99,102,241,.6);
+box-shadow:inset 0 2px 8px rgba(0,0,0,.35),0 0 0 3px rgba(99,102,241,.15)}
+.inp::placeholder{color:var(–t3);font-size:.82rem;font-weight:600}
 
-        /* --- المربعات الداخلية --- */
-        .inner-box {
-            background: var(--inner-bg);
-            border: 1px solid var(--inner-border);
-            box-shadow: var(--inner-shadow);
-            border-radius: 1.5rem;
-            padding: 1.25rem;
-        }
+.chip{background:var(–inner);border:1px solid var(–ib);border-radius:.75rem;padding:.75rem .3rem;
+color:var(–t2);font-family:‘Cairo’,sans-serif;font-size:.76rem;font-weight:700;
+cursor:pointer;transition:all .2s;text-align:center}
+.chip.on{background:var(–btn);border-color:rgba(99,102,241,.5);color:#fff!important;
+font-weight:900;box-shadow:0 5px 16px rgba(99,102,241,.4);transform:translateY(-2px)}
 
-        /* --- الأزرار والحقول --- */
-        .btn-primary {
-            background: var(--btn-primary); color: var(--btn-text) !important;
-            border: none;
-            border-radius: 1.25rem; padding: 1.1rem; font-weight: 900; font-size: 1.1rem;
-            width: 100%; cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.15rem;
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-        }
-        .btn-primary:active:not(:disabled) { transform: scale(0.97); box-shadow: 0 5px 10px -3px rgba(79, 70, 229, 0.3); }
-        
-        .btn-primary:disabled {
-            background: var(--inner-bg); color: var(--text-sub) !important;
-            border: 1px solid var(--inner-border); box-shadow: none;
-            cursor: not-allowed; opacity: 0.8;
-        }
+.cap{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(–t3)}
+.hide{display:none!important}
+.fi{animation:fi .65s cubic-bezier(.16,1,.3,1) both}
+@keyframes fi{from{opacity:0;transform:translateY(24px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.13s}.d3{animation-delay:.21s}
 
-        .input-field {
-            background: var(--inner-bg); border: 1px solid var(--inner-border);
-            box-shadow: var(--inner-shadow);
-            color: var(--text-main); border-radius: 1.25rem;
-            padding: 1.1rem; font-weight: 800; text-align: center; font-size: 1.1rem;
-            width: 100%; outline: none; transition: 0.3s;
-            letter-spacing: 1px;
-        }
-        .input-field:focus { border-color: #4f46e5; }
-        .input-field::placeholder { color: var(--text-sub); font-weight: 600; opacity: 0.7; font-size: 0.95rem; letter-spacing: normal; }
+.arow{background:var(–inner);border:1px solid var(–ib);border-radius:.85rem;
+padding:.7rem .9rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
+.badge{font-size:10px;font-weight:800;padding:.2rem .55rem;border-radius:999px;border:1px solid}
+.badge.ok{color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.08)}
+.badge.pen{color:var(–t3);border-color:var(–ib)}
 
-        /* --- الرغبات --- */
-        .wish-chip {
-            background: var(--wish-bg); border: 1px solid var(--inner-border);
-            color: var(--text-sub); border-radius: 1rem; padding: 0.9rem 0.5rem;
-            font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: 0.2s; text-align: center;
-        }
-        .wish-active {
-            background: var(--wish-active) !important; color: #ffffff !important; 
-            border: 1px solid var(--wish-active) !important; box-shadow: 0 6px 15px -3px rgba(79, 70, 229, 0.4);
-            font-weight: 900; transform: translateY(-2px);
-        }
+@keyframes npop{0%{transform:scale(.6);opacity:0;filter:blur(8px)}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1;filter:none}}
+.npop{animation:npop .7s cubic-bezier(.175,.885,.32,1.275) forwards}
 
-        .hidden-el { display: none !important; }
-        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); filter: blur(3px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-    </style>
+.spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.15);border-top-color:rgba(255,255,255,.85);
+border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(–border);border-radius:2px}
+</style>
+
 </head>
 <body>
 
-<div class="liquid-canvas">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
+<div class="lbg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
 </div>
 
-<div id="login-screen" class="main-wrapper fade-in">
-    <div class="text-center mb-6">
-        <div style="font-size: 4.5rem; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)); margin-bottom: 0.5rem;">🎁</div>
-        <h1 class="text-4xl font-black tracking-tight" style="color: var(--text-main)">هدايا العائلة</h1>
-        <p class="mt-3 text-sm font-bold" style="color: var(--text-sub)">أدخل الرمز السري للمتابعة</p>
-    </div>
-    
-    <div class="glass-card flex flex-col gap-4">
-        <input type="password" id="access-code" placeholder="تاريخ ميلادك بالهجري" class="input-field">
-        <button onclick="login()" id="login-btn" class="btn-primary flex-row">
-            <span id="login-btn-text">الدخول للقرعة ←</span>
-        </button>
-    </div>
+<!-- شاشة الدخول -->
+
+<div id="s-login" class="wrap fi">
+  <div style="text-align:center;margin-bottom:1.4rem">
+    <div style="font-size:3.8rem;filter:drop-shadow(0 0 22px rgba(99,102,241,.75));margin-bottom:.55rem">🎁</div>
+    <h1 style="font-size:1.85rem;font-weight:900;letter-spacing:-.5px;color:var(--t1)">هدايا العيد</h1>
+    <p class="cap" style="margin-top:.35rem;letter-spacing:3px">قُرعة العائلة الكريمة • ٢٠٢٦</p>
+  </div>
+  <div class="card fi d1" style="display:flex;flex-direction:column;gap:.9rem">
+    <p class="cap" style="text-align:center">أدخل رمزك السري</p>
+    <input type="password" id="inp-code" class="inp" placeholder="تاريخ ميلادك بالهجري"
+      onkeydown="if(event.key==='Enter')login()">
+    <button class="btn row" onclick="login()" id="btn-login">
+      <span id="txt-login">دخول القرعة</span>
+      <span style="opacity:.65">←</span>
+    </button>
+  </div>
+  <p style="text-align:center;color:var(--t3);font-size:.68rem;font-weight:600;margin-top:.4rem">﷽</p>
 </div>
 
-<div id="member-screen" class="main-wrapper fade-in hidden-el" style="margin-top: 1.5rem;">
-    
-    <div class="glass-card text-center">
-        <p class="text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color: var(--text-sub)">عضو العائلة المعتمد</p>
-        <h2 id="user-welcome" class="text-2xl font-black mb-6" style="color: var(--text-main)"></h2>
+<!-- شاشة العضو -->
 
-        <div id="result-card" class="hidden-el">
-            <div class="inner-box mb-5">
-                <p class="text-[10px] font-bold mb-2 uppercase tracking-widest" style="color: var(--text-sub)">🎯 هديتك هذا العيد لـ</p>
-                <div id="target-name" class="text-5xl font-black mb-4" style="color: var(--text-accent); text-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);"></div>
-                
-                <div id="budget-display" class="hidden-el inner-box p-3.5 flex justify-center gap-2 mb-4">
-                    <span class="text-xs font-bold" style="color: var(--text-sub)">💰 الميزانية المقترحة:</span>
-                    <span id="budget-amount" class="font-black text-sm" style="color: var(--text-accent)"></span>
-                </div>
+<div id="s-member" class="wrap hide" style="padding-bottom:1rem">
 
-                <button onclick="toggleWishes()" class="w-full py-2.5 rounded-xl text-xs font-bold transition-all" style="background: var(--wish-bg); color: var(--text-main); border: 1px solid var(--glass-border);">
-                    🎁 عرض رغباته المفضلة
-                </button>
-                <div id="wishes-box" class="hidden-el flex-wrap justify-center gap-2 mt-4 transition-all"></div>
-            </div>
+  <div class="card fi d1" style="text-align:center">
+    <p class="cap" style="margin-bottom:.45rem">عضو العائلة الكريمة ✓</p>
+    <h2 id="el-welcome" style="font-size:1.3rem;font-weight:900;color:var(--t1);margin-bottom:1.1rem"></h2>
 
-            <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" disabled>
-                <span id="deliver-btn-title" class="font-black">🔒 يفتح يوم العيد</span>
-                <span id="deliver-btn-sub" class="text-[11px] font-bold opacity-70 tracking-widest">جاري العد التنازلي...</span>
-            </button>
-            
-            <div id="delivered-msg" class="hidden-el inner-box font-black text-sm text-center" style="background: rgba(34, 197, 94, 0.05); color: #22c55e; border-color: rgba(34, 197, 94, 0.2);">
-                ✅ بيّض الله وجهك، تم تأكيد تسليم الهدية!
-            </div>
-        </div>
-        
-        <div id="no-draw-msg" class="hidden-el py-12 font-black text-lg" style="color: var(--text-sub)">السحب الإلكتروني في الطريق.. ⏳</div>
+```
+<!-- نتيجة القرعة -->
+<div id="zone-result" class="hide">
+  <div class="inner" style="margin-bottom:.95rem;text-align:center">
+    <p class="cap" style="margin-bottom:.55rem">🎯 هديتك هذا العيد تروح لـ</p>
+    <div id="el-target" class="npop" style="font-size:2.6rem;font-weight:900;
+      background:linear-gradient(135deg,#a5b4fc,#67e8f9);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;margin-bottom:.25rem"></div>
+    <p style="color:var(--t2);font-size:.73rem;font-weight:700">حظّك وقع عليه — فرّح قلبه بهديتك 🎁</p>
+
+    <div class="divl"></div>
+
+    <div id="row-budget" class="hide" style="display:flex;justify-content:center;align-items:center;gap:.45rem;margin-bottom:.7rem">
+      <span style="color:var(--t2);font-size:.73rem;font-weight:700">💰 الميزانية المقترحة:</span>
+      <span id="el-budget" style="font-weight:900;font-size:.83rem;color:#a5b4fc"></span>
     </div>
 
-    <div class="glass-card">
-        <h3 class="font-black text-lg mb-1 text-right" style="color: var(--text-main)">🌟 رغباتي الشخصية</h3>
-        <p class="text-[10px] mb-5 text-right font-bold" style="color: var(--text-sub)">اختر ما تفضله ليراه من سيهديك</p>
-        
-        <div id="wishes-grid" class="grid grid-cols-2 gap-2.5 mb-5"></div>
-        
-        <input type="text" id="custom-wish-input" placeholder="أو اكتب رغبة مخصصة هنا... ✍️" class="input-field mb-5 text-sm p-3.5">
-        <button onclick="saveWishes()" id="save-wishes-btn" class="btn-primary" style="flex-direction: row; font-size: 0.95rem;">
-            <span id="save-btn-text">💾 حفظ اختياراتي في النظام</span>
-        </button>
-    </div>
+    <button id="btn-toggle-wishes" onclick="toggleWishes()"
+      style="width:100%;padding:.6rem;border-radius:.8rem;font-size:.78rem;font-weight:800;
+        font-family:'Cairo',sans-serif;background:var(--inner);border:1px solid var(--ib);
+        color:var(--t1);cursor:pointer;transition:.2s">
+      🎀 اعرض أمنياته المفضلة
+    </button>
+    <div id="box-wishes" class="hide" style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.65rem"></div>
+  </div>
 
-    <button onclick="logout()" class="font-bold text-xs py-2 transition-opacity mx-auto" style="color: var(--text-sub); opacity: 0.6;">← تسجيل خروج آمن</button>
+  <button id="btn-deliver" onclick="markDelivered()" class="btn" disabled style="margin-bottom:.7rem">
+    <span id="ttl-deliver" style="font-weight:900">🔒 يُفتح يوم العيد</span>
+    <span id="sub-deliver" style="font-size:.71rem;opacity:.62;font-weight:700">جارٍ العدّ التنازلي...</span>
+  </button>
+
+  <div id="msg-delivered" class="inner hide" style="text-align:center;color:#4ade80;font-weight:900;
+    font-size:.88rem;background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.2)">
+    ✅ بيّض الله وجهك — تم التسليم بنجاح!
+  </div>
 </div>
 
-<div id="admin-screen" class="main-wrapper fade-in hidden-el" style="margin-top: 1.5rem;">
-    <div class="glass-card text-center">
-        <div class="text-4xl mb-3" style="filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3))">👑</div>
-        <h2 class="text-2xl font-black mb-6" style="color: var(--text-main)">لوحة المشرف</h2>
+<div id="zone-nodraw" class="hide" style="padding:2.5rem 0;color:var(--t2);font-weight:800;font-size:.95rem">
+  القرعة ما جاء وقتها بعد ⏳
+  <p style="font-size:.7rem;color:var(--t3);margin-top:.35rem;font-weight:600">راسل المشرف لو عندك استفسار</p>
+</div>
+```
 
-        <div class="inner-box text-right flex flex-col gap-5 mb-6">
-            <p class="text-xs font-bold uppercase tracking-widest" style="color: var(--text-sub)">⚙️ قيود السحب الذكي</p>
-            <div class="flex justify-between items-center font-bold text-sm" style="color: var(--text-main)">
-                <span>فواز لا يُهدي نواف (تعارض)</span>
-                <input type="checkbox" id="fawaz-toggle" checked class="w-5 h-5 accent-indigo-500 cursor-pointer">
-            </div>
-            <div class="flex justify-between items-center font-bold text-sm" style="color: var(--text-main)">
-                <span>سميرة تُهدى من طارق/فواز فقط</span>
-                <input type="checkbox" id="sameera-toggle" checked class="w-5 h-5 accent-indigo-500 cursor-pointer">
-            </div>
-        </div>
+  </div>
 
-        <div class="text-right mb-6">
-             <label class="text-xs font-bold block mb-2" style="color: var(--text-sub)">💰 تحديد الميزانية (اختياري)</label>
-             <input type="text" id="budget-input" placeholder="مثال: 500 ريال" class="input-field text-base">
-        </div>
+  <!-- بطاقة الأمنيات -->
 
-        <button onclick="runDraw()" id="draw-btn" class="btn-primary" style="flex-direction: row; gap: 0.5rem">
-            <span>🎲 إجراء سحب إلكتروني جديد</span>
-        </button>
-    </div>
+  <div class="card fi d2">
+    <h3 style="font-weight:900;font-size:1rem;color:var(--t1);margin-bottom:.2rem">✨ أمنياتي الشخصية</h3>
+    <p style="color:var(--t2);font-size:.71rem;font-weight:700;margin-bottom:.9rem">اختر ما يعجبك — من يهديك راح يشوفه</p>
+    <div id="grid-wishes" style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.9rem"></div>
+    <input type="text" id="inp-custom" class="inp" placeholder="أو اكتب رغبة خاصة... ✍️"
+      style="margin-bottom:.85rem;font-size:.86rem;padding:.82rem 1rem">
+    <button class="btn row" onclick="saveWishes()">
+      <span id="txt-save">💾 احفظ أمنياتي</span>
+    </button>
+  </div>
 
-    <div id="assignments-section" class="hidden-el w-full">
-        <div class="glass-card">
-            <h3 class="text-center font-black text-lg mb-5 pb-3 border-b" style="border-color: var(--glass-border); color: var(--text-main)">📋 التوزيع الحالي</h3>
-            <div id="assignments-list" class="flex flex-col gap-2"></div>
-        </div>
-    </div>
+<button onclick="logout()"
+style="color:var(--t3);font-size:.7rem;font-weight:700;background:none;border:none;cursor:pointer;
+margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
+← تسجيل الخروج
+</button>
 
-    <button onclick="logout()" class="font-bold text-xs py-2 mx-auto" style="color: var(--text-sub); opacity: 0.6;">← خروج المشرف</button>
 </div>
 
-<canvas id="confetti-canvas" style="position:fixed; inset:0; pointer-events:none; z-index:999; display:none;"></canvas>
+<!-- لوحة المشرف -->
+
+<div id="s-admin" class="wrap hide" style="padding-bottom:1rem">
+
+  <div class="card fi d1" style="text-align:center">
+    <div style="font-size:2.4rem;filter:drop-shadow(0 0 18px rgba(99,102,241,.65));margin-bottom:.4rem">👑</div>
+    <h2 style="font-weight:900;font-size:1.35rem;color:var(--t1);margin-bottom:.15rem">لوحة تحكم المشرف</h2>
+    <p style="color:var(--t2);font-size:.73rem;font-weight:700;margin-bottom:1.3rem">إدارة قرعة العائلة الكريمة</p>
+
+```
+<div class="inner" style="text-align:right;margin-bottom:1rem">
+  <p class="cap" style="margin-bottom:.85rem">⚙️ قيود القرعة الذكية</p>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;
+    font-size:.83rem;font-weight:700;color:var(--t1)">
+    <label for="tog-fawaz" style="cursor:pointer">فواز ما يُهدي نواف</label>
+    <input type="checkbox" id="tog-fawaz" checked style="width:1.05rem;height:1.05rem;accent-color:#6366f1;cursor:pointer">
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;
+    font-size:.83rem;font-weight:700;color:var(--t1)">
+    <label for="tog-sameera" style="cursor:pointer">سميرة تُهدى من طارق أو فواز بس</label>
+    <input type="checkbox" id="tog-sameera" checked style="width:1.05rem;height:1.05rem;accent-color:#6366f1;cursor:pointer">
+  </div>
+</div>
+
+<div style="text-align:right;margin-bottom:1rem">
+  <label class="cap" style="display:block;margin-bottom:.45rem">💰 حدّد الميزانية (اختياري)</label>
+  <input type="text" id="inp-budget" class="inp" placeholder="مثال: 300 ريال">
+</div>
+
+<button class="btn row" onclick="runDraw()" id="btn-draw">
+  <span id="txt-draw">🎲 ابدأ القرعة الإلكترونية</span>
+</button>
+```
+
+  </div>
+
+  <div id="sec-assigns" class="card fi d2 hide">
+    <h3 style="text-align:center;font-weight:900;font-size:.93rem;color:var(--t1);
+      padding-bottom:.75rem;margin-bottom:.75rem;border-bottom:1px solid var(--border)">
+      📋 التوزيع الحالي للقرعة
+    </h3>
+    <div id="list-assigns" style="display:flex;flex-direction:column;gap:.45rem"></div>
+  </div>
+
+<button onclick="logout()"
+style="color:var(--t3);font-size:.7rem;font-weight:700;background:none;border:none;cursor:pointer;
+margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
+← تسجيل خروج المشرف
+</button>
+
+</div>
+
+<canvas id="cvs" style="position:fixed;inset:0;pointer-events:none;z-index:999;display:none"></canvas>
 
 <script>
-    const SUPABASE_URL = 'https://oprethkloexyrhagmdod.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SURL='https://oprethkloexyrhagmdod.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
+const db=supabase.createClient(SURL,SKEY);
+const STORE='eid_gift_v3';
+let me=null,assignId=null,rxWishes=[];
+const arM=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
-    let currentUser = null;
-    let currentAssignmentId = null;
-    let receiverWishesData = [];
-    const arabicMonths = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+const $=id=>document.getElementById(id);
+const show=(id,flex)=>{const e=$(id);e.classList.remove('hide');if(flex)e.style.display=flex};
+const hide=id=>$(id).classList.add('hide');
+function haptic(p){try{navigator.vibrate?.(p)}catch(_){}}
 
-    window.onload = async () => {
-        const savedCode = localStorage.getItem('rajeh_gift_final_v14');
-        if (savedCode) {
-            document.getElementById('access-code').value = savedCode;
-            login(true);
-        }
-    };
+function screen(s){
+  ['s-login','s-member','s-admin'].forEach(id=>{
+    if(id===s){show(id,'flex')}else{$(id).classList.add('hide');$(id).style.display=''}
+  });
+}
 
-    function haptic(pattern) {
-        if ("vibrate" in navigator) { try { navigator.vibrate(pattern); } catch (e) {} }
+/* ── دخول ── */
+window.onload=()=>{
+  const s=localStorage.getItem(STORE);
+  if(s){$('inp-code').value=s;login(true);}
+};
+
+async function login(auto=false){
+  if(!auto)haptic(40);
+  const code=$('inp-code').value.trim();
+  if(!code)return;
+  $('txt-login').innerHTML='<span class="spin"></span>';
+  const{data:u,error}=await db.from('users').select('*').eq('code',code).single();
+  if(error||!u){
+    if(!auto){haptic([50,100,50]);toast('الرمز غير صحيح ❌','err');}
+    localStorage.removeItem(STORE);
+    $('txt-login').textContent='دخول القرعة';
+    return;
+  }
+  localStorage.setItem(STORE,code);
+  me=u;
+  u.role==='admin'?loadAdmin():loadMember(u);
+}
+
+function logout(){
+  if(!confirm('متأكد من تسجيل الخروج؟'))return;
+  localStorage.removeItem(STORE);
+  location.reload();
+}
+
+/* ── عضو ── */
+async function loadMember(u){
+  screen('s-member');
+  haptic(30);
+  const w=$('el-welcome');
+  if(u.name==='سميرة'){
+    w.innerHTML='يا هلا يا قلب البيت — أمنا سميرة 👑❤️';
+    w.style.cssText='font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,#f9a8d4,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.1rem';
+  }else{
+    w.textContent='يا هلا يا '+u.name+' 👋';
+  }
+  buildGrid(u.wishes||'');
+  const{data:dr}=await db.from('draws').select('*').order('created_at',{ascending:false}).limit(1).maybeSingle();
+  if(!dr){show('zone-nodraw','block');return;}
+  if(dr.budget){$('el-budget').textContent=dr.budget+' ريال';show('row-budget','flex');}
+  const{data:asgn}=await db.from('assignments')
+    .select('*,receiver:users!receiver_id(name,wishes)')
+    .eq('giver_id',u.id).eq('draw_id',dr.id).maybeSingle();
+  if(!asgn){show('zone-nodraw','block');return;}
+  assignId=asgn.id;
+  $('el-target').textContent=asgn.receiver.name;
+  rxWishes=(asgn.receiver.wishes||'').split(',').filter(Boolean);
+  show('zone-result','block');
+  setTimeout(()=>haptic([80,40,80]),400);
+  if(asgn.is_delivered){
+    hide('btn-deliver');
+    show('msg-delivered','block');
+  }else{
+    show('btn-deliver','flex');
+    hide('msg-delivered');
+    countdown();
+  }
+}
+
+function countdown(){
+  const eid=new Date('2026-03-20T00:00:00').getTime();
+  const tick=()=>{
+    const btn=$('btn-deliver');
+    if(!btn)return;
+    const diff=eid-Date.now();
+    if(diff<=0){
+      btn.disabled=false;
+      $('ttl-deliver').textContent='📦 تأكيد تسليم الهدية';
+      $('sub-deliver').textContent='اضغط لتسجيل التسليم الرسمي';
+      return;
     }
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor(diff%86400000/3600000);
+    const m=Math.floor(diff%3600000/60000);
+    btn.disabled=true;
+    $('ttl-deliver').textContent='🔒 يُفتح يوم العيد';
+    $('sub-deliver').textContent='باقي '+d+' يوم '+h+' ساعة '+m+' دقيقة';
+    setTimeout(tick,30000);
+  };
+  tick();
+}
 
-    async function login(isAuto = false) {
-        if(!isAuto) haptic(50); 
-        const btnText = document.getElementById('login-btn-text');
-        const code = document.getElementById('access-code').value.trim();
-        
-        if (!code) return;
-        if (!isAuto) btnText.innerText = '⏳ جاري الاتصال...';
+function toggleWishes(){
+  const box=$('box-wishes');
+  const btn=$('btn-toggle-wishes');
+  const isHidden=box.classList.contains('hide');
+  if(isHidden){
+    box.classList.remove('hide');
+    box.style.display='flex';
+    btn.textContent='🔼 إخفاء الأمنيات';
+    box.innerHTML=rxWishes.length
+      ?rxWishes.map(w=>`<span style="padding:.28rem .65rem;border-radius:.5rem;font-size:.74rem;font-weight:800;background:var(--inner);border:1px solid var(--ib);color:var(--t1)">${w}</span>`).join('')
+      :'<p style="font-size:.76rem;color:var(--t2);font-weight:700;padding:.25rem">ما حدّد أمنياته بعد ⏳</p>';
+  }else{
+    hide('box-wishes');
+    btn.textContent='🎀 اعرض أمنياته المفضلة';
+  }
+}
 
-        const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
+async function markDelivered(){
+  if(!confirm('📦 هل سلّمت الهدية فعلاً وتبي تسجّلها؟'))return;
+  haptic([50,50,50]);
+  $('ttl-deliver').innerHTML='<span class="spin"></span>';
+  $('sub-deliver').textContent='';
+  $('btn-deliver').disabled=true;
+  const{error}=await db.from('assignments').update({is_delivered:true}).eq('id',assignId);
+  if(!error){
+    fireConfetti();
+    hide('btn-deliver');
+    show('msg-delivered','block');
+    haptic([100,80,100,80,150]);
+    toast('جزاك الله خيراً! 🎉','ok');
+  }else{
+    toast('حدث خطأ، حاول مجدداً','err');
+    $('btn-deliver').disabled=false;
+    $('ttl-deliver').textContent='📦 تأكيد تسليم الهدية';
+  }
+}
 
-        if (error || !user) {
-            if (!isAuto) { haptic([50, 100, 50]); alert('عذراً، الرمز غير صحيح! تأكد من تاريخ الميلاد بالهجري.'); }
-            localStorage.removeItem('rajeh_gift_final_v14');
-            btnText.innerText = 'الدخول للقرعة ←';
-            return;
-        }
+/* ── الأمنيات ── */
+const OPTS=[
+  {l:'عطور وعناية',i:'🌸'},{l:'ملابس وأناقة',i:'👔'},
+  {l:'إلكترونيات',i:'📱'},{l:'قهوة وحلويات',i:'☕'},
+  {l:'ساعة فاخرة',i:'⌚'},{l:'كتب واستجمام',i:'📚'},
+];
 
-        localStorage.setItem('rajeh_gift_final_v14', code);
-        currentUser = user;
-        user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
+function buildGrid(saved){
+  const arr=saved.split(',').filter(Boolean);
+  $('grid-wishes').innerHTML=OPTS.map(o=>`
+    <button onclick="toggleChip(this)" class="chip${arr.includes(o.l)?' on':''}">
+      <div>${o.i}</div><div>${o.l}</div>
+    </button>`).join('');
+}
+
+function toggleChip(el){el.classList.toggle('on');haptic(18);}
+
+async function saveWishes(){
+  haptic(40);
+  $('txt-save').innerHTML='<span class="spin"></span>';
+  const sel=[...document.querySelectorAll('.chip.on')].map(b=>{
+    const lines=b.textContent.trim().split('\n');
+    return lines[lines.length-1].trim();
+  });
+  const custom=$('inp-custom').value.trim();
+  if(custom)sel.push(custom);
+  const{error}=await db.from('users').update({wishes:sel.join(',')}).eq('id',me.id);
+  if(!error){toast('✅ تم حفظ أمنياتك','ok');$('inp-custom').value='';}
+  else toast('حدث خطأ في الحفظ ❌','err');
+  $('txt-save').textContent='💾 احفظ أمنياتي';
+}
+
+/* ── مشرف ── */
+async function loadAdmin(){
+  screen('s-admin');
+  const{data:asgns}=await db.from('assignments')
+    .select('*,giver:users!giver_id(name),receiver:users!receiver_id(name)')
+    .order('created_at',{ascending:false});
+  if(asgns&&asgns.length>0){
+    renderAssigns(asgns);
+    show('sec-assigns','block');
+  }
+}
+
+function renderAssigns(asgns){
+  $('list-assigns').innerHTML=asgns.map(a=>`
+    <div class="arow">
+      <span style="font-weight:900;color:#a5b4fc;width:33%;text-align:right">${a.giver.name}</span>
+      <span class="badge ${a.is_delivered?'ok':'pen'}">${a.is_delivered?'✅ سُلّمت':'⏳ بانتظار'}</span>
+      <span style="font-weight:900;color:var(--t1);width:33%;text-align:left">${a.receiver.name}</span>
+    </div>`).join('');
+}
+
+async function runDraw(){
+  if(!confirm('⚠️ باحذف التوزيع الحالي وأبدأ قرعة جديدة — تؤكد؟'))return;
+  haptic(80);
+  $('txt-draw').innerHTML='<span class="spin"></span> جارٍ السحب...';
+  $('btn-draw').disabled=true;
+
+  const{data:members}=await db.from('users').select('*').eq('role','member');
+  if(!members||members.length<2){toast('عدد الأعضاء غير كافٍ','err');resetDraw();return;}
+
+  const fC=$('tog-fawaz').checked;
+  const sC=$('tog-sameera').checked;
+  const budget=$('inp-budget').value.trim();
+
+  /* القرعات السابقة لتفادي التكرار */
+  const{data:past}=await db.from('draws').select('id').order('created_at',{ascending:false}).limit(3);
+  let pastPairs=[];
+  if(past?.length){
+    const{data:pa}=await db.from('assignments')
+      .select('giver:users!giver_id(name),receiver:users!receiver_id(name)')
+      .in('draw_id',past.map(d=>d.id));
+    if(pa)pastPairs=pa.map(a=>a.giver.name+'->'+a.receiver.name);
+  }
+
+  let result=null;
+  for(let i=0;i<10000;i++){
+    const sh=[...members].sort(()=>Math.random()-.5);
+    if(sh.some((m,idx)=>m.id===members[idx].id))continue;
+    const map={};
+    members.forEach((m,idx)=>{map[m.name]=sh[idx].name;});
+    if(fC&&map['فواز']==='نواف')continue;
+    if(sC){
+      const g=Object.keys(map).find(k=>map[k]==='سميرة');
+      if(!['طارق','فواز'].includes(g))continue;
     }
+    if(Object.entries(map).some(([g,r])=>pastPairs.includes(g+'->'+r)))continue;
+    result={sh,map};break;
+  }
 
-    function logout() {
-        if(confirm('هل أنت متأكد من تسجيل الخروج؟') == true){
-            localStorage.removeItem('rajeh_gift_final_v14');
-            location.reload();
-        }
-    }
+  if(!result){toast('ما قدرت أسوي القرعة — جرّب تقليل القيود','err');resetDraw();return;}
 
-    async function showMemberScreen(user) {
-        document.getElementById('login-screen').classList.add('hidden-el');
-        document.getElementById('member-screen').classList.remove('hidden-el');
-        document.getElementById('member-screen').style.display = 'flex';
-        
-        const welcomeEl = document.getElementById('user-welcome');
-        if (user.name === 'سميرة') {
-            welcomeEl.innerHTML = "يا هلا بست الحبايب أمنا سميرة ❤️👑";
-            welcomeEl.style.color = "#fbbf24"; 
-        } else {
-            welcomeEl.innerText = "يا هلا، " + user.name;
-        }
+  await db.from('assignments').delete().neq('id',0);
+  const dName='هدايا العيد — '+arM[new Date().getMonth()]+' '+new Date().getFullYear();
+  const{data:nd,error:de}=await db.from('draws').insert({month_name:dName,budget}).select().single();
+  if(de){toast('خطأ في إنشاء القرعة ❌','err');resetDraw();return;}
 
-        buildWishesGrid(user.wishes || '');
+  const{error:ae}=await db.from('assignments').insert(
+    members.map((m,idx)=>({draw_id:nd.id,giver_id:m.id,receiver_id:result.sh[idx].id,is_delivered:false}))
+  );
+  if(ae){toast('خطأ في حفظ التوزيع ❌','err');resetDraw();return;}
 
-        const { data: drawData } = await db.from('draws').select('*').order('created_at', {ascending: false}).limit(1).maybeSingle();
-        
-        if (drawData) {
-            if (drawData.budget) {
-                document.getElementById('budget-amount').innerText = drawData.budget + " ريال";
-                document.getElementById('budget-display').classList.remove('hidden-el');
-            }
+  fireConfetti();
+  haptic([100,80,100,80,200]);
+  toast('🎉 تمت القرعة بنجاح — يارب تفرح بها العائلة!','ok');
+  setTimeout(()=>location.reload(),2600);
+}
 
-            const { data: assign } = await db.from('assignments')
-                .select('*, receiver:users!receiver_id(name, wishes)')
-                .eq('giver_id', user.id).eq('draw_id', drawData.id).maybeSingle();
+function resetDraw(){
+  $('btn-draw').disabled=false;
+  $('txt-draw').textContent='🎲 ابدأ القرعة الإلكترونية';
+}
 
-            if (assign) {
-                currentAssignmentId = assign.id;
-                document.getElementById('target-name').innerText = assign.receiver.name;
-                setTimeout(() => haptic([100, 50, 100]), 500); 
+/* ── Toast ── */
+function toast(msg,type='info'){
+  document.getElementById('_toast')?.remove();
+  const t=document.createElement('div');
+  t.id='_toast';
+  const C={ok:{bg:'rgba(34,197,94,.12)',b:'rgba(74,222,128,.3)',c:'#4ade80'},
+            err:{bg:'rgba(239,68,68,.12)',b:'rgba(248,113,113,.3)',c:'#f87171'},
+            info:{bg:'rgba(99,102,241,.12)',b:'rgba(129,140,248,.3)',c:'#a5b4fc'}};
+  const s=C[type]||C.info;
+  Object.assign(t.style,{
+    position:'fixed',bottom:'1.8rem',left:'50%',
+    transform:'translateX(-50%) translateY(16px)',
+    background:s.bg,backdropFilter:'blur(20px)',webkitBackdropFilter:'blur(20px)',
+    border:`1px solid ${s.b}`,borderRadius:'1rem',
+    padding:'.7rem 1.1rem',color:s.c,
+    fontFamily:"'Cairo',sans-serif",fontWeight:'800',fontSize:'.83rem',
+    zIndex:'9999',maxWidth:'88vw',textAlign:'center',
+    boxShadow:'0 8px 28px rgba(0,0,0,.4)',
+    transition:'opacity .3s,transform .3s',opacity:'0',
+  });
+  t.textContent=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';});
+  setTimeout(()=>{
+    t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)';
+    setTimeout(()=>t.remove(),350);
+  },3000);
+}
 
-                if (assign.is_delivered) {
-                    document.getElementById('delivered-msg').classList.remove('hidden-el');
-                    document.getElementById('deliver-btn').classList.add('hidden-el');
-                } else {
-                    document.getElementById('deliver-btn').classList.remove('hidden-el');
-                }
-                
-                document.getElementById('result-card').classList.remove('hidden-el');
-                receiverWishesData = (assign.receiver.wishes || '').split(',').filter(Boolean);
-            } else {
-                document.getElementById('no-draw-msg').classList.remove('hidden-el');
-            }
-        } else {
-            document.getElementById('no-draw-msg').classList.remove('hidden-el');
-        }
-    }
-
-    let countdownInterval;
-    function initCountdown() {
-        const eidDate = new Date("2026-03-20T00:00:00").getTime();
-        const deliverBtn = document.getElementById('deliver-btn');
-        const btnTitle = document.getElementById('deliver-btn-title');
-        const btnSub = document.getElementById('deliver-btn-sub');
-
-        countdownInterval = setInterval(() => {
-            const now = new Date().getTime();
-            const diff = eidDate - now;
-
-            if (diff < 0) { 
-                clearInterval(countdownInterval);
-                if(deliverBtn) {
-                    deliverBtn.disabled = false; 
-                    if(btnTitle) btnTitle.innerText = "📦 تأكيد تسليم الهدية";
-                    if(btnSub) btnSub.innerText = "اضغط هنا لتأكيد التسليم الرسمي";
-                }
-                return; 
-            }
-            
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            
-            if(deliverBtn) {
-                deliverBtn.disabled = true; 
-                if(btnTitle) btnTitle.innerText = "🔒 يفتح يوم العيد";
-                if(btnSub) btnSub.innerText = `باقي: ${d} يوم و ${h} ساعة`;
-            }
-        }, 1000);
-    }
-    initCountdown();
-
-    function buildWishesGrid(saved) {
-        const options = ['عطور وعناية', 'ملابس وأناقة', 'إلكترونيات', 'قهوة وحلويات', 'ساعة فخمة', 'كتب وقراءة'];
-        const grid = document.getElementById('wishes-grid');
-        const savedArray = (saved || '').split(',');
-        grid.innerHTML = options.map(opt => `
-            <button onclick="toggleWish(this)" class="wish-chip ${savedArray.includes(opt) ? 'wish-active' : ''}">
-                ${opt}
-            </button>
-        `).join('');
-    }
-
-    function toggleWish(btn) { btn.classList.toggle('wish-active'); haptic(20); }
-
-    async function saveWishes() {
-        haptic(50);
-        const btnText = document.getElementById('save-btn-text');
-        const selected = [...document.querySelectorAll('.wish-active')].map(b => b.innerText);
-        const custom = document.getElementById('custom-wish-input').value.trim();
-        if (custom) selected.push(custom);
-        
-        btnText.innerText = '⏳ جاري الحفظ...';
-        await db.from('users').update({ wishes: selected.join(',') }).eq('id', currentUser.id);
-        alert('تم حفظ رغباتك في النظام بنجاح! ✅');
-        btnText.innerText = '💾 حفظ اختياراتي في النظام';
-    }
-
-    function toggleWishes() {
-        haptic(20);
-        const box = document.getElementById('wishes-box');
-        box.classList.toggle('hidden-el'); box.classList.add('flex');
-        box.innerHTML = receiverWishesData.length 
-            ? receiverWishesData.map(w => `<span class="px-3 py-1.5 rounded-lg text-[10px] font-bold border" style="background:var(--inner-bg); color:var(--text-main); border-color:var(--glass-border)">${w}</span>`).join('') 
-            : '<p class="text-[11px] font-bold py-2" style="color:var(--text-sub)">لم يحدد هذا العضو رغباته بعد⏳</p>';
-    }
-
-    async function markAsDelivered() {
-        if(confirm('📦 هل قمت بتسليم الهدية فعلياً وتريد تسجيل ذلك بالنظام؟')) {
-            haptic([50, 50, 50]);
-            const btnTitle = document.getElementById('deliver-btn-title');
-            const btnSub = document.getElementById('deliver-btn-sub');
-            btnTitle.innerText = "⏳ جاري التحديث...";
-            btnSub.innerText = "";
-            document.getElementById('deliver-btn').disabled = true;
-            
-            const { error } = await db.from('assignments').update({ is_delivered: true }).eq('id', currentAssignmentId);
-            if(!error) {
-                fireConfetti();
-                document.getElementById('deliver-btn').classList.add('hidden-el');
-                document.getElementById('delivered-msg').classList.remove('hidden-el');
-                triggerHaptic([100, 100, 100]); 
-            }
-        }
-    }
-
-    async function showAdminScreen() {
-        document.getElementById('login-screen').classList.add('hidden-el');
-        document.getElementById('admin-screen').classList.remove('hidden-el');
-        document.getElementById('admin-screen').style.display = 'flex';
-        
-        const { data: assigns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').order('created_at', {ascending: false});
-        if (assigns && assigns.length > 0) {
-            document.getElementById('assignments-section').classList.remove('hidden-el');
-            document.getElementById('assignments-list').innerHTML = assigns.map(a => `
-                <div class="inner-box admin-row p-3 flex justify-between items-center text-sm border" style="border-color: var(--glass-border)">
-                    <span class="font-black text-indigo-500 w-1/3 text-right">${a.giver.name}</span>
-                    <span class="text-[9px] font-bold w-1/3 text-center uppercase tracking-widest" style="color: ${a.is_delivered ? '#22c55e' : 'var(--text-sub)'}">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
-                    <span class="font-black w-1/3 text-left" style="color:var(--text-main)">${a.receiver.name}</span>
-                </div>
-            `).join('');
-        }
-    }
-
-    async function runDraw() {
-        haptic(100);
-        if(!confirm('⚠️ تحذير: سيتم حذف التوزيع الحالي للكل وإجراء سحب إلكتروني جديد كلياً. هل أنت متأكد؟')) return;
-
-        const btnText = document.getElementById('draw-btn-text');
-        btnText.innerText = 'جاري السحب الإلكتروني... 🎲';
-        document.getElementById('draw-btn').disabled = true;
-
-        const { data: members } = await db.from('users').select('*').eq('role', 'member');
-        const fC = document.getElementById('fawaz-toggle').checked;
-        const sC = document.getElementById('sameera-toggle').checked;
-        const budget = document.getElementById('budget-input').value.trim();
-
-        const { data: recentDraws } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(3);
-        let recentPairs = [];
-        if (recentDraws && recentDraws.length > 0) {
-            const { data: recentAssigns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').in('draw_id', recentDraws.map(d=>d.id));
-            if (recentAssigns) recentPairs = recentAssigns.map(a => ({ giver: a.giver.name, receiver: a.receiver.name }));
-        }
-
-        let shuffled = null;
-        for (let i = 0; i < 10000; i++) {
-            const temp = [...members].sort(() => Math.random() - 0.5);
-            if (!temp.some((m, idx) => m.id === members[idx].id)) {
-                const map = {}; members.forEach((m, idx) => map[m.name] = temp[idx].name);
-                if (fC && map['فواز'] === 'نواف') continue;
-                if (sC) {
-                    const giverOfS = Object.keys(map).find(k => map[k] === 'سميرة');
-                    if (!['طارق', 'فواز'].includes(giverOfS)) continue;
-                }
-                if (recentPairs.some(pair => map[pair.giver] === pair.receiver)) continue;
-
-                shuffled = temp; break;
-            }
-        }
-
-        if (!shuffled) { alert('تعذّر السحب! عدد القيود يتعارض مع عدد الأعضاء. جرب تقليل القيود الذكية.'); document.getElementById('draw-btn').disabled = false; btnText.innerText = '🎲 إجراء سحب إلكتروني جديد'; return; }
-
-        const dName = `هدايا العيد ${arabicMonths[new Date().getMonth()]} ${new Date().getFullYear()}`;
-
-        await db.from('assignments').delete().neq('id', 0);
-        const { data: d } = await db.from('draws').insert({ month_name: dName, budget: budget }).select().single();
-        await db.from('assignments').insert(members.map((m, idx) => ({ draw_id: d.id, giver_id: m.id, receiver_id: shuffled[idx].id, is_delivered: false })));
-
-        fireConfetti();
-        alert('🎉 مبروك! تمت القرعة بنجاح لجميع أفراد العائلة.');
-        location.reload();
-    }
-
-    function fireConfetti() {
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        canvas.style.display = 'block';
-        const colors = ['#4f46e5','#3b82f6','#818cf8','#ffffff','#fbbf24']; // ألوان فخمة رسمية
-        const pieces = Array.from({length: 150}, () => ({
-            x: Math.random() * canvas.width, y: -20,
-            w: Math.random() * 8 + 4, h: Math.random() * 5 + 3,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            vy: Math.random() * 5 + 3, vx: (Math.random() - 0.5) * 6,
-            r: Math.random() * 360, vr: (Math.random() - 0.5) * 15
-        }));
-        let frame = 0;
-        (function anim() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            pieces.forEach(p => {
-                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI/180);
-                ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - frame/220);
-                ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
-                p.y += p.vy; p.x += p.vx; p.r += p.vr;
-            });
-            if (++frame < 240) requestAnimationFrame(anim); 
-            else canvas.style.display = 'none';
-        })();
-    }
+/* ── كونفيتي ── */
+function fireConfetti(){
+  const cv=$('cvs'),ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  cv.style.display='block';
+  const pal=['#6366f1','#8b5cf6','#06b6d4','#a5b4fc','#67e8f9','#fff','#c4b5fd','#38bdf8'];
+  const ps=Array.from({length:190},()=>({
+    x:Math.random()*cv.width,y:-15,
+    w:Math.random()*9+3,h:Math.random()*5+2,
+    c:pal[Math.floor(Math.random()*pal.length)],
+    vx:(Math.random()-.5)*7,vy:Math.random()*5+2.5,
+    r:Math.random()*360,vr:(Math.random()-.5)*16,
+  }));
+  let f=0;
+  (function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const a=Math.max(0,1-f/200);
+    ps.forEach(p=>{
+      ctx.save();ctx.globalAlpha=a;ctx.translate(p.x,p.y);
+      ctx.rotate(p.r*Math.PI/180);ctx.fillStyle=p.c;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.vy+=0.06;
+    });
+    if(++f<245)requestAnimationFrame(draw);
+    else cv.style.display='none';
+  })();
+}
 </script>
 
 </body>
