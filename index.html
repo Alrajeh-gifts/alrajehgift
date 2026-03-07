@@ -10,7 +10,7 @@
     <style>
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
 
-        html, body { height: 100%; margin: 0; }
+        html, body { min-height: 100%; margin: 0; }
 
         /* ===== ACCENT ===== */
         :root {
@@ -27,7 +27,6 @@
             --glow-2:       rgba(139,92,246,0.18);
             --glow-3:       rgba(59,130,246,0.12);
             
-            /* تأثير الزجاج العميق */
             --glass-bg:         linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 100%);
             --glass-border:     rgba(255,255,255,0.04);
             --glass-border-top: rgba(255,255,255,0.15);
@@ -103,14 +102,21 @@
 
         body {
             min-height: 100vh;
+            min-height: 100dvh; /* الحل السحري لمشكلة شريط سفاري */
             background: var(--bg);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 1rem;
+            padding: 2.5rem 1rem; /* مسافة آمنة من الأعلى والأسفل */
             position: relative;
             overflow-x: hidden;
             transition: background 0.4s ease;
+        }
+
+        /* هذا الكود يضمن توسيط الشاشات وعدم قصها إذا كانت أطول من الجوال */
+        #login-screen, #member-screen, #admin-screen {
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         body::before {
@@ -223,7 +229,7 @@
 </head>
 <body>
 
-<div id="login-screen" class="max-w-sm w-full fade-in" style="position:relative;z-index:1">
+<div id="login-screen" class="max-w-sm w-full fade-in" style="position:relative;z-index:1;display:flex;flex-direction:column">
     <div class="text-center mb-10">
         <div style="font-size:4rem;margin-bottom:1rem">🎁</div>
         <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-primary);margin:0">هدايا العيد!</h1>
