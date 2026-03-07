@@ -30,9 +30,9 @@
         :root {
             --bg:           #090a0f; 
             
-            --liquid-1:     rgba(99, 102, 241, 0.35); /* Indigo */
-            --liquid-2:     rgba(139, 92, 246, 0.30); /* Violet */
-            --liquid-3:     rgba(59, 130, 246, 0.20); /* Blue */
+            --liquid-1:     rgba(99, 102, 241, 0.35);
+            --liquid-2:     rgba(139, 92, 246, 0.30);
+            --liquid-3:     rgba(59, 130, 246, 0.20);
 
             --glass-bg:         rgba(255, 255, 255, 0.08);
             --glass-border:     rgba(255, 255, 255, 0.05);
@@ -70,9 +70,9 @@
             :root {
                 --bg:           #f3f4f8; 
                 
-                --liquid-1:     rgba(99, 102, 241, 0.35); /* Indigo pastel */
-                --liquid-2:     rgba(236, 72, 153, 0.25); /* Pink pastel */
-                --liquid-3:     rgba(56, 189, 248, 0.30); /* Sky blue pastel */
+                --liquid-1:     rgba(99, 102, 241, 0.35);
+                --liquid-2:     rgba(236, 72, 153, 0.25);
+                --liquid-3:     rgba(56, 189, 248, 0.30);
 
                 --glass-bg:         rgba(255, 255, 255, 0.65);
                 --glass-border:     rgba(255, 255, 255, 0.80);
@@ -80,7 +80,7 @@
                 --glass-border-left:rgba(255, 255, 255, 0.90);
                 --glass-shadow:     rgba(30, 27, 75, 0.08);
 
-                --text-primary:   #1e1b4b; /* كحلي غامق */
+                --text-primary:   #1e1b4b;
                 --text-secondary: rgba(30, 27, 75, 0.70);
                 --text-muted:     rgba(30, 27, 75, 0.45);
                 
@@ -106,7 +106,7 @@
             }
             .btn-primary { box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4) !important; color: #ffffff !important; }
             #budget-amount { color: #1e1b4b !important; }
-            .countdown-glass { background: rgba(255,255,255,0.85) !important; color: #4f46e5 !important; }
+            .timer-glass { background: rgba(99,102,241,0.1) !important; border: 1px solid rgba(99,102,241,0.3) !important; color: #1e1b4b !important; }
         }
 
         body {
@@ -131,7 +131,7 @@
             z-index: 10;
         }
 
-        /* ===== السائل المتحرك (Liquid Background) ===== */
+        /* ===== السائل المتحرك ===== */
         body::before, body::after {
             content: '';
             position: fixed;
@@ -178,7 +178,6 @@
             overflow: hidden;
         }
 
-        /* لمعة زجاجية */
         .glass::after {
             content: '';
             position: absolute;
@@ -232,29 +231,6 @@
         .code-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.2), inset 0 3px 6px rgba(0,0,0,0.05); transform: scale(1.02); }
         .code-input::placeholder { color: var(--input-ph); font-weight: 400; }
 
-        /* مؤقت العيد */
-        .countdown-glass {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            -webkit-backdrop-filter: blur(15px);
-            backdrop-filter: blur(15px);
-            color: #ffffff;
-            padding: 0.5rem 1.2rem;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            white-space: nowrap;
-        }
-
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
         .fade-in { animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
         .pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
@@ -263,10 +239,6 @@
     </style>
 </head>
 <body>
-
-<div class="countdown-glass fade-in">
-    ⏳ باقي على العيد: <span id="countdown-timer">جاري الحساب...</span>
-</div>
 
 <div id="login-screen" class="max-w-sm w-full fade-in" style="display:flex;flex-direction:column">
     <div class="text-center mb-8 mt-10">
@@ -303,6 +275,13 @@
             <p style="color:var(--text-muted);font-size:.75rem;margin:1.25rem 0 0">🤫 سرّك الخاص، لا تخبر أحداً!</p>
             
             <div id="delivery-section" style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--wish-border)">
+                
+                <div class="timer-glass" style="background:var(--wish-active-bg);border:1px solid rgba(99,102,241,0.25);padding:.85rem;border-radius:1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:.5rem">
+                    <span style="font-size:1rem">⏳</span>
+                    <span style="color:var(--text-secondary);font-size:.85rem;font-weight:700">باقي على العيد:</span>
+                    <span id="countdown-timer" style="color:var(--text-primary);font-weight:900;font-size:.95rem">جاري الحساب...</span>
+                </div>
+
                 <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" style="display:none;width:100%;padding:.9rem;border-radius:1rem;font-weight:700;font-size:.95rem;border:none">
                     📦 تأكيد تسليم الهدية
                 </button>
@@ -398,8 +377,7 @@
 <canvas id="confetti-canvas" class="confetti-canvas" style="display:none"></canvas>
 
 <script>
-    // ===== PWA Setup (تطبيق الجوال) =====
-    // إنشاء ملف Manifest ديناميكي ليتمكن الجوال من تثبيت الموقع
+    // ===== PWA Setup =====
     const manifest = {
         "name": "هدايا العيد",
         "short_name": "هدايا",
@@ -410,8 +388,6 @@
         "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>", "sizes": "192x192", "type": "image/svg+xml"}]
     };
     document.getElementById('manifest-link').href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
-
-    // Service Worker وهمي ليتجاوز شروط التثبيت في بعض المتصفحات
     if ('serviceWorker' in navigator) {
         const swCode = `self.addEventListener('fetch', ()=>{});`;
         const blob = new Blob([swCode], {type: 'application/javascript'});
@@ -420,9 +396,8 @@
 
     // ===== مؤقت العد التنازلي للعيد =====
     function initCountdown() {
-        // تاريخ العيد التقريبي (عدل هذا التاريخ سنوياً)
+        // تم ضبط التاريخ على 20 مارس، يمكنك تغييره متى شئت
         const eidDate = new Date("2026-03-20T00:00:00").getTime(); 
-        
         const timerEl = document.getElementById('countdown-timer');
         
         setInterval(() => {
@@ -430,15 +405,13 @@
             const distance = eidDate - now;
             
             if (distance < 0) {
-                timerEl.innerText = "كل عام وأنتم بخير! 🎉";
+                if(timerEl) timerEl.innerText = "كل عام وأنتم بخير! 🎉";
                 return;
             }
-            
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            
-            timerEl.innerText = `${days} يوم و ${hours} ساعة و ${minutes} دقيقة`;
+            if(timerEl) timerEl.innerText = `${days} يوم و ${hours} ساعة و ${minutes} دقيقة`;
         }, 1000);
     }
     initCountdown();
@@ -464,7 +437,6 @@
     let receiverWishes = [];
     let currentAssignmentId = null;
 
-    // ===== الدخول =====
     async function login() {
         const btn = document.getElementById('login-btn');
         const codeInput = document.getElementById('access-code');
@@ -474,8 +446,7 @@
         btn.innerText = '...جاري التحقق';
         btn.disabled = true;
 
-        const { data: user, error } = await db
-            .from('users').select('*').eq('code', code).single();
+        const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
 
         if (error || !user) {
             alert('الرمز غير صحيح! تأكد من كتابة الأرقام بالإنجليزية');
@@ -484,11 +455,9 @@
             codeInput.value = ''; 
             return;
         }
-
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
-    // ===== شاشة العضو =====
     async function showMemberScreen(user) {
         currentUser = user;
         hide('login-screen');
@@ -506,12 +475,7 @@
         } catch(e) {}
 
         try {
-            const { data: assignments, error } = await db
-                .from('assignments')
-                .select('*, receiver:users!receiver_id(name, wishes)')
-                .eq('giver_id', user.id)
-                .limit(1);
-
+            const { data: assignments, error } = await db.from('assignments').select('*, receiver:users!receiver_id(name, wishes)').eq('giver_id', user.id).limit(1);
             if (error) throw error;
 
             if (assignments && assignments.length > 0) {
@@ -520,19 +484,11 @@
                 const receiver = assignment.receiver;
                 document.getElementById('target-name').innerText = receiver.name;
                 
-                if(receiver.wishes !== undefined) {
-                     receiverWishes = (receiver.wishes || '').split(',').filter(Boolean);
-                } else {
-                     receiverWishes = [];
-                }
+                if(receiver.wishes !== undefined) receiverWishes = (receiver.wishes || '').split(',').filter(Boolean);
+                else receiverWishes = [];
 
-                if (assignment.is_delivered) {
-                    show('delivered-msg');
-                    hide('deliver-btn');
-                } else {
-                    hide('delivered-msg');
-                    show('deliver-btn');
-                }
+                if (assignment.is_delivered) { show('delivered-msg'); hide('deliver-btn'); } 
+                else { hide('delivered-msg'); show('deliver-btn'); }
 
                 document.getElementById('result-card').style.display = 'block';
                 document.getElementById('no-draw-msg').style.display = 'none';
@@ -541,19 +497,13 @@
                 document.getElementById('no-draw-msg').style.display = 'block';
             }
         } catch {
-            const { data: assignments } = await db
-                .from('assignments')
-                .select('*, receiver:users!receiver_id(name)')
-                .eq('giver_id', user.id)
-                .limit(1);
-
+            const { data: assignments } = await db.from('assignments').select('*, receiver:users!receiver_id(name)').eq('giver_id', user.id).limit(1);
             if (assignments && assignments.length > 0) {
                 const assignment = assignments[0];
                 currentAssignmentId = assignment.id;
                 document.getElementById('target-name').innerText = assignment.receiver.name;
                 receiverWishes = [];
-                hide('delivered-msg');
-                hide('deliver-btn');
+                hide('delivered-msg'); hide('deliver-btn');
                 document.getElementById('result-card').style.display = 'block';
                 document.getElementById('no-draw-msg').style.display = 'none';
             } else {
@@ -566,16 +516,12 @@
     function buildWishesGrid(savedWishes) {
         const savedArray = savedWishes ? savedWishes.split(',').filter(Boolean) : [];
         const predefinedLabels = GIFT_OPTIONS.map(o => o.label);
-
         let customWish = '';
         const activePredefined = [];
 
         savedArray.forEach(wish => {
-            if (predefinedLabels.includes(wish)) {
-                activePredefined.push(wish);
-            } else {
-                customWish = wish;
-            }
+            if (predefinedLabels.includes(wish)) activePredefined.push(wish);
+            else customWish = wish;
         });
 
         const grid = document.getElementById('wishes-grid');
@@ -604,27 +550,18 @@
             .map(b => b.dataset.wish);
 
         const customWish = document.getElementById('custom-wish-input').value.trim();
-        if (customWish) {
-            selected.push(customWish.replace(/,/g, ' '));
-        }
+        if (customWish) selected.push(customWish.replace(/,/g, ' '));
 
         btn.innerText = '⏳ جاري الحفظ...';
         btn.disabled = true;
 
-        const { error } = await db
-            .from('users')
-            .update({ wishes: selected.join(',') })
-            .eq('id', currentUser.id);
+        const { error } = await db.from('users').update({ wishes: selected.join(',') }).eq('id', currentUser.id);
 
         btn.innerText = '💾 حفظ اختياراتي';
         btn.disabled = false;
 
-        if (!error) {
-            show('save-msg');
-            setTimeout(() => hide('save-msg'), 3000);
-        } else {
-            alert('خطأ في الحفظ: ' + error.message);
-        }
+        if (!error) { show('save-msg'); setTimeout(() => hide('save-msg'), 3000); } 
+        else { alert('خطأ في الحفظ: ' + error.message); }
     }
 
     function toggleWishes() {
@@ -638,21 +575,13 @@
                 let customWish = '';
                 const predefinedHtml = receiverWishes.map(w => {
                     const opt = GIFT_OPTIONS.find(o => o.label === w);
-                    if (opt) {
-                        return `<span style="background:var(--wish-active-bg);border:1px solid rgba(99,102,241,0.3);color:var(--text-primary);font-size:.85rem;padding:.35rem 1rem;border-radius:999px; display:inline-flex; align-items:center; gap:6px; font-weight:700">
-                            <span>${opt.emoji}</span><span>${w}</span>
-                        </span>`;
-                    } else {
-                        customWish = w; 
-                        return '';
-                    }
+                    if (opt) return `<span style="background:var(--wish-active-bg);border:1px solid rgba(99,102,241,0.3);color:var(--text-primary);font-size:.85rem;padding:.35rem 1rem;border-radius:999px; display:inline-flex; align-items:center; gap:6px; font-weight:700"><span>${opt.emoji}</span><span>${w}</span></span>`;
+                    else { customWish = w; return ''; }
                 }).join('');
 
                 box.innerHTML = `
                     <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .75rem;text-align:center;font-weight:700">يرغب في:</p>
-                    <div style="display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center; margin-bottom: ${customWish ? '1rem' : '0'}">
-                        ${predefinedHtml}
-                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center; margin-bottom: ${customWish ? '1rem' : '0'}">${predefinedHtml}</div>
                     ${customWish ? `<div style="background:rgba(255,255,255,0.05); border:1px solid var(--wish-border); color:var(--text-primary); padding:.85rem; border-radius:.75rem; font-size:.9rem; text-align:right;font-weight:600">✍️ ${customWish}</div>` : ''}`;
             }
             box.style.display = 'block';
@@ -670,10 +599,7 @@
         btn.innerText = '⏳ جاري التحديث...';
         btn.disabled = true;
 
-        const { error } = await db
-            .from('assignments')
-            .update({ is_delivered: true })
-            .eq('id', currentAssignmentId);
+        const { error } = await db.from('assignments').update({ is_delivered: true }).eq('id', currentAssignmentId);
 
         if (error) {
             alert('حدث خطأ أثناء التحديث.');
@@ -686,7 +612,6 @@
         }
     }
 
-    // ===== لوحة المشرف =====
     async function showAdminScreen() {
         hide('login-screen'); show('admin-screen');
         const now = new Date();
@@ -701,11 +626,7 @@
 
             if (draw.budget) document.getElementById('budget-input').value = draw.budget;
 
-            const { data: assignments } = await db
-                .from('assignments')
-                .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
-                .eq('draw_id', draw.id);
-
+            const { data: assignments } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').eq('draw_id', draw.id);
             if (assignments && assignments.length > 0) renderAssignments(assignments, draw.month_name);
         } catch(e) {}
     }
@@ -715,21 +636,18 @@
         document.getElementById('assignments-list').innerHTML = assignments.map(a => `
             <div class="member-row" style="border-radius:1rem;padding:.85rem;display:flex;align-items:center;justify-content:space-between;box-shadow:inset 0 1px 3px rgba(0,0,0,0.1)">
                 <span style="color:var(--text-primary);font-weight:900;font-size:.95rem; width:35%; text-align:right">${a.giver.name}</span>
-                
                 <div style="display:flex;flex-direction:column;align-items:center;gap:.3rem; width:30%">
                     <span style="color:var(--accent);font-size:1.1rem">← 🎁</span>
                     <span style="font-size:.65rem;font-weight:900;padding:.2rem .6rem;border-radius:999px;${a.is_delivered ? 'background:var(--success-bg);color:#22c55e' : 'background:rgba(255,255,255,0.1);color:var(--text-muted)'}">
                         ${a.is_delivered ? '✅ سُلِّمت' : '⏳ بالانتظار'}
                     </span>
                 </div>
-
                 <span style="color:var(--text-primary);font-weight:900;font-size:.95rem; width:35%; text-align:left">${a.receiver.name}</span>
             </div>
         `).join('');
         show('assignments-section');
     }
 
-    // ===== الخوارزمية الذكية & السحب =====
     async function runDraw() {
         const btn = document.getElementById('draw-btn');
         btn.innerText = '⏳ جاري السحب...';
@@ -786,9 +704,10 @@
         } catch (err) { alert('خطأ تقني: ' + err.message); resetBtn(btn); }
     }
 
+    // ===== الخوارزمية الذكية بقوة 10,000 محاولة =====
     function makeDerangement(arr, sameeraConstraint = false, fawazConstraint = false, recentPairs = []) {
         function tryDraw(pairsToAvoid) {
-            for (let attempt = 0; attempt < 1500; attempt++) {
+            for (let attempt = 0; attempt < 10000; attempt++) {
                 const shuffled = [...arr].sort(() => Math.random() - 0.5);
                 if (shuffled.some((item, i) => item.id === arr[i].id)) continue;
                 
@@ -811,7 +730,6 @@
         return tryDraw([]); 
     }
 
-    // ===== احتفال الكونفيتي =====
     function fireConfetti() {
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
@@ -848,7 +766,6 @@
         })();
     }
 
-    // ===== مساعدات =====
     function show(id) {
         const el = document.getElementById(id);
         if(el) el.style.display = ['member-screen','admin-screen','assignments-section'].includes(id) ? 'flex' : 'block';
