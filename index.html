@@ -12,197 +12,181 @@
 
         html, body { min-height: 100%; margin: 0; }
 
-        /* ===== ACCENT ===== */
+        /* ===== ACCENT (تغيير الأزرق إلى البنفسجي الـ Indigo) ===== */
         :root {
-            --accent:        #6366f1;
-            --accent-light:  #818cf8;
+            --accent:        #6366f1; /* Indigo */
+            --accent-light:  #a5b4fc;
             --accent-dim:    rgba(99,102,241,0.15);
-            --accent-border: rgba(99,102,241,0.40);
+            --accent-border: rgba(99,102,241,0.30);
         }
 
-        /* ===== 🌙 الثيم الداكن (احترافي وعميق) ===== */
+        /* ===== 🌙 الثيم الداكن (Liquid Glass Mode) ===== */
         :root {
-            --bg:           #08090d;
-            --glow-1:       rgba(99,102,241,0.22);
-            --glow-2:       rgba(139,92,246,0.18);
-            --glow-3:       rgba(59,130,246,0.12);
+            /* خلفية سوداء عميقة لإبراز الألوان */
+            --bg:           #0d1117; 
             
-            --glass-bg:         linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 100%);
-            --glass-border:     rgba(255,255,255,0.04);
-            --glass-border-top: rgba(255,255,255,0.15);
-            --glass-border-left:rgba(255,255,255,0.10);
-            --glass-shadow:     rgba(0,0,0,0.50);
-            --glass-inset:      rgba(255,255,255,0.02);
+            /* ألوان السائل المتحرك خلف الزجاج */
+            --liquid-1:     rgba(99, 102, 241, 0.25); /* Indigo */
+            --liquid-2:     rgba(139, 92, 246, 0.20); /* Violet */
+            --liquid-3:     rgba(59, 130, 246, 0.10); /* Blue Dim */
+
+            /* تأثير الزجاج السائل من Apple */
+            --glass-bg:         rgba(255, 255, 255, 0.07);
+            --glass-border:     rgba(255, 255, 255, 0.05);
+            /* حدود رفيعة علوية وجانبية لتعطي البروز 3D */
+            --glass-border-top: rgba(255, 255, 255, 0.12);
+            --glass-border-left:rgba(255, 255, 255, 0.08);
+            --glass-shadow:     rgba(0, 0, 0, 0.40);
 
             --text-primary:   #ffffff;
-            --text-secondary: rgba(255,255,255,0.70);
-            --text-muted:     rgba(255,255,255,0.35);
+            --text-secondary: rgba(255, 255, 255, 0.70);
+            --text-muted:     rgba(255, 255, 255, 0.35);
             
-            --input-bg:       rgba(0,0,0,0.25);
-            --input-border:   rgba(255,255,255,0.08);
+            --input-bg:       rgba(0,0,0,0.30);
+            --input-border:   rgba(255, 255, 255, 0.06);
             --input-color:    #ffffff;
-            --input-ph:       rgba(255,255,255,0.30);
+            --input-ph:       rgba(255, 255, 255, 0.30);
             
-            --row-bg:         linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-            --row-border:     rgba(255,255,255,0.08);
+            --row-bg:         linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            --row-border:     rgba(255, 255, 255, 0.05);
             
-            --wish-bg:        rgba(255,255,255,0.03);
-            --wish-border:    rgba(255,255,255,0.08);
-            --wish-color:     rgba(255,255,255,0.65);
-            --wish-hover-b:   rgba(99,102,241,0.50);
+            --wish-bg:        rgba(255, 255, 255, 0.02);
+            --wish-border:    rgba(255, 255, 255, 0.06);
+            --wish-color:     rgba(255, 255, 255, 0.60);
+            --wish-hover-b:   rgba(99, 102, 241, 0.40);
             --wish-hover-c:   #ffffff;
             
-            --constraints-bg: rgba(0,0,0,0.35);
-            --save-btn-bg:    rgba(255,255,255,0.05);
-            
-            --result-bg:      linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
-            --result-border:  rgba(99,102,241,0.35);
-        }
-
-        /* ===== ☀️ الثيم الفاتح (احترافي وعميق) ===== */
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg:           #f4f5fa;
-                --glow-1:       rgba(99,102,241,0.15);
-                --glow-2:       rgba(139,92,246,0.12);
-                --glow-3:       rgba(59,130,246,0.08);
-                
-                --glass-bg:         linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.40) 100%);
-                --glass-border:     rgba(255,255,255,0.40);
-                --glass-border-top: #ffffff;
-                --glass-border-left:#ffffff;
-                --glass-shadow:     rgba(30,27,75,0.08);
-                --glass-inset:      rgba(255,255,255,0.80);
-
-                --text-primary:   #1e1b4b;
-                --text-secondary: rgba(30,27,75,0.70);
-                --text-muted:     rgba(30,27,75,0.40);
-                
-                --input-bg:       rgba(255,255,255,0.90);
-                --input-border:   rgba(99,102,241,0.25);
-                --input-color:    #1e1b4b;
-                --input-ph:       rgba(30,27,75,0.40);
-                
-                --row-bg:         linear-gradient(90deg, rgba(255,255,255,0.80), rgba(255,255,255,0.40));
-                --row-border:     rgba(99,102,241,0.15);
-                
-                --wish-bg:        rgba(255,255,255,0.70);
-                --wish-border:    rgba(99,102,241,0.20);
-                --wish-color:     rgba(30,27,75,0.70);
-                --wish-hover-b:   rgba(99,102,241,0.60);
-                --wish-hover-c:   #4338ca;
-                
-                --constraints-bg: rgba(99,102,241,0.05);
-                --save-btn-bg:    rgba(255,255,255,0.80);
-                
-                --result-bg:      linear-gradient(135deg, rgba(99,102,241,0.12), rgba(99,102,241,0.03));
-                --result-border:  rgba(99,102,241,0.25);
-            }
+            --constraints-bg: rgba(0, 0, 0, 0.40);
+            --result-bg:      linear-gradient(135deg, rgba(99, 102, 241, 0.10), rgba(99, 102, 241, 0.02));
+            --result-border:  rgba(99, 102, 241, 0.20);
         }
 
         body {
             min-height: 100vh;
-            min-height: 100dvh; /* الحل السحري لمشكلة شريط سفاري */
+            min-height: 100dvh;
             background: var(--bg);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2.5rem 1rem; /* مسافة آمنة من الأعلى والأسفل */
+            padding: 2rem 1rem;
             position: relative;
             overflow-x: hidden;
-            transition: background 0.4s ease;
+            /* للتأكد من سلاسة حركة السائل خلف الزجاج */
+            transform: translateZ(0); 
         }
 
-        /* هذا الكود يضمن توسيط الشاشات وعدم قصها إذا كانت أطول من الجوال */
+        /* تنسيق الشاشات وتوسيطها */
         #login-screen, #member-screen, #admin-screen {
             margin-top: auto;
             margin-bottom: auto;
+            width: 100%;
+            max-width: 24rem;
         }
 
-        body::before {
+        /* ===== تصميم السائل المتحرك خلف الزجاج (Liquid Background) ===== */
+        body::before, body::after {
             content: '';
             position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(circle 700px at 10% 20%, var(--glow-1) 0%, transparent 60%),
-                radial-gradient(circle 600px at 90% 80%, var(--glow-2) 0%, transparent 60%),
-                radial-gradient(circle 500px at 50% 50%, var(--glow-3) 0%, transparent 60%);
-            pointer-events: none;
+            border-radius: 50%;
+            filter: blur(80px); /* بلور قوي لدمج الألوان */
             z-index: 0;
-            animation: bg-breathe 10s ease-in-out infinite alternate;
+            pointer-events: none;
         }
 
-        @keyframes bg-breathe {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+        /* السائل الأساسي (جوي) */
+        body::before {
+            inset: -100px;
+            background:
+                radial-gradient(circle at 15% 25%, var(--liquid-1) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, var(--liquid-2) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, var(--liquid-3) 0%, transparent 40%);
+            animation: liquid-swim 15s ease-in-out infinite alternate;
+        }
+
+        /* السائل الثانوي لإعطاء عمق إضافي */
+        body::after {
+            width: 600px; height: 600px;
+            bottom: -200px; left: -200px;
+            background: radial-gradient(circle, var(--liquid-2) 0%, transparent 70%);
+            opacity: 0.6;
+            animation: liquid-swim 20s ease-in-out infinite alternate-reverse;
+        }
+
+        /* حركة بطيئة جداً وانسيابية للألوان خلف الزجاج */
+        @keyframes liquid-swim {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, -50px) scale(1.05); }
         }
 
         body > div, body > canvas { position: relative; z-index: 1; }
 
-        /* ===== الزجاج العميق 💎 ===== */
+        /* ===== الزجاج السائل (The Liquid Glass Card) 💎 ===== */
         .glass {
             background: var(--glass-bg);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            backdrop-filter: blur(24px) saturate(180%);
+            /* سر Apple: blur قوي مع زيادة التشبع saturate لإبراز ألوان الخلفية */
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            backdrop-filter: blur(28px) saturate(200%);
             
             border: 1px solid var(--glass-border);
             border-top: 1px solid var(--glass-border-top);
             border-left: 1px solid var(--glass-border-left);
             
             box-shadow: 
-                0 16px 40px -8px var(--glass-shadow),
-                inset 0 1px 0 var(--glass-inset);
+                0 20px 50px -10px var(--glass-shadow);
                 
             position: relative;
             overflow: hidden;
         }
 
+        /* لمعة زجاجية خفيفة جداً تمر على الكرت لفخامة أكثر */
         .glass::after {
             content: '';
             position: absolute;
-            top: 0; left: -100%; width: 40%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent);
-            transform: skewX(-25deg);
-            animation: glass-shine 8s infinite;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+            transform: skewX(-30deg);
+            animation: glass-shine 10s infinite;
             pointer-events: none;
         }
         @keyframes glass-shine {
-            0%, 80% { left: -100%; }
+            0%, 85% { left: -100%; }
             100% { left: 200%; }
         }
 
+        /* تنسيق الأزرار باللون الجديد الـ Indigo */
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #4338ca);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-bottom: 2px solid rgba(0,0,0,0.2);
-            box-shadow: 0 8px 20px -4px rgba(99,102,241,0.5);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #6366f1, #4f46e5); /* Indigo to Darker Indigo */
+            border: 1px solid rgba(255,255,255,0.15);
+            border-bottom: 2px solid rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px -5px rgba(99,102,241,0.5);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
         }
         .btn-primary:hover  { 
             transform: translateY(-3px); 
-            box-shadow: 0 12px 28px -4px rgba(99,102,241,0.6); 
+            box-shadow: 0 15px 35px -5px rgba(99,102,241,0.6); 
             filter: brightness(1.1);
         }
-        .btn-primary:active { transform: translateY(1px); box-shadow: 0 4px 12px -4px rgba(99,102,241,0.4); border-bottom-width: 1px; }
+        .btn-primary:active { transform: translateY(1px); box-shadow: 0 5px 15px -5px rgba(99,102,241,0.4); border-bottom-width: 1px; }
         .btn-primary:disabled { opacity: 0.5; transform: none; cursor: not-allowed; filter: grayscale(50%); }
 
-        .result-card { background: var(--result-bg); border: 1px solid var(--result-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
+        .result-card { background: var(--result-bg); border: 1px solid var(--result-border); box-shadow: inset 0 2px 15px rgba(0,0,0,0.05); }
         .member-row { background: var(--row-bg); border: 1px solid var(--row-border); }
 
         .wish-btn {
             background: var(--wish-bg);
             border: 1px solid var(--wish-border);
             color: var(--wish-color);
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             cursor: pointer;
         }
         .wish-btn:hover { border-color: var(--wish-hover-b); color: var(--wish-hover-c); transform: translateY(-1px); }
         .wish-btn-active {
-            background: var(--accent-dim) !important;
-            border-color: var(--accent-border) !important;
-            color: var(--accent-light) !important;
-            box-shadow: 0 4px 12px var(--glow-1);
+            background: rgba(99, 102, 241, 0.15) !important;
+            border-color: rgba(99, 102, 241, 0.40) !important;
+            color: #a5b4fc !important;
+            box-shadow: 0 5px 15px rgba(99,102,241,0.2);
         }
 
         .code-input {
@@ -211,18 +195,18 @@
             border: 1px solid var(--input-border); color: var(--input-color);
             outline: none; transition: all 0.3s ease;
             font-family: 'Cairo', sans-serif;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
         }
         .code-input:focus { 
             border-color: var(--accent); 
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.2), inset 0 2px 4px rgba(0,0,0,0.1); 
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2), inset 0 3px 6px rgba(0,0,0,0.1); 
             transform: scale(1.02);
         }
         .code-input::placeholder { color: var(--input-ph); font-weight: 400; }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-        .fade-in { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 8px 20px -4px rgba(99,102,241,0.5); } 50% { box-shadow: 0 12px 32px -4px rgba(99,102,241,0.8); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        .fade-in { animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 10px 25px -5px rgba(99,102,241,0.5); } 50% { box-shadow: 0 15px 40px -5px rgba(99,102,241,0.8); } }
         .pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
         .confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
     </style>
@@ -235,39 +219,39 @@
         <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-primary);margin:0">هدايا العيد!</h1>
         <p style="color:var(--text-secondary);margin-top:.5rem;font-size:.9rem">أدخل رمزك السري للدخول</p>
     </div>
-    <div class="glass" style="border-radius:1.5rem;padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
+    <div class="glass" style="border-radius:1.5rem;padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem">
         <input type="text" id="access-code" placeholder="رمز الدخول" class="code-input" onkeydown="if(event.key==='Enter') login()">
-        <button onclick="login()" id="login-btn" class="btn-primary" style="width:100%;color:var(--text-primary);font-weight:900;padding:1rem;border-radius:1rem;font-size:1.1rem;border:none">
+        <button onclick="login()" id="login-btn" class="btn-primary" style="width:100%;color:#ffffff;font-weight:900;padding:1.1rem;border-radius:1rem;font-size:1.1rem;border:none">
             دخول ←
         </button>
     </div>
 </div>
 
-<div id="member-screen" class="fade-in" style="position:relative;z-index:1;display:none;flex-direction:column;gap:1rem;width:100%;max-width:24rem">
+<div id="member-screen" class="fade-in" style="position:relative;z-index:1;display:none;flex-direction:column;gap:1.25rem;width:100%;max-width:24rem">
     <div class="glass" style="border-radius:1.5rem;padding:2rem;text-align:center">
         <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .25rem">أهلاً وسهلاً</p>
         <h2 id="user-welcome" style="color:var(--text-primary);font-size:1.4rem;font-weight:900;margin:0 0 1.5rem"></h2>
 
-        <div id="result-card" class="result-card" style="display:none;border-radius:1rem;padding:1.5rem">
+        <div id="result-card" class="result-card" style="display:none;border-radius:1.25rem;padding:1.5rem">
             <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .5rem">🎯 ستُهدي هذا الشهر</p>
-            <div id="target-name" style="font-size:2.5rem;font-weight:900;color:var(--accent-light);margin:.75rem 0"></div>
+            <div id="target-name" style="font-size:2.8rem;font-weight:900;color:var(--accent-light);margin:.75rem 0; text-shadow: 0 0 15px rgba(165,180,252,0.4)"></div>
             
-            <div id="budget-display" style="display:none;background:var(--wish-bg);border:1px solid var(--wish-border);padding:.6rem;border-radius:.75rem;margin-bottom:1.25rem">
+            <div id="budget-display" style="display:none;background:var(--wish-bg);border:1px solid var(--wish-border);padding:.7rem;border-radius:.75rem;margin-bottom:1.5rem">
                 <span style="color:var(--text-secondary);font-size:.85rem">💰 الميزانية المقترحة:</span>
-                <span id="budget-amount" style="color:var(--text-primary);font-weight:900;font-size:.9rem;margin-right:.25rem"></span>
+                <span id="budget-amount" style="color:#ffffff;font-weight:900;font-size:.95rem;margin-right:.3rem"></span>
             </div>
 
-            <button onclick="toggleWishes()" style="font-size:.8rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--text-secondary);padding:.4rem 1rem;border-radius:.75rem;cursor:pointer;font-family:Cairo,sans-serif">
+            <button onclick="toggleWishes()" style="font-size:.8rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);color:var(--text-secondary);padding:.5rem 1.25rem;border-radius:.75rem;cursor:pointer;font-family:Cairo,sans-serif;transition: all 0.2s">
                 🎁 عرض رغبات الهدية
             </button>
-            <div id="wishes-box" style="display:none;margin-top:1rem"></div>
-            <p style="color:var(--text-muted);font-size:.75rem;margin:1rem 0 0">🤫 سرّك الخاص، لا تخبر أحداً!</p>
+            <div id="wishes-box" style="display:none;margin-top:1.25rem"></div>
+            <p style="color:var(--text-muted);font-size:.75rem;margin:1.25rem 0 0">🤫 سرّك الخاص، لا تخبر أحداً!</p>
             
-            <div id="delivery-section" style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--wish-border)">
-                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" style="display:none;width:100%;padding:.75rem;border-radius:.75rem;font-weight:700;font-size:.9rem;font-family:Cairo,sans-serif;border:none">
+            <div id="delivery-section" style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--wish-border)">
+                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" style="display:none;width:100%;padding:.8rem;border-radius:.75rem;font-weight:700;font-size:.9rem;font-family:Cairo,sans-serif;border:none">
                     📦 تأكيد تسليم الهدية
                 </button>
-                <div id="delivered-msg" style="display:none;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:#4ade80;padding:.75rem;border-radius:.75rem;font-size:.85rem;font-weight:700">
+                <div id="delivered-msg" style="display:none;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;padding:.8rem;border-radius:.75rem;font-size:.85rem;font-weight:700">
                     ✅ تم تسليم الهدية بنجاح!
                 </div>
             </div>
@@ -282,24 +266,24 @@
 
     <div class="glass" style="border-radius:1.5rem;padding:1.5rem">
         <h3 style="color:var(--text-primary);font-weight:900;margin:0 0 .25rem">🌟 رغباتي في الهدية</h3>
-        <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 1rem">اختر ما يعجبك أو اكتب هديتك</p>
+        <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 1.25rem">اختر ما يعجبك أو اكتب هديتك</p>
         
-        <div id="wishes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem"></div>
+        <div id="wishes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem"></div>
         
-        <input type="text" id="custom-wish-input" placeholder="أو اكتب هديتك المفضلة هنا... ✍️" class="code-input" style="margin-bottom:1.25rem;font-size:.9rem;padding:.75rem;background:var(--wish-bg);border:1px solid var(--wish-border);color:var(--text-primary)">
+        <input type="text" id="custom-wish-input" placeholder="أو اكتب هديتك المفضلة هنا... ✍️" class="code-input" style="margin-bottom:1.25rem;font-size:.9rem;padding:.8rem;background:var(--wish-bg);border:1px solid var(--wish-border);color:var(--text-primary)">
         
-        <button onclick="saveWishes()" id="save-wishes-btn" style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:var(--text-secondary);font-weight:700;padding:.75rem;border-radius:1rem;cursor:pointer;font-size:.9rem;font-family:Cairo,sans-serif;transition:all .2s">
+        <button onclick="saveWishes()" id="save-wishes-btn" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);color:var(--text-secondary);font-weight:700;padding:.9rem;border-radius:1rem;cursor:pointer;font-size:.9rem;font-family:Cairo,sans-serif;transition:all .2s">
             💾 حفظ اختياراتي
         </button>
-        <p id="save-msg" style="display:none;color:#4ade80;font-size:.8rem;text-align:center;margin:.5rem 0 0">✅ تم الحفظ!</p>
+        <p id="save-msg" style="display:none;color:#4ade80;font-size:.8rem;text-align:center;margin:.6rem 0 0">✅ تم الحفظ!</p>
     </div>
 
-    <button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
+    <button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif; margin-top: 0.5rem">
         ← تسجيل خروج
     </button>
 </div>
 
-<div id="admin-screen" style="display:none;flex-direction:column;gap:1rem;width:100%;max-width:24rem;position:relative;z-index:1" class="fade-in">
+<div id="admin-screen" style="display:none;flex-direction:column;gap:1.25rem;position:relative;z-index:1" class="fade-in">
     <div class="glass" style="border-radius:1.5rem;padding:1.25rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem">
             <span style="font-size:1.5rem">👑</span>
@@ -310,11 +294,11 @@
     </div>
 
     <div class="glass" style="border-radius:1.5rem;padding:1.5rem;text-align:center">
-        <p id="draw-status-text" style="color:var(--text-secondary);font-size:.85rem;margin:0 0 1rem">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
+        <p id="draw-status-text" style="color:var(--text-secondary);font-size:.85rem;margin:0 0 1.25rem">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
 
-        <div style="background:var(--constraints-bg);border-radius:1rem;padding:1rem;margin-bottom:1rem;text-align:right">
+        <div style="background:var(--constraints-bg);border-radius:1rem;padding:1.25rem;margin-bottom:1rem;text-align:right">
             <p style="color:var(--text-secondary);font-size:.8rem;font-weight:700;margin:0 0 .75rem">⚙️ قيود القرعة</p>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
                 <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
                     <input type="checkbox" id="fawaz-toggle" checked onchange="updateToggle(this,'fawaz-track')" style="opacity:0;width:0;height:0;position:absolute">
                     <span id="fawaz-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
@@ -334,26 +318,26 @@
             </div>
         </div>
 
-        <div style="background:var(--constraints-bg);border-radius:1rem;padding:1rem;margin-bottom:1.5rem;text-align:right">
-            <label style="color:var(--text-secondary);font-size:.8rem;font-weight:700;display:block;margin-bottom:.5rem">💰 الميزانية المقترحة (اختياري)</label>
-            <input type="text" id="budget-input" placeholder="مثال: 100 - 150 ريال" class="code-input" style="padding:.6rem;font-size:.9rem;background:var(--input-bg)">
+        <div style="background:var(--constraints-bg);border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;text-align:right">
+            <label style="color:var(--text-secondary);font-size:.8rem;font-weight:700;display:block;margin-bottom:.6rem">💰 الميزانية المقترحة (اختياري)</label>
+            <input type="text" id="budget-input" placeholder="مثال: 100 - 150 ريال" class="code-input" style="padding:.8rem;font-size:.95rem;background:var(--input-bg)">
         </div>
 
         <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse"
-            style="width:100%;color:var(--text-primary);font-weight:900;padding:1.2rem;border-radius:1rem;font-size:1.2rem;font-family:Cairo,sans-serif">
+            style="width:100%;color:#ffffff;font-weight:900;padding:1.3rem;border-radius:1.25rem;font-size:1.2rem;font-family:Cairo,sans-serif;border:none">
             🎲 إجراء القرعة
         </button>
-        <p style="color:var(--text-muted);font-size:.75rem;margin:.75rem 0 0">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
+        <p style="color:var(--text-muted);font-size:.75rem;margin:1rem 0 0">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
     </div>
 
     <div id="assignments-section" style="display:none">
         <div class="glass" style="border-radius:1.5rem;padding:1.5rem">
-            <h3 style="color:var(--text-primary);font-weight:900;text-align:center;margin:0 0 1rem">📋 نتائج القرعة</h3>
-            <div id="assignments-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
+            <h3 style="color:var(--text-primary);font-weight:900;text-align:center;margin:0 0 1.25rem">📋 نتائج القرعة</h3>
+            <div id="assignments-list" style="display:flex;flex-direction:column;gap:.6rem"></div>
         </div>
     </div>
 
-    <button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
+    <button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif; margin-bottom: 1rem">
         ← تسجيل خروج
     </button>
 </div>
@@ -361,6 +345,7 @@
 <canvas id="confetti-canvas" class="confetti-canvas" style="display:none"></canvas>
 
 <script>
+    // Supabase Configuration
     const SUPABASE_URL = 'https://oprethkloexyrhagmdod.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -368,6 +353,7 @@
     const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
                     'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
+    // Reduced and generalized gift options
     const GIFT_OPTIONS = [
         { emoji: '🌸', label: 'عطور وعناية' },
         { emoji: '👕', label: 'ملابس وإكسسوارات' },
@@ -384,7 +370,8 @@
     // ===== الدخول =====
     async function login() {
         const btn = document.getElementById('login-btn');
-        const code = document.getElementById('access-code').value.trim();
+        const codeInput = document.getElementById('access-code');
+        const code = codeInput.value.trim();
         if (!code) return;
 
         btn.innerText = '...جاري التحقق';
@@ -397,6 +384,7 @@
             alert('الرمز غير صحيح! تأكد من كتابة الأرقام بالإنجليزية');
             btn.innerText = 'دخول ←';
             btn.disabled = false;
+            codeInput.value = ''; // Clear input on error
             return;
         }
 
@@ -413,14 +401,17 @@
         buildWishesGrid(user.wishes || '');
 
         // جلب الميزانية المقترحة من آخر قرعة
-        const { data: latestDraw } = await db.from('draws').select('budget').order('created_at', { ascending: false }).limit(1).maybeSingle();
-        if (latestDraw && latestDraw.budget) {
-            document.getElementById('budget-amount').innerText = latestDraw.budget;
-            show('budget-display');
-        } else {
-            hide('budget-display');
-        }
+        try {
+            const { data: latestDraw } = await db.from('draws').select('budget').order('created_at', { ascending: false }).limit(1).maybeSingle();
+            if (latestDraw && latestDraw.budget) {
+                document.getElementById('budget-amount').innerText = latestDraw.budget;
+                show('budget-display');
+            } else {
+                hide('budget-display');
+            }
+        } catch(e) { /* ignore budget error */ }
 
+        // Fetch current assignment
         try {
             const { data: assignments, error } = await db
                 .from('assignments')
@@ -442,6 +433,7 @@
                      receiverWishes = [];
                 }
 
+                // Delivery Status
                 if (assignment.is_delivered) {
                     show('delivered-msg');
                     hide('deliver-btn');
@@ -457,6 +449,7 @@
                 document.getElementById('no-draw-msg').style.display = 'block';
             }
         } catch {
+            // Fallback if receiver join fails or column is_delivered missing
             const { data: assignments } = await db
                 .from('assignments')
                 .select('*, receiver:users!receiver_id(name)')
@@ -468,15 +461,8 @@
                 currentAssignmentId = assignment.id;
                 document.getElementById('target-name').innerText = assignment.receiver.name;
                 receiverWishes = [];
-
-                if (assignment.is_delivered) {
-                    show('delivered-msg');
-                    hide('deliver-btn');
-                } else {
-                    hide('delivered-msg');
-                    show('deliver-btn');
-                }
-
+                hide('delivered-msg');
+                hide('deliver-btn'); // Can't mark delivered in fallback
                 document.getElementById('result-card').style.display = 'block';
                 document.getElementById('no-draw-msg').style.display = 'none';
             } else {
@@ -486,6 +472,7 @@
         }
     }
 
+    // Build wishes grid separating predefined and custom
     function buildWishesGrid(savedWishes) {
         const savedArray = savedWishes ? savedWishes.split(',').filter(Boolean) : [];
         const predefinedLabels = GIFT_OPTIONS.map(o => o.label);
@@ -497,6 +484,7 @@
             if (predefinedLabels.includes(wish)) {
                 activePredefined.push(wish);
             } else {
+                // Assuming only one custom wish exists
                 customWish = wish;
             }
         });
@@ -514,6 +502,7 @@
             </button>
         `).join('');
 
+        // Set custom wish input
         document.getElementById('custom-wish-input').value = customWish;
     }
 
@@ -521,22 +510,25 @@
         const isActive = btn.classList.contains('wish-btn-active');
         if (isActive) {
             btn.classList.remove('wish-btn-active');
-            btn.classList.add('bg-white/5', 'border-white/10', 'text-gray-400');
+            // Re-apply hover styles handled by CSS, but ensure dim bg removed
         } else {
             btn.classList.add('wish-btn-active');
-            btn.classList.remove('bg-white/5', 'border-white/10', 'text-gray-400');
         }
         hide('save-msg');
     }
 
+    // Save predefined + custom wishes
     async function saveWishes() {
         const btn = document.getElementById('save-wishes-btn');
+        // Get active predefined wishes
         const selected = [...document.querySelectorAll('.wish-btn')]
             .filter(b => b.classList.contains('wish-btn-active'))
             .map(b => b.dataset.wish);
 
+        // Get and sanitize custom wish
         const customWish = document.getElementById('custom-wish-input').value.trim();
         if (customWish) {
+            // Replace commas to not break splitting
             selected.push(customWish.replace(/,/g, ' '));
         }
 
@@ -548,35 +540,47 @@
             .update({ wishes: selected.join(',') })
             .eq('id', currentUser.id);
 
+        btn.innerText = '💾 حفظ اختياراتي';
+        btn.disabled = false;
+
         if (!error) {
             show('save-msg');
-            btn.innerText = '💾 حفظ اختياراتي';
-            btn.disabled = false;
+            setTimeout(() => hide('save-msg'), 3000);
         } else {
             alert('خطأ في الحفظ: ' + error.message);
-            btn.innerText = '💾 حفظ اختياراتي';
-            btn.disabled = false;
         }
     }
 
+    // Show receiver wishes
     function toggleWishes() {
         const box = document.getElementById('wishes-box');
         const isHidden = box.style.display === 'none' || box.style.display === '';
 
         if (isHidden) {
+            const predefinedLabels = GIFT_OPTIONS.map(o => o.label);
+            
             if (receiverWishes.length === 0) {
-                box.innerHTML = '<p style="color:var(--text-muted);font-size:.8rem;text-align:center;padding:.5rem 0">لم يحدد رغباته بعد ⏳</p>';
+                box.innerHTML = '<p style="color:var(--text-muted);font-size:.8rem;text-align:center;padding:.75rem 0">لم يحدد رغباته بعد ⏳</p>';
             } else {
+                let customWish = '';
+                const predefinedHtml = receiverWishes.map(w => {
+                    const opt = GIFT_OPTIONS.find(o => o.label === w);
+                    if (opt) {
+                        return `<span style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent-light);font-size:.8rem;padding:.3rem .9rem;border-radius:999px; display:inline-flex; align-items:center; gap:5px">
+                            <span>${opt.emoji}</span><span>${w}</span>
+                        </span>`;
+                    } else {
+                        customWish = w; // Assume non-predefined is custom
+                        return '';
+                    }
+                }).join('');
+
                 box.innerHTML = `
-                    <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 .5rem;text-align:center">يرغب في:</p>
-                    <div style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center">
-                        ${receiverWishes.map(w => {
-                            const opt = GIFT_OPTIONS.find(o => o.label === w);
-                            return `<span style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent-light);font-size:.8rem;padding:.25rem .75rem;border-radius:999px">
-                                ${opt ? opt.emoji : '🎁'} ${w}
-                            </span>`;
-                        }).join('')}
-                    </div>`;
+                    <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 .6rem;text-align:center">يرغب في:</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center; margin-bottom: ${customWish ? '.75rem' : '0'}">
+                        ${predefinedHtml}
+                    </div>
+                    ${customWish ? `<div style="background:var(--wish-bg); border:1px solid var(--wish-border); color:var(--text-primary); padding:.75rem; border-radius:.75rem; font-size:.85rem; text-align:right">✍️ ${customWish}</div>` : ''}`;
             }
             box.style.display = 'block';
         } else {
@@ -584,9 +588,10 @@
         }
     }
 
-    // ===== تأكيد تسليم الهدية =====
+    // ===== تأكيد تسليم الهدية (Member) =====
     async function markAsDelivered() {
-        const confirmDelivery = confirm('هل أنت متأكد أنك سلمت الهدية؟ لا يمكن التراجع عن هذا الإجراء.');
+        if (!currentAssignmentId) return;
+        const confirmDelivery = confirm('هل أنت متأكد أنك سلمت الهدية؟ לא ניתן לבטל פעולה זו.');
         if (!confirmDelivery) return;
 
         const btn = document.getElementById('deliver-btn');
@@ -599,7 +604,7 @@
             .eq('id', currentAssignmentId);
 
         if (error) {
-            alert('حدث خطأ! تأكد من إضافة عمود is_delivered في قاعدة بيانات Supabase.');
+            alert('حدث خطأ أثناء التحديث (تأكد من وجود عمود is_delivered).');
             btn.innerText = '📦 تأكيد تسليم الهدية';
             btn.disabled = false;
         } else {
@@ -619,47 +624,49 @@
     }
 
     async function loadCurrentAssignments() {
-        const { data: draw } = await db
-            .from('draws').select('*')
-            .order('created_at', { ascending: false })
-            .limit(1).maybeSingle();
+        try {
+            const { data: draw } = await db
+                .from('draws').select('*')
+                .order('created_at', { ascending: false })
+                .limit(1).maybeSingle();
 
-        if (!draw) return;
+            if (!draw) return;
 
-        // وضع الميزانية السابقة في الحقل إن وجدت
-        if (draw.budget) {
-            document.getElementById('budget-input').value = draw.budget;
-        }
+            // Load budget into input
+            if (draw.budget) {
+                document.getElementById('budget-input').value = draw.budget;
+            }
 
-        const { data: assignments } = await db
-            .from('assignments')
-            .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
-            .eq('draw_id', draw.id);
+            const { data: assignments } = await db
+                .from('assignments')
+                .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
+                .eq('draw_id', draw.id);
 
-        if (assignments && assignments.length > 0)
-            renderAssignments(assignments, draw.month_name);
+            if (assignments && assignments.length > 0)
+                renderAssignments(assignments, draw.month_name);
+        } catch(e) { /* ignore error on load */ }
     }
 
     function renderAssignments(assignments, monthName) {
         document.getElementById('draw-status-text').innerText = `✅ تم إجراء قرعة ${monthName}`;
         document.getElementById('assignments-list').innerHTML = assignments.map(a => `
             <div class="member-row" style="border-radius:.75rem;padding:.75rem;display:flex;align-items:center;justify-content:space-between">
-                <span style="color:var(--text-primary);font-weight:700;font-size:.9rem">${a.giver.name}</span>
+                <span style="color:var(--text-primary);font-weight:700;font-size:.9rem; width:35%; text-align:right">${a.giver.name}</span>
                 
-                <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem; width:30%">
                     <span style="color:var(--accent-light);font-size:1rem">← 🎁</span>
-                    <span style="font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;${a.is_delivered ? 'background:rgba(74,222,128,0.15);color:#4ade80' : 'background:rgba(255,255,255,0.05);color:var(--text-muted)'}">
+                    <span style="font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:999px;${a.is_delivered ? 'background:rgba(74,222,128,0.15);color:#4ade80' : 'background:rgba(255,255,255,0.05);color:var(--text-muted)'}">
                         ${a.is_delivered ? '✅ سُلِّمت' : '⏳ بالانتظار'}
                     </span>
                 </div>
 
-                <span style="color:var(--accent-light);font-weight:700;font-size:.9rem">${a.receiver.name}</span>
+                <span style="color:var(--accent-light);font-weight:700;font-size:.9rem; width:35%; text-align:left">${a.receiver.name}</span>
             </div>
         `).join('');
         show('assignments-section');
     }
 
-    // ===== إجراء القرعة =====
+    // ===== إجراء القرعة (Admin) =====
     async function runDraw() {
         const btn = document.getElementById('draw-btn');
         btn.innerText = '⏳ جاري السحب...';
@@ -667,14 +674,16 @@
         btn.classList.remove('pulse');
 
         try {
+            // 1. Fetch Members
             const { data: members, error: mErr } = await db
                 .from('users').select('*').eq('role', 'member');
 
             if (mErr || !members || members.length < 2) {
-                alert('يجب وجود عضوان على الأقل لإجراء القرعة');
+                alert('يجب وجود عضوان على الأقل لإجراء القرعة.');
                 resetBtn(btn); return;
             }
 
+            // 2. Fetch History (last 2 draws)
             const { data: recentDraws } = await db
                 .from('draws').select('id')
                 .order('created_at', { ascending: false })
@@ -695,31 +704,34 @@
                 }
             }
 
+            // 3. Generate Draw with Constraints
             const sameeraConstraint = document.getElementById('sameera-toggle').checked;
             const fawazConstraint = document.getElementById('fawaz-toggle').checked;
             const shuffled = makeDerangement(members, sameeraConstraint, fawazConstraint, recentPairs);
             
             if (!shuffled) {
-                alert('تعذّر توليد قرعة تحترم جميع القيود، جرّب تخفيف بعض القيود وأعد المحاولة');
+                alert('تعذّر توليد قرعة تحترم جميع القيود، جرّب تخفيف بعض القيود وأعد المحاولة.');
                 resetBtn(btn); return;
             }
 
-            const { data: allDraws } = await db
-                .from('draws').select('id')
-                .order('created_at', { ascending: true });
+            // 4. Cleanup old draws (keep only 2)
+            try {
+                const { data: allDraws } = await db
+                    .from('draws').select('id')
+                    .order('created_at', { ascending: true });
 
-            if (allDraws && allDraws.length >= 2) {
-                const toDelete = allDraws.slice(0, allDraws.length - 1).map(d => d.id);
-                if (toDelete.length > 0) {
-                    await db.from('assignments').delete().in('draw_id', toDelete);
-                    await db.from('draws').delete().in('id', toDelete);
+                if (allDraws && allDraws.length >= 2) {
+                    const toDelete = allDraws.slice(0, allDraws.length - 1).map(d => d.id);
+                    if (toDelete.length > 0) {
+                        await db.from('assignments').delete().in('draw_id', toDelete);
+                        await db.from('draws').delete().in('id', toDelete);
+                    }
                 }
-            }
+            } catch(e) { /* ignore cleanup error */ }
 
+            // 5. Create new draw
             const now = new Date();
             const monthName = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-            
-            // قراءة الميزانية من الحقل
             const budgetVal = document.getElementById('budget-input').value.trim();
 
             const { data: newDraw, error: dErr } = await db
@@ -728,22 +740,26 @@
                 .select().single();
 
             if (dErr || !newDraw) {
-                alert('خطأ في إنشاء القرعة، تأكد من إضافة عمود budget في جدول draws');
+                alert('خطأ في إنشاء القرعة (تأكد من وجود عمود budget).');
                 resetBtn(btn); return;
             }
 
+            // 6. Save Assignments
             const newAssignments = members.map((giver, i) => ({
                 draw_id: newDraw.id,
                 giver_id: giver.id,
-                receiver_id: shuffled[i].id
+                receiver_id: shuffled[i].id,
+                is_delivered: false // Explicitly set default
             }));
 
             const { error: aErr } = await db.from('assignments').insert(newAssignments);
             if (aErr) {
-                alert('خطأ في حفظ القرعة: ' + aErr.message);
+                alert('خطأ في حفظ النتائج: ' + aErr.message);
+                // Consider deleting the draw on assignment save error
                 resetBtn(btn); return;
             }
 
+            // 7. Render final results
             const { data: final } = await db
                 .from('assignments')
                 .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
@@ -755,15 +771,17 @@
             btn.disabled = false;
 
         } catch (err) {
-            alert('خطأ: ' + err.message);
+            alert('خطأ تقني: ' + err.message);
             resetBtn(btn);
         }
     }
 
+    // Constraint Satisfaction Drawing Algorithm
     function makeDerangement(arr, sameeraConstraint = false, fawazConstraint = false, recentPairs = []) {
         for (let attempt = 0; attempt < 1000; attempt++) {
             const shuffled = [...arr].sort(() => Math.random() - 0.5);
 
+            // Constraint: No self-gifting
             if (shuffled.some((item, i) => item.id === arr[i].id)) continue;
 
             const giverToReceiver = {};
@@ -771,26 +789,29 @@
                 giverToReceiver[giver.name] = shuffled[i].name;
             });
 
+            // Specific Constraint: فواز !=> نواف
             if (fawazConstraint && giverToReceiver['فواز'] === 'نواف') continue;
 
+            // Specific Constraint: سميرة from טארק or فواز only
             if (sameeraConstraint) {
                 const giverOfSameera = Object.keys(giverToReceiver)
                     .find(giver => giverToReceiver[giver] === 'سميرة');
-                if (!giverOfSameera) continue;
+                if (!giverOfSameera) continue; // Should not happen in derangement
                 if (!['طارق', 'فواز'].includes(giverOfSameera)) continue;
             }
 
+            // History Constraint: No repeat of same giver->receiver from last 2 draws
             const hasRepeat = recentPairs.some(pair =>
                 giverToReceiver[pair.giver] === pair.receiver
             );
             if (hasRepeat) continue;
 
-            return shuffled;
+            return shuffled; // Successful draw
         }
-        return null;
+        return null; // Failed to satisfy constraints
     }
 
-    // ===== كونفيتي 🎉 =====
+    // ===== Confetti Animation 🎉 =====
     function fireConfetti() {
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
@@ -798,8 +819,9 @@
         canvas.height = window.innerHeight;
         canvas.style.display = 'block';
 
-        const colors = ['#c9a55a','#e8c97a','#4f46e5','#818cf8','#ffffff','#a5b4fc','#d4af6a'];
-        const pieces = Array.from({length: 100}, () => ({
+        // Custom indigo/violet confetti palette
+        const colors = ['#6366f1','#a5b4fc','#c9a55a','#ffffff','#818cf8'];
+        const pieces = Array.from({length: 120}, () => ({
             x: Math.random() * canvas.width,
             y: -20,
             w: Math.random() * 10 + 5,
@@ -814,7 +836,7 @@
         let frame = 0;
         (function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const alpha = Math.max(0, 1 - frame / 130);
+            const alpha = Math.max(0, 1 - frame / 140); // Fade out
             pieces.forEach(p => {
                 ctx.save();
                 ctx.translate(p.x, p.y);
@@ -826,21 +848,29 @@
                 p.y += p.vy; p.x += p.vx; p.rot += p.vr;
             });
             frame++;
-            if (frame < 160) requestAnimationFrame(animate);
-            else canvas.style.display = 'none';
+            if (frame < 170) requestAnimationFrame(animate);
+            else {
+                canvas.style.display = 'none';
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clean up
+            }
         })();
     }
 
-    // ===== مساعدات =====
+    // ===== Helpers =====
     function show(id) {
         const el = document.getElementById(id);
+        if(!el) return;
+        // Screens use flex, intermediate divs block
         const isScreen = ['member-screen','admin-screen','assignments-section'].includes(id);
         el.style.display = isScreen ? 'flex' : 'block';
     }
-    function hide(id) { document.getElementById(id).style.display = 'none'; }
+    function hide(id) { 
+        const el = document.getElementById(id);
+        if(el) el.style.display = 'none'; 
+    }
     function updateToggle(checkbox, trackId) {
         const track = document.getElementById(trackId);
-        track.style.background = checkbox.checked ? '#4f46e5' : '#374151';
+        track.style.background = checkbox.checked ? '#4f46e5' : '#374151'; // Indigo vs Gray
     }
     function resetBtn(btn) {
         btn.innerText = '🎲 إجراء القرعة';
