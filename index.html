@@ -151,7 +151,6 @@
             overflow: hidden;
         }
 
-        /* لمعة متحركة تمر على الزجاج كل 8 ثواني لإعطاء فخامة */
         .glass::after {
             content: '';
             position: absolute;
@@ -246,6 +245,12 @@
         <div id="result-card" class="result-card" style="display:none;border-radius:1rem;padding:1.5rem">
             <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .5rem">🎯 ستُهدي هذا الشهر</p>
             <div id="target-name" style="font-size:2.5rem;font-weight:900;color:var(--accent-light);margin:.75rem 0"></div>
+            
+            <div id="budget-display" style="display:none;background:var(--wish-bg);border:1px solid var(--wish-border);padding:.6rem;border-radius:.75rem;margin-bottom:1.25rem">
+                <span style="color:var(--text-secondary);font-size:.85rem">💰 الميزانية المقترحة:</span>
+                <span id="budget-amount" style="color:var(--text-primary);font-weight:900;font-size:.9rem;margin-right:.25rem"></span>
+            </div>
+
             <button onclick="toggleWishes()" style="font-size:.8rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--text-secondary);padding:.4rem 1rem;border-radius:.75rem;cursor:pointer;font-family:Cairo,sans-serif">
                 🎁 عرض رغبات الهدية
             </button>
@@ -323,6 +328,11 @@
             </div>
         </div>
 
+        <div style="background:var(--constraints-bg);border-radius:1rem;padding:1rem;margin-bottom:1.5rem;text-align:right">
+            <label style="color:var(--text-secondary);font-size:.8rem;font-weight:700;display:block;margin-bottom:.5rem">💰 الميزانية المقترحة (اختياري)</label>
+            <input type="text" id="budget-input" placeholder="مثال: 100 - 150 ريال" class="code-input" style="padding:.6rem;font-size:.9rem;background:var(--input-bg)">
+        </div>
+
         <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse"
             style="width:100%;color:var(--text-primary);font-weight:900;padding:1.2rem;border-radius:1rem;font-size:1.2rem;font-family:Cairo,sans-serif">
             🎲 إجراء القرعة
@@ -352,7 +362,6 @@
     const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
                     'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
-    // قائمة الهدايا العامة والمختصرة
     const GIFT_OPTIONS = [
         { emoji: '🌸', label: 'عطور وعناية' },
         { emoji: '👕', label: 'ملابس وإكسسوارات' },
@@ -396,6 +405,15 @@
         document.getElementById('user-welcome').innerText = `${user.name} 👋`;
 
         buildWishesGrid(user.wishes || '');
+
+        // جلب الميزانية المقترحة من آخر قرعة
+        const { data: latestDraw } = await db.from('draws').select('budget').order('created_at', { ascending: false }).limit(1).maybeSingle();
+        if (latestDraw && latestDraw.budget) {
+            document.getElementById('budget-amount').innerText = latestDraw.budget;
+            show('budget-display');
+        } else {
+            hide('budget-display');
+        }
 
         try {
             const { data: assignments, error } = await db
@@ -602,6 +620,11 @@
 
         if (!draw) return;
 
+        // وضع الميزانية السابقة في الحقل إن وجدت
+        if (draw.budget) {
+            document.getElementById('budget-input').value = draw.budget;
+        }
+
         const { data: assignments } = await db
             .from('assignments')
             .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
@@ -689,13 +712,17 @@
 
             const now = new Date();
             const monthName = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+            
+            // قراءة الميزانية من الحقل
+            const budgetVal = document.getElementById('budget-input').value.trim();
+
             const { data: newDraw, error: dErr } = await db
                 .from('draws')
-                .insert({ month_name: monthName, status: 'active' })
+                .insert({ month_name: monthName, status: 'active', budget: budgetVal })
                 .select().single();
 
             if (dErr || !newDraw) {
-                alert('خطأ في إنشاء القرعة');
+                alert('خطأ في إنشاء القرعة، تأكد من إضافة عمود budget في جدول draws');
                 resetBtn(btn); return;
             }
 
