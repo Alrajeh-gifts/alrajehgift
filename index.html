@@ -10,66 +10,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Cairo', sans-serif; }
-        body { background: #0f1117; min-height: 100vh; }
 
 ```
-    .card {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
+    body {
+        min-height: 100vh;
+        background: #080c14;
+        background-image:
+            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,0.12) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 80% 90%, rgba(168,143,100,0.1) 0%, transparent 55%),
+            radial-gradient(ellipse 40% 40% at 50% 50%, rgba(30,41,80,0.4) 0%, transparent 70%);
     }
+
+    /* ===== GLASSMORPHISM ===== */
+    .glass {
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border: 1px solid rgba(255,255,255,0.09);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .glass-strong {
+        background: rgba(255,255,255,0.07);
+        backdrop-filter: blur(32px) saturate(200%);
+        -webkit-backdrop-filter: blur(32px) saturate(200%);
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    /* ===== GOLD ACCENT ===== */
+    :root {
+        --gold: #c9a55a;
+        --gold-light: #e8c97a;
+        --gold-dim: rgba(201,165,90,0.15);
+        --gold-border: rgba(201,165,90,0.3);
+    }
+
+    .text-gold { color: var(--gold); }
+    .text-gold-light { color: var(--gold-light); }
 
     .btn-primary {
-        background: linear-gradient(135deg, #f59e0b, #ef4444);
+        background: linear-gradient(135deg, #4f46e5 0%, #312e81 50%, #1e1b4b 100%);
+        border: 1px solid rgba(99,102,241,0.4);
+        box-shadow: 0 4px 24px rgba(79,70,229,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
         transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(245,158,11,0.3);
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.5); }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(79,70,229,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
     .btn-primary:active { transform: translateY(0); }
-    .btn-primary:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
+    .btn-primary:disabled { opacity: 0.4; transform: none; cursor: not-allowed; }
 
     .result-card {
-        background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.15));
-        border: 1px solid rgba(245,158,11,0.3);
+        background: linear-gradient(135deg, rgba(201,165,90,0.08), rgba(79,70,229,0.08));
+        border: 1px solid var(--gold-border);
+        box-shadow: inset 0 1px 0 rgba(201,165,90,0.1);
     }
 
     .member-row {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
         transition: all 0.2s;
+    }
+    .member-row:hover { background: rgba(255,255,255,0.06); }
+
+    /* ===== TOGGLE ===== */
+    .toggle-checked { background-color: #4f46e5 !important; }
+
+    /* ===== WISH BUTTON ===== */
+    .wish-btn-active {
+        background: var(--gold-dim) !important;
+        border-color: var(--gold-border) !important;
+        color: var(--gold-light) !important;
+    }
+
+    /* ===== INPUT ===== */
+    input[type="text"] {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: white;
+        transition: all 0.3s;
+    }
+    input[type="text"]:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: rgba(201,165,90,0.07);
+        box-shadow: 0 0 0 3px rgba(201,165,90,0.08);
+    }
+    input[type="text"]::placeholder { color: rgba(255,255,255,0.25); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) forwards; }
+
+    @keyframes shimmer {
+        0%   { box-shadow: 0 0 0 0 rgba(79,70,229,0.35); }
+        70%  { box-shadow: 0 0 0 14px rgba(79,70,229,0); }
+        100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); }
+    }
+    .pulse { animation: shimmer 2.2s infinite; }
+
+    /* ===== DIVIDER ===== */
+    .gold-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
     }
 
     .confetti-canvas {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         pointer-events: none; z-index: 999;
     }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { animation: fadeIn 0.5s ease forwards; }
-
-    @keyframes pulse-ring {
-        0% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
-        70% { box-shadow: 0 0 0 15px rgba(245,158,11,0); }
-        100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
-    }
-    .pulse { animation: pulse-ring 2s infinite; }
-
-    input {
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.15);
-        color: white;
-        transition: all 0.3s;
-    }
-    input:focus {
-        outline: none;
-        border-color: #f59e0b;
-        background: rgba(245,158,11,0.1);
-        box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
-    }
-    input::placeholder { color: rgba(255,255,255,0.3); }
 </style>
 ```
 
@@ -84,7 +138,7 @@
         <h1 class="text-3xl font-black text-white">هدايا العيد! 🌙</h1>
         <p class="text-gray-400 mt-2 text-sm">أدخل رمزك السري للدخول</p>
     </div>
-    <div class="card rounded-3xl p-6 space-y-4">
+    <div class="glass rounded-3xl p-6 space-y-4">
         <input
             type="text" id="access-code"
             placeholder="رمز الدخول"
@@ -100,15 +154,22 @@
 <!-- شاشة العضو -->
 
 <div id="member-screen" class="hidden max-w-sm w-full fade-in space-y-4">
-    <div class="card rounded-3xl p-8 text-center">
-        <p class="text-gray-400 text-sm mb-1">أهلاً وسهلاً</p>
-        <h2 id="user-welcome" class="text-2xl font-black text-white mb-8"></h2>
 
 ```
-    <div id="result-card" class="result-card rounded-2xl p-8 hidden">
-        <p class="text-gray-300 text-sm mb-3">🎯 ستُهدي هذا الشهر</p>
-        <div id="target-name" class="text-5xl font-black text-amber-400 my-4"></div>
-        <p class="text-gray-400 text-xs mt-4">🤫 سرّك الخاص، لا تخبر أحداً!</p>
+<!-- بطاقة القرعة -->
+<div class="glass rounded-3xl p-8 text-center">
+    <p class="text-gray-400 text-sm mb-1">أهلاً وسهلاً</p>
+    <h2 id="user-welcome" class="text-2xl font-black text-white mb-6"></h2>
+
+    <div id="result-card" class="result-card rounded-2xl p-6 hidden">
+        <p class="text-gray-300 text-sm mb-2">🎯 ستُهدي هذا الشهر</p>
+        <div id="target-name" class="text-4xl font-black text-gold my-3"></div>
+        <button onclick="toggleWishes()" class="mt-2 text-xs bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-2 rounded-xl transition">
+            🎁 عرض رغبات الهدية
+        </button>
+        <!-- رغبات المُهدى إليه -->
+        <div id="wishes-box" class="hidden mt-4 text-right space-y-2"></div>
+        <p class="text-gray-500 text-xs mt-4">🤫 سرّك الخاص، لا تخبر أحداً!</p>
     </div>
 
     <div id="no-draw-msg" class="hidden py-8">
@@ -117,6 +178,21 @@
         <p class="text-gray-500 text-sm mt-2">انتظر إشعاراً من المشرف</p>
     </div>
 </div>
+
+<!-- بطاقة رغباتي -->
+<div class="glass rounded-3xl p-6">
+    <h3 class="text-white font-black mb-1">🌟 رغباتي في الهدية</h3>
+    <p class="text-gray-500 text-xs mb-4">اختر ما يعجبك وسيراه من سيُهديك</p>
+
+    <div id="wishes-grid" class="grid grid-cols-2 gap-2 mb-4"></div>
+
+    <button onclick="saveWishes()" id="save-wishes-btn"
+        class="w-full bg-white/10 hover:bg-[var(--gold-dim)] border border-white/10 hover:border-[var(--gold-border)] text-gray-300 hover:text-gold font-bold py-3 rounded-2xl transition text-sm">
+        💾 حفظ اختياراتي
+    </button>
+    <p id="save-msg" class="hidden text-green-400 text-xs text-center mt-2">✅ تم الحفظ!</p>
+</div>
+
 <button onclick="location.reload()" class="w-full text-gray-500 text-sm py-2 hover:text-gray-300 transition">
     ← تسجيل خروج
 </button>
@@ -129,16 +205,16 @@
 <div id="admin-screen" class="hidden max-w-sm w-full fade-in space-y-4">
 
 ```
-<div class="card rounded-3xl p-6">
+<div class="glass rounded-3xl p-6">
     <div class="flex items-center justify-between mb-1">
         <span class="text-2xl">👑</span>
-        <span id="current-month" class="text-amber-400 text-sm font-bold"></span>
+        <span id="current-month" class="text-gold text-sm font-bold"></span>
     </div>
     <h2 class="text-xl font-black text-white">لوحة المشرف</h2>
     <p class="text-gray-400 text-xs mt-1">أجرِ أو أعِد القرعة في أي وقت</p>
 </div>
 
-<div class="card rounded-3xl p-6 text-center">
+<div class="glass rounded-3xl p-6 text-center">
     <p id="draw-status-text" class="text-gray-400 text-sm mb-4">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
 
     <!-- القيود الخاصة -->
@@ -149,7 +225,7 @@
         <div class="flex items-center justify-between">
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" id="fawaz-toggle" checked class="sr-only peer">
-                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-amber-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
+                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-indigo-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
             </label>
             <span class="text-gray-300 text-xs">فواز لا يُهدي نواف</span>
         </div>
@@ -158,7 +234,7 @@
         <div class="flex items-center justify-between">
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" id="sameera-toggle" checked class="sr-only peer">
-                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-amber-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
+                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-indigo-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
             </label>
             <span class="text-gray-300 text-xs">سميرة تُهدى من طارق أو فواز فقط</span>
         </div>
@@ -170,7 +246,7 @@
     <p class="text-gray-600 text-xs mt-3">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
 </div>
 
-<div id="assignments-section" class="card rounded-3xl p-6 hidden">
+<div id="assignments-section" class="glass rounded-3xl p-6 hidden">
     <h3 class="text-white font-black mb-4 text-center">📋 نتائج القرعة</h3>
     <div id="assignments-list" class="space-y-2"></div>
 </div>
@@ -216,22 +292,128 @@
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
+    // قائمة الهدايا الجاهزة
+    const GIFT_OPTIONS = [
+        { emoji: '🌸', label: 'عطر' },
+        { emoji: '📚', label: 'كتاب' },
+        { emoji: '⌚', label: 'ساعة' },
+        { emoji: '👜', label: 'محفظة' },
+        { emoji: '🎮', label: 'ألعاب' },
+        { emoji: '🍫', label: 'حلويات' },
+        { emoji: '🌿', label: 'عناية بالبشرة' },
+        { emoji: '🎧', label: 'سماعات' },
+        { emoji: '👗', label: 'ملابس' },
+        { emoji: '🕯️', label: 'ديكور منزلي' },
+        { emoji: '💳', label: 'بطاقة هدية' },
+        { emoji: '🏋️', label: 'رياضة وصحة' },
+        { emoji: '✈️', label: 'تجربة وسفر' },
+        { emoji: '🎨', label: 'هواية وفن' },
+    ];
+
+    let currentUser = null;
+    let receiverWishes = [];
+
     // ===== شاشة العضو =====
     async function showMemberScreen(user) {
+        currentUser = user;
         hide('login-screen'); show('member-screen');
         document.getElementById('user-welcome').innerText = `${user.name} 👋`;
 
+        // بناء شبكة الرغبات
+        buildWishesGrid(user.wishes || '');
+
+        // جلب القرعة
         const { data: assignments } = await db
             .from('assignments')
-            .select('*, receiver:users!receiver_id(name)')
+            .select('*, receiver:users!receiver_id(name, wishes)')
             .eq('giver_id', user.id)
             .limit(1);
 
         if (assignments && assignments.length > 0) {
-            document.getElementById('target-name').innerText = assignments[0].receiver.name;
+            const receiver = assignments[0].receiver;
+            document.getElementById('target-name').innerText = receiver.name;
+            receiverWishes = receiver.wishes ? receiver.wishes.split(',').filter(Boolean) : [];
             show('result-card'); hide('no-draw-msg');
         } else {
             hide('result-card'); show('no-draw-msg');
+        }
+    }
+
+    function buildWishesGrid(savedWishes) {
+        const saved = savedWishes ? savedWishes.split(',').filter(Boolean) : [];
+        const grid = document.getElementById('wishes-grid');
+        grid.innerHTML = GIFT_OPTIONS.map(opt => `
+            <button onclick="toggleWish(this, '${opt.label}')"
+                data-wish="${opt.label}"
+                class="wish-btn flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition
+                       ${saved.includes(opt.label)
+                           ? 'wish-btn-active'
+                           : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20'}">
+                <span>${opt.emoji}</span>
+                <span>${opt.label}</span>
+            </button>
+        `).join('');
+    }
+
+    function toggleWish(btn, wish) {
+        const isActive = btn.classList.contains('wish-btn-active');
+        if (isActive) {
+            btn.classList.remove('wish-btn-active');
+            btn.classList.add('bg-white/5', 'border-white/10', 'text-gray-400');
+        } else {
+            btn.classList.add('wish-btn-active');
+            btn.classList.remove('bg-white/5', 'border-white/10', 'text-gray-400');
+        }
+        hide('save-msg');
+    }
+
+    async function saveWishes() {
+        const btn = document.getElementById('save-wishes-btn');
+        const selected = [...document.querySelectorAll('.wish-btn')]
+            .filter(b => b.classList.contains('wish-btn-active'))
+            .map(b => b.dataset.wish);
+
+        btn.innerText = '...جاري الحفظ';
+        btn.disabled = true;
+
+        const { error } = await db
+            .from('users')
+            .update({ wishes: selected.join(',') })
+            .eq('id', currentUser.id);
+
+        if (!error) {
+            show('save-msg');
+            btn.innerText = '💾 حفظ اختياراتي';
+            btn.disabled = false;
+        } else {
+            alert('خطأ في الحفظ: ' + error.message);
+            btn.innerText = '💾 حفظ اختياراتي';
+            btn.disabled = false;
+        }
+    }
+
+    function toggleWishes() {
+        const box = document.getElementById('wishes-box');
+        const isHidden = box.classList.contains('hidden');
+
+        if (isHidden) {
+            if (receiverWishes.length === 0) {
+                box.innerHTML = '<p class="text-gray-500 text-xs text-center py-2">لم يحدد رغباته بعد ⏳</p>';
+            } else {
+                box.innerHTML = `
+                    <p class="text-gray-400 text-xs mb-2 text-center">يرغب في:</p>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        ${receiverWishes.map(w => {
+                            const opt = GIFT_OPTIONS.find(o => o.label === w);
+                            return `<span class="bg-[var(--gold-dim)] border border-[var(--gold-border)] text-gold-light text-xs px-3 py-1 rounded-full">
+                                ${opt ? opt.emoji : '🎁'} ${w}
+                            </span>`;
+                        }).join('')}
+                    </div>`;
+            }
+            show('wishes-box');
+        } else {
+            hide('wishes-box');
         }
     }
 
@@ -266,8 +448,8 @@
         document.getElementById('assignments-list').innerHTML = assignments.map(a => `
             <div class="member-row rounded-xl p-3 flex items-center justify-between">
                 <span class="text-white font-bold text-sm">${a.giver.name}</span>
-                <span class="text-amber-400 text-lg">← 🎁</span>
-                <span class="text-amber-400 font-bold text-sm">${a.receiver.name}</span>
+                <span class="text-gold text-lg">← 🎁</span>
+                <span class="text-gold font-bold text-sm">${a.receiver.name}</span>
             </div>
         `).join('');
         show('assignments-section');
@@ -421,7 +603,7 @@
         canvas.height = window.innerHeight;
         canvas.style.display = 'block';
 
-        const colors = ['#f59e0b','#ef4444','#10b981','#3b82f6','#8b5cf6','#ec4899','#ffffff'];
+        const colors = ['#c9a55a','#e8c97a','#4f46e5','#818cf8','#ffffff','#a5b4fc','#d4af6a'];
         const pieces = Array.from({length: 100}, () => ({
             x: Math.random() * canvas.width,
             y: -20,
