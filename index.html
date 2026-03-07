@@ -16,10 +16,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
+        /* === الخطوط واللمسات العامة === */
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { min-height: 100%; margin: 0; }
 
-        /* ===== المتغيرات الأساسية (الوضع الداكن) ===== */
+        /* ===== لوحة الألوان الأساسية (Deep Liquid Glass) ===== */
         :root {
             --bg: #08090d;
             --text-primary: #ffffff;
@@ -28,30 +29,35 @@
             --glass-bg: rgba(255, 255, 255, 0.07);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-border-top: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
             --input-bg: rgba(0, 0, 0, 0.35);
             --accent: #6366f1;
             --accent-dim: rgba(99, 102, 241, 0.15);
-            --liquid-1: rgba(99, 102, 241, 0.3);
-            --liquid-2: rgba(139, 92, 246, 0.25);
+            --liquid-1: rgba(99, 102, 241, 0.35); /* Indigo */
+            --liquid-2: rgba(139, 92, 246, 0.30); /* Violet */
+            --liquid-3: rgba(59, 130, 246, 0.20); /* Blue */
+            --timer-bg: rgba(99, 102, 241, 0.15);
         }
 
-        /* ===== تعديلات النمط النهاري (Light Mode) لضمان الوضوح التام ===== */
+        /* ===== النمط النهاري (Apple Milky Glass Style) ===== */
         @media (prefers-color-scheme: light) {
             :root {
-                --bg: #f1f4f9;
-                --text-primary: #111827; /* كحلي غامق جداً للقراءة */
-                --text-secondary: #4b5563;
-                --text-muted: #9ca3af;
-                --glass-bg: rgba(255, 255, 255, 0.85);
-                --glass-border: rgba(99, 102, 241, 0.2);
-                --glass-border-top: rgba(255, 255, 255, 1);
+                --bg: #f3f5f9;
+                --text-primary: #0f172a; /* كحلي غامق جداً */
+                --text-secondary: #475569;
+                --text-muted: #94a3b8;
+                --glass-bg: rgba(255, 255, 255, 0.7);
+                --glass-border: rgba(99, 102, 241, 0.15);
+                --glass-border-top: rgba(255, 255, 255, 0.95);
+                --glass-shadow: rgba(30, 27, 75, 0.08);
                 --input-bg: #ffffff;
                 --accent-dim: rgba(99, 102, 241, 0.1);
-                --liquid-1: rgba(99, 102, 241, 0.2);
-                --liquid-2: rgba(236, 72, 153, 0.15);
+                --liquid-1: rgba(99, 102, 241, 0.3);
+                --liquid-2: rgba(236, 72, 153, 0.2); /* وردي خفيف في النهار */
+                --timer-bg: rgba(99, 102, 241, 0.08);
             }
-            .btn-primary { color: #ffffff !important; }
-            #budget-display { background: rgba(99, 102, 241, 0.05) !important; color: #111827 !important; }
+            .btn-primary { color: #ffffff !important; box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4) !important; }
+            #budget-display { background: rgba(99, 102, 241, 0.05) !important; border-color: rgba(99, 102, 241, 0.15) !important; }
         }
 
         body {
@@ -66,140 +72,182 @@
             transition: background 0.4s ease;
         }
 
-        /* السائل المتحرك */
-        body::before {
-            content: ''; position: fixed; inset: -150px;
-            background: radial-gradient(circle at 20% 30%, var(--liquid-1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, var(--liquid-2) 0%, transparent 50%);
-            filter: blur(80px); z-index: 0; pointer-events: none;
-            animation: swim 20s ease-in-out infinite alternate;
+        /* ===== تصميم السائل المتحرك (Liquid Elements) ===== */
+        body::before, body::after {
+            content: ''; position: fixed; border-radius: 50%; filter: blur(90px); z-index: 0; pointer-events: none;
         }
-        @keyframes swim { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(50px, 40px) scale(1.1); } }
+        body::before {
+            inset: -150px;
+            background:
+                radial-gradient(circle at 20% 30%, var(--liquid-1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, var(--liquid-2) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, var(--liquid-3) 0%, transparent 50%);
+            animation: liquid-swim 18s ease-in-out infinite alternate;
+        }
+        body::after {
+            width: 600px; height: 600px; bottom: -200px; left: -200px;
+            background: radial-gradient(circle, var(--liquid-2) 0%, transparent 65%);
+            animation: liquid-swim 22s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes liquid-swim { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(50px, 40px) scale(1.1); } }
 
+        /* ===== الزجاج السائل العميق (The Card) ===== */
         .glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            backdrop-filter: blur(30px) saturate(210%);
+            -webkit-backdrop-filter: blur(30px) saturate(210%);
             border: 1px solid var(--glass-border);
             border-top: 1px solid var(--glass-border-top);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            z-index: 10;
+            box-shadow: 0 25px 50px -12px var(--glass-shadow);
+            position: relative; overflow: hidden; z-index: 10;
         }
 
+        /* لمعة زجاجية تتحرك كل فترة */
+        .glass::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+            transform: skewX(-30deg); animation: glass-shine 10s infinite; pointer-events: none;
+        }
+        @keyframes glass-shine { 0%, 85% { left: -100%; } 100% { left: 200%; } }
+
+        /* ===== الأزرار والحقول ===== */
         .btn-primary {
             background: linear-gradient(135deg, #6366f1, #4f46e5);
-            box-shadow: 0 10px 25px -5px rgba(99,102,241,0.5);
-            border: none; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 3px solid rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
         }
-        .btn-primary:active { transform: scale(0.95); }
+        .btn-primary:active { transform: scale(0.95); border-bottom-width: 1px; }
 
         .code-input {
-            background: var(--input-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            text-align: center;
+            background: var(--input-bg); border: 1px solid var(--glass-border);
+            color: var(--text-primary); text-align: center; box-shadow: inset 0 3px 6px rgba(0,0,0,0.05);
+        }
+        .code-input:focus { border-color: var(--accent); transform: scale(1.02); }
+
+        .wish-active {
+            background: var(--accent) !important; color: white !important; border-color: var(--accent) !important;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
         }
 
+        /* ===== الأقسام والشاشات ===== */
+        #login-screen, #member-screen, #admin-screen { width: 100%; max-width: 24rem; margin-top: auto; margin-bottom: auto; }
         .fade-in { animation: fadeUp 0.6s ease-out forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(25px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
-        .wish-active { background: #6366f1 !important; color: white !important; border-color: #6366f1 !important; }
-        
-        #assignments-section, #member-screen, #admin-screen { width: 100%; max-width: 24rem; }
+        .timer-container {
+            background: var(--timer-bg); border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 0.85rem; border-radius: 1.25rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
     </style>
 </head>
 <body>
 
-<div id="login-screen" class="w-full max-w-sm fade-in" style="margin-top: 12vh;">
+<div id="login-screen" class="fade-in px-4">
     <div class="text-center mb-10">
-        <div style="font-size:5rem; filter: drop-shadow(0 10px 15px rgba(99,102,241,0.3))">🎁</div>
-        <h1 class="text-3xl font-black mt-4">هدايا العيد</h1>
-        <p class="opacity-70 mt-2">أدخل الرمز السري للدخول</p>
+        <div style="font-size:5.5rem; filter: drop-shadow(0 10px 20px rgba(99,102,241,0.3))">🎁</div>
+        <h1 class="text-4xl font-black mt-4">هدايا العيد</h1>
+        <p class="opacity-70 mt-2 font-semibold">أدخل الرمز السري للمفاجأة</p>
     </div>
-    <div class="glass rounded-3xl p-6 flex flex-col gap-4">
-        <input type="password" id="access-code" placeholder="الرمز السري" class="code-input p-4 rounded-2xl font-bold text-2xl outline-none">
-        <button onclick="login()" id="login-btn" class="btn-primary w-full font-black py-4 rounded-2xl text-lg">
-            تسجيل الدخول ←
+    <div class="glass rounded-[2rem] p-6 flex flex-col gap-5">
+        <input type="password" id="access-code" placeholder="الرمز السري" class="code-input p-5 rounded-2xl font-bold text-2xl outline-none focus:ring-4 ring-indigo-500/20">
+        <button onclick="login()" id="login-btn" class="btn-primary w-full font-black py-4 rounded-2xl text-xl shadow-xl shadow-indigo-500/20">
+            اكتشف هديتك ←
         </button>
     </div>
 </div>
 
-<div id="member-screen" class="fade-in" style="display:none; flex-direction:column; gap:1.5rem">
-    <div class="glass rounded-3xl p-8 text-center mt-10">
-        <p class="text-sm opacity-60">أهلاً وسهلاً</p>
+<div id="member-screen" class="fade-in px-4" style="display:none; flex-direction:column; gap:1.5rem">
+    <div class="glass rounded-[2rem] p-8 text-center mt-10">
+        <p class="text-xs opacity-60 font-bold">أهلاً وسهلاً بك</p>
         <h2 id="user-welcome" class="text-2xl font-black mb-6"></h2>
 
-        <div id="result-card" class="p-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5" style="display:none;">
-            <p class="text-xs opacity-60 mb-1">🎯 ستُهدي هذا العيد</p>
-            <div id="target-name" class="text-4xl font-black text-indigo-500 mb-6"></div>
+        <div id="result-card" class="p-6 rounded-[1.5rem] border border-indigo-500/20 bg-indigo-500/5 shadow-inner" style="display:none;">
+            <p class="text-xs opacity-60 mb-2 font-bold">🎯 ستُهدي هذا العيد لـ</p>
+            <div id="target-name" class="text-4xl font-black text-indigo-500 mb-6 tracking-tight"></div>
             
             <div id="budget-display" class="bg-indigo-500/10 p-3 rounded-xl mb-6 flex items-center justify-center gap-2 border border-indigo-500/10" style="display:none">
                 <span class="text-xs opacity-70">💰 الميزانية:</span>
                 <span id="budget-amount" class="font-black text-sm"></span>
             </div>
 
-            <button onclick="toggleWishes()" class="bg-indigo-500/10 border border-indigo-500/20 px-6 py-2 rounded-full text-xs font-bold mb-4">
+            <button onclick="toggleWishes()" class="bg-indigo-500/10 border border-indigo-500/20 px-6 py-2 rounded-full text-xs font-bold mb-5" style="color: var(--text-primary)">
                 🎁 عرض رغبات الشخص
             </button>
             <div id="wishes-box" class="hidden flex-wrap justify-center gap-2 mb-4"></div>
 
-            <div class="pt-6 border-t border-indigo-500/10 mt-4">
-                <div class="bg-indigo-500/5 p-3 rounded-2xl mb-4 flex items-center justify-center gap-2 border border-indigo-500/10">
-                    <span>⏳</span>
-                    <span id="countdown-timer" class="text-sm font-bold opacity-80">جاري الحساب...</span>
+            <div class="pt-6 border-t border-indigo-500/10 mt-2">
+                <div class="timer-container mb-4">
+                    <span class="text-lg">⏳</span>
+                    <span id="countdown-timer" class="text-sm font-black opacity-80">...</span>
                 </div>
 
-                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary w-full py-3 rounded-2xl font-black text-sm">
+                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary w-full py-4 rounded-2xl font-black text-sm">
                     📦 تأكيد تسليم الهدية
                 </button>
-                <div id="delivered-msg" class="hidden bg-green-500/10 text-green-500 p-4 rounded-2xl font-bold">✅ تم التسليم بنجاح!</div>
+                <div id="delivered-msg" class="hidden bg-green-500/10 text-green-600 p-4 rounded-2xl font-bold border border-green-500/20">
+                    ✅ تم التسليم بنجاح!
+                </div>
             </div>
         </div>
         
-        <div id="no-draw-msg" class="hidden py-10 opacity-50 font-bold">لم تُجرَ القرعة بعد ⏳</div>
+        <div id="no-draw-msg" class="hidden py-12 opacity-50 font-black">لم تُجرَ القرعة بعد، انتظر الإشعار 🔔</div>
     </div>
 
-    <div class="glass rounded-3xl p-6">
-        <h3 class="font-black mb-4">🌟 رغباتي في الهدية</h3>
-        <div id="wishes-grid" class="grid grid-cols-2 gap-2 mb-4"></div>
-        <input type="text" id="custom-wish-input" placeholder="أو اكتب هديتك هنا..." class="code-input w-full p-3 rounded-xl text-sm outline-none mb-4">
-        <button onclick="saveWishes()" id="save-wishes-btn" class="w-full bg-indigo-500/10 border border-indigo-500/20 py-3 rounded-xl font-bold">💾 حفظ اختياراتي</button>
+    <div class="glass rounded-[2rem] p-6 shadow-xl">
+        <h3 class="font-black text-lg mb-4 text-right">🌟 رغباتي في الهدية</h3>
+        <p class="text-xs opacity-60 mb-4 text-right">اختر ما يعجبك أو اكتب هديتك ليرونها</p>
+        <div id="wishes-grid" class="grid grid-cols-2 gap-3 mb-5"></div>
+        <input type="text" id="custom-wish-input" placeholder="أو اكتب هديتك هنا... ✍️" class="code-input w-full p-4 rounded-2xl text-sm outline-none mb-5">
+        <button onclick="saveWishes()" id="save-wishes-btn" class="w-full py-4 rounded-2xl font-black text-sm border border-indigo-500/30" style="background: rgba(99,102,241,0.05)">💾 حفظ اختياراتي</button>
     </div>
 
-    <button onclick="location.reload()" class="opacity-50 font-bold text-sm py-4">← تسجيل خروج</button>
+    <button onclick="location.reload()" class="font-black text-sm py-4 mb-10 opacity-40">← تسجيل الخروج</button>
 </div>
 
-<div id="admin-screen" class="fade-in" style="display:none; flex-direction:column; gap:1.25rem">
-    <div class="glass rounded-3xl p-6 mt-10 text-center">
-        <h2 class="text-xl font-black">لوحة المشرف 👑</h2>
-        <div class="bg-indigo-500/5 p-4 rounded-2xl mt-4 text-right flex flex-col gap-3 border border-indigo-500/10">
-            <p class="text-xs font-bold opacity-60">⚙️ القيود النشطة</p>
-            <div class="flex justify-between items-center text-sm">
+<div id="admin-screen" class="fade-in px-4" style="display:none; flex-direction:column; gap:1.5rem">
+    <div class="glass rounded-[2rem] p-6 mt-10 text-center">
+        <div class="flex justify-between items-center mb-6">
+             <span class="text-3xl">👑</span>
+             <span id="admin-month" class="text-xs font-black bg-indigo-500/10 px-4 py-2 rounded-full text-indigo-500">مارس 2026</span>
+        </div>
+        <h2 class="text-xl font-black mb-6">لوحة التحكم بالمشرف</h2>
+        
+        <div class="bg-indigo-500/5 p-5 rounded-2xl text-right flex flex-col gap-4 border border-indigo-500/10 mb-6">
+            <p class="text-xs font-black opacity-50">⚙️ إعدادات القرعة والقيود</p>
+            <div class="flex justify-between items-center text-sm font-bold">
                 <span>فواز لا يُهدي نواف</span>
-                <input type="checkbox" id="fawaz-toggle" checked>
+                <input type="checkbox" id="fawaz-toggle" checked class="w-5 h-5 accent-indigo-500">
             </div>
-            <div class="flex justify-between items-center text-sm">
-                <span>سميرة تُهدى من طارق أو فواز</span>
-                <input type="checkbox" id="sameera-toggle" checked>
+            <div class="flex justify-between items-center text-sm font-bold">
+                <span>سميرة تُهدى من طارق/فواز</span>
+                <input type="checkbox" id="sameera-toggle" checked class="w-5 h-5 accent-indigo-500">
             </div>
         </div>
-        <div class="mt-4 text-right">
-             <label class="text-xs font-bold opacity-60 block mb-2">💰 الميزانية (اختياري)</label>
-             <input type="text" id="budget-input" placeholder="مثلاً: 300 ريال" class="code-input w-full p-3 rounded-xl text-sm outline-none">
+
+        <div class="text-right mb-6">
+             <label class="text-xs font-black opacity-50 block mb-2">💰 ميزانية الهدية (اختياري)</label>
+             <input type="text" id="budget-input" placeholder="مثال: 300 ريال" class="code-input w-full p-4 rounded-2xl text-sm outline-none">
         </div>
-        <button onclick="runDraw()" id="draw-btn" class="btn-primary w-full py-4 rounded-2xl font-black text-xl mt-6">🎲 إجراء القرعة الآن</button>
-        <p id="draw-status-text" class="text-xs mt-3 opacity-50"></p>
+
+        <button onclick="runDraw()" id="draw-btn" class="btn-primary w-full py-5 rounded-2xl font-black text-xl shadow-2xl">
+            🎲 إجراء قرعة جديدة
+        </button>
+        <p id="draw-status-text" class="text-xs mt-4 opacity-50 font-bold"></p>
     </div>
 
     <div id="assignments-section" class="hidden">
-        <div class="glass rounded-3xl p-6">
-            <h3 class="text-center font-black mb-4">📋 النتائج الحالية</h3>
-            <div id="assignments-list" class="flex flex-col gap-2"></div>
+        <div class="glass rounded-[2rem] p-6 shadow-2xl">
+            <h3 class="text-center font-black mb-5 border-b border-white/5 pb-3">📋 النتائج الحالية</h3>
+            <div id="assignments-list" class="flex flex-col gap-3"></div>
         </div>
     </div>
 
-    <button onclick="location.reload()" class="opacity-50 font-bold text-sm py-4 text-center">← تسجيل خروج</button>
+    <button onclick="location.reload()" class="opacity-50 font-black text-sm py-4 text-center">← تسجيل خروج</button>
 </div>
+
+<canvas id="confetti-canvas" style="position:fixed; inset:0; pointer-events:none; z-index:999; display:none"></canvas>
 
 <script>
     const SUPABASE_URL = 'https://oprethkloexyrhagmdod.supabase.co';
@@ -209,15 +257,16 @@
     let currentUser = null;
     let currentAssignmentId = null;
 
-    // دالة الاهتزاز المحسنة للجوال
-    function haptic(pattern) {
+    // --- نظام الاهتزاز الذكي لآيفون ---
+    function doHaptic(pattern) {
         if ("vibrate" in navigator) {
-            try { navigator.vibrate(pattern); } catch (e) {}
+            try { navigator.vibrate(pattern); } catch (e) { console.log("Haptic error:", e); }
         }
     }
 
+    // --- الدخول ---
     async function login() {
-        haptic(60); 
+        doHaptic(65); // اهتزاز فوري عند الضغط لفتح الصلاحية
         const btn = document.getElementById('login-btn');
         const code = document.getElementById('access-code').value.trim();
         if (!code) return;
@@ -228,7 +277,7 @@
         const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
 
         if (error || !user) {
-            alert('الرمز غير صحيح!');
+            alert('الرمز السري غير صحيح!');
             btn.innerText = 'تسجيل الدخول ←';
             btn.disabled = false;
             return;
@@ -238,6 +287,7 @@
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
+    // --- شاشة العضو ---
     async function showMemberScreen(user) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('member-screen').style.display = 'flex';
@@ -245,6 +295,7 @@
 
         buildWishesGrid(user.wishes || '');
 
+        // جلب الميزانية
         const { data: drawData } = await db.from('draws').select('*').order('created_at', {ascending: false}).limit(1).maybeSingle();
         if (drawData && drawData.budget) {
             document.getElementById('budget-amount').innerText = drawData.budget;
@@ -256,7 +307,9 @@
         if (assign) {
             currentAssignmentId = assign.id;
             document.getElementById('target-name').innerText = assign.receiver.name;
-            setTimeout(() => haptic([100, 50, 100]), 500); 
+            
+            // اهتزاز مزدوج لحظة كشف الاسم (تفاعل Apple Style)
+            setTimeout(() => doHaptic([100, 50, 100]), 400); 
 
             if (assign.is_delivered) {
                 document.getElementById('delivered-msg').classList.remove('hidden');
@@ -271,24 +324,28 @@
         }
     }
 
+    // --- المؤقت ---
     function initCountdown() {
         const eid = new Date("2026-03-20T00:00:00").getTime();
         setInterval(() => {
             const diff = eid - new Date().getTime();
-            if (diff < 0) { document.getElementById('countdown-timer').innerText = "كل عام وأنتم بخير! 🎉"; return; }
+            const timerEl = document.getElementById('countdown-timer');
+            if (!timerEl) return;
+            if (diff < 0) { timerEl.innerText = "عيدكم مبارك! 🎉"; return; }
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById('countdown-timer').innerText = `باقي للعيد: ${d} يوم و ${h} ساعة`;
+            timerEl.innerText = `باقي للعيد: ${d} يوم و ${h} ساعة`;
         }, 1000);
     }
     initCountdown();
 
+    // --- الرغبات ---
     function buildWishesGrid(saved) {
-        const options = ['عطور وعناية', 'ملابس', 'تقنية', 'قهوة وحلويات', 'ساعة', 'كتاب'];
+        const options = ['عطور وعناية', 'ملابس', 'إلكترونيات', 'قهوة وحلويات', 'ساعة', 'كتاب'];
         const grid = document.getElementById('wishes-grid');
         const savedArray = (saved || '').split(',');
         grid.innerHTML = options.map(opt => `
-            <button onclick="toggleWish(this)" class="p-3 rounded-xl border border-indigo-500/10 text-xs font-bold transition-all ${savedArray.includes(opt) ? 'wish-active' : 'bg-indigo-500/5 opacity-70'}">
+            <button onclick="toggleWish(this)" class="p-4 rounded-2xl border border-indigo-500/10 text-xs font-black transition-all ${savedArray.includes(opt) ? 'wish-active' : 'bg-indigo-500/5 opacity-70'}">
                 ${opt}
             </button>
         `).join('');
@@ -297,52 +354,55 @@
     function toggleWish(btn) {
         btn.classList.toggle('wish-active');
         btn.classList.toggle('opacity-70');
-        haptic(30);
+        doHaptic(30);
     }
 
     async function saveWishes() {
-        haptic(50);
+        doHaptic(50);
         const selected = [...document.querySelectorAll('.wish-active')].map(b => b.innerText);
         const custom = document.getElementById('custom-wish-input').value.trim();
         if (custom) selected.push(custom);
+        
         await db.from('users').update({ wishes: selected.join(',') }).eq('id', currentUser.id);
         alert('تم حفظ رغباتك بنجاح! ✅');
     }
 
     function toggleWishes() {
-        haptic(20);
+        doHaptic(20);
         const box = document.getElementById('wishes-box');
         box.classList.toggle('hidden');
         box.classList.add('flex');
         const data = window.receiverWishesData || [];
-        box.innerHTML = data.length ? data.map(w => `<span class="bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-lg text-xs font-bold">${w}</span>`).join('') : '<p class="text-xs opacity-50">لم يحدد الشخص رغباته بعد</p>';
+        box.innerHTML = data.length ? data.map(w => `<span class="bg-indigo-500/15 border border-indigo-500/20 px-4 py-2 rounded-xl text-xs font-black shadow-sm">${w}</span>`).join('') : '<p class="text-xs opacity-50 font-bold">لم يحدد الشخص رغباته بعد</p>';
     }
 
     async function markAsDelivered() {
-        if(!confirm('هل تود تأكيد تسليم الهدية؟')) return;
-        haptic([50, 50, 50]);
+        if(!confirm('هل تود تأكيد تسليم الهدية؟ 🎁')) return;
+        doHaptic([50, 50, 50]);
         await db.from('assignments').update({ is_delivered: true }).eq('id', currentAssignmentId);
         location.reload();
     }
 
+    // --- المشرف ---
     async function showAdminScreen() {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-screen').style.display = 'flex';
+        
         const { data: assignments } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)');
         if (assignments && assignments.length > 0) {
             document.getElementById('assignments-section').classList.remove('hidden');
             document.getElementById('assignments-list').innerHTML = assignments.map(a => `
-                <div class="bg-indigo-500/5 p-3 rounded-2xl flex justify-between items-center text-sm border border-indigo-500/10">
-                    <span class="font-bold text-indigo-500">${a.giver.name}</span>
-                    <span class="opacity-20 text-xs">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
-                    <span class="font-bold">${a.receiver.name}</span>
+                <div class="bg-indigo-500/5 p-4 rounded-2xl flex justify-between items-center text-sm border border-indigo-500/10 shadow-sm">
+                    <span class="font-black text-indigo-500">${a.giver.name}</span>
+                    <span class="opacity-20 font-bold text-[10px]">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
+                    <span class="font-black">${a.receiver.name}</span>
                 </div>
             `).join('');
         }
     }
 
     async function runDraw() {
-        haptic(100);
+        doHaptic(100);
         if(!confirm('سيتم حذف القرعة الحالية وإنشاء واحدة جديدة، هل أنت متأكد؟')) return;
         const btn = document.getElementById('draw-btn');
         btn.innerText = 'جاري السحب... 🎲';
