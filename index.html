@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>هدايا العائلة! 🎁</title>
+    <title>هدايا العائلة 🎁</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,122 +15,142 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
     
     <style>
+        /* ================================================================
+           💎 نظام الألوان والمقاسات الموزون (Perfect UI System)
+        ================================================================ */
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
+        /* امتداد الشاشة بالكامل للأعلى (Full Screen) */
         html, body { 
             height: 100%; margin: 0; padding: 0; 
-            background: var(--bg-app); transition: background 0.4s ease;
+            background-color: var(--bg-app); 
+            transition: background-color 0.3s ease;
         }
         
         body {
             display: flex; flex-direction: column; align-items: center;
-            padding-top: max(2.5rem, env(safe-area-inset-top));
-            padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
-            padding-left: 1.25rem; padding-right: 1.25rem;
+            padding-top: env(safe-area-inset-top); /* دمج طبيعي مع أعلى الشاشة */
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: 1rem; padding-right: 1rem;
             min-height: 100dvh;
+            color: var(--text-main);
         }
 
-        /* --- الألوان (داكن) --- */
+        /* --- الألوان (الوضع الداكن - الافتراضي) --- */
         :root {
-            --bg-app: #0b0c10;
+            --bg-app: #0a0b10;
             --text-main: #ffffff;
-            --text-sub: rgba(255, 255, 255, 0.65);
+            --text-sub: rgba(255, 255, 255, 0.6);
+            --text-accent: #818cf8;
+            
             --card-bg: rgba(255, 255, 255, 0.05);
             --card-border: rgba(255, 255, 255, 0.1);
-            --inner-bg: rgba(255, 255, 255, 0.03);
-            --card-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5);
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.4);
+            --inner-bg: rgba(0, 0, 0, 0.3);
+            
+            --btn-primary: linear-gradient(135deg, #6366f1, #4f46e5);
+            --btn-text: #ffffff;
+            
+            --wish-bg: rgba(255, 255, 255, 0.05);
+            --wish-active: #6366f1;
+            
             --liquid-1: rgba(99, 102, 241, 0.3);
             --liquid-2: rgba(139, 92, 246, 0.2);
         }
 
-        /* --- الألوان (نهاري) --- */
+        /* --- الألوان (الوضع النهاري - تباين عالي) --- */
         @media (prefers-color-scheme: light) {
             :root {
                 --bg-app: #f4f6f9;
-                --text-main: #0f172a; 
-                --text-sub: #475569;
-                --card-bg: rgba(255, 255, 255, 0.9);
+                --text-main: #0f172a; /* كحلي داكن للنصوص الرئيسية */
+                --text-sub: #475569; /* رمادي داكن للنصوص الفرعية */
+                --text-accent: #4338ca; /* لون الاسم (طارق/محمد) */
+                
+                --card-bg: rgba(255, 255, 255, 0.95);
                 --card-border: rgba(99, 102, 241, 0.2);
-                --inner-bg: rgba(99, 102, 241, 0.04);
-                --card-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.15);
-                --accent: #4f46e5;
+                --inner-bg: rgba(99, 102, 241, 0.05);
+                
+                --btn-primary: linear-gradient(135deg, #4f46e5, #4338ca);
+                --btn-text: #ffffff;
+                
+                --wish-bg: rgba(99, 102, 241, 0.08); /* خلفية الرغبات في النهار */
+                --wish-active: #4f46e5;
+                
                 --liquid-1: rgba(99, 102, 241, 0.15);
                 --liquid-2: rgba(236, 72, 153, 0.1);
             }
-            .btn-primary { color: #ffffff !important; }
-            .target-text { color: #4338ca !important; }
+            .admin-row { background: #ffffff !important; border-color: rgba(99, 102, 241, 0.2) !important; }
         }
 
-        .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-        .blob { position: absolute; border-radius: 50%; filter: blur(85px); opacity: 0.7; }
-        .blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: var(--liquid-1); animation: float1 22s infinite alternate; }
+        /* --- الخلفية السائلة --- */
+        .liquid-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.8; }
+        .blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: var(--liquid-1); animation: float1 20s infinite alternate; }
         .blob-2 { width: 400px; height: 400px; bottom: -50px; left: -50px; background: var(--liquid-2); animation: float2 18s infinite alternate-reverse; }
-        @keyframes float1 { 0% { transform: translate(0,0); } 100% { transform: translate(40px, 40px); } }
-        @keyframes float2 { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
+        @keyframes float1 { 100% { transform: translate(50px, 50px); } }
+        @keyframes float2 { 100% { transform: translate(-50px, 50px); } }
 
+        /* --- هندسة البطاقات (مقاسات متطابقة) --- */
         .glass-card {
             background: var(--card-bg);
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--card-border);
-            border-radius: 2rem; 
-            padding: 1.75rem; 
-            box-shadow: var(--card-shadow);
-            width: 100%; max-width: 23rem; 
-            z-index: 10; position: relative;
+            border-radius: 2rem; /* زوايا ناعمة وموحدة */
+            padding: 1.5rem; /* مسافة داخلية متناسقة */
+            width: 100%; max-width: 24rem; 
+            margin-bottom: 1.5rem;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
         }
 
         .inner-box {
             background: var(--inner-bg);
             border: 1px solid var(--card-border);
-            border-radius: 1.25rem; 
+            border-radius: 1.25rem;
             padding: 1.25rem;
-            width: 100%;
         }
 
+        /* --- الأزرار والحقول --- */
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            color: #ffffff; border: none; border-radius: 1.25rem;
-            padding: 1.15rem; font-weight: 900; font-size: 1.1rem;
-            box-shadow: 0 8px 25px -5px var(--accent-glow);
-            transition: all 0.2s ease; cursor: pointer; width: 100%;
+            background: var(--btn-primary);
+            color: var(--btn-text) !important;
+            border: none; border-radius: 1.25rem;
+            padding: 1.2rem; font-weight: 900; font-size: 1.1rem;
+            width: 100%; cursor: pointer; transition: 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
         }
-        .btn-primary:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 4px 15px -5px var(--accent-glow); }
+        .btn-primary:active:not(:disabled) { transform: scale(0.96); box-shadow: none; }
         
-        /* القفل الحقيقي للزر */
-        .btn-primary:disabled { 
-            opacity: 0.5; 
-            cursor: not-allowed; 
-            background: #475569 !important; /* لون رمادي باهت عند القفل */
-            box-shadow: none; 
-            transform: none;
+        /* قفل الزر بشكل حقيقي (Disabled) */
+        .btn-primary:disabled {
+            background: var(--inner-bg);
+            color: var(--text-sub) !important;
+            border: 1px solid var(--card-border);
+            box-shadow: none; cursor: not-allowed; opacity: 0.8;
         }
 
         .input-field {
             background: var(--inner-bg); border: 1px solid var(--card-border);
             color: var(--text-main); border-radius: 1.25rem;
-            padding: 1.15rem; font-weight: 700; text-align: center;
+            padding: 1.2rem; font-weight: 700; text-align: center;
             width: 100%; outline: none; transition: 0.3s;
         }
-        .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+        .input-field:focus { border-color: var(--accent); }
+        .input-field::placeholder { color: var(--text-sub); font-weight: 600; opacity: 0.7; }
 
+        /* --- الرغبات --- */
         .wish-chip {
-            background: var(--inner-bg); border: 1px solid var(--card-border);
-            color: var(--text-sub); border-radius: 1rem; padding: 0.85rem;
-            font-size: 0.85rem; font-weight: 700; transition: 0.2s; cursor: pointer;
-            text-align: center;
+            background: var(--wish-bg); border: 1px solid var(--card-border);
+            color: var(--text-sub); border-radius: 1rem; padding: 1rem 0.5rem;
+            font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: 0.2s;
         }
         .wish-active {
-            background: var(--accent) !important; color: #ffffff !important; border-color: var(--accent) !important;
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); font-weight: 900; transform: translateY(-2px);
+            background: var(--wish-active) !important; color: #ffffff !important; 
+            border-color: var(--wish-active) !important; font-weight: 900;
         }
 
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .hidden-el { display: none !important; }
-        .target-text { color: #818cf8; text-shadow: 0 4px 15px rgba(99,102,241,0.15); }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -140,89 +160,82 @@
     <div class="blob blob-2"></div>
 </div>
 
-<div id="login-screen" class="fade-in w-full flex flex-col items-center justify-center flex-1" style="z-index: 10;">
+<div id="login-screen" class="fade-in w-full max-w-sm flex flex-col items-center justify-center flex-1">
     <div class="text-center mb-8">
-        <div style="font-size: 5rem; filter: drop-shadow(0 10px 20px rgba(99,102,241,0.3)); margin-bottom: 0.5rem;">🎁</div>
-        <h1 class="text-4xl font-black tracking-tight">هدايا العائلة</h1>
+        <div style="font-size: 5rem; filter: drop-shadow(0 10px 20px rgba(99,102,241,0.3));">🎁</div>
+        <h1 class="text-4xl font-black mt-2" style="color: var(--text-main)">هدايا العائلة</h1>
         <p class="mt-2 text-sm font-bold" style="color: var(--text-sub)">أدخل الرمز السري للانضمام</p>
     </div>
     
-    <div class="glass-card flex flex-col gap-5">
+    <div class="glass-card flex flex-col gap-4">
         <input type="password" id="access-code" placeholder="الرمز السري" class="input-field text-2xl tracking-widest">
-        <button onclick="login()" id="login-btn" class="btn-primary">
+        <button onclick="login()" id="login-btn" class="btn-primary flex-row">
             <span id="login-btn-text">اكتشف هديتك ←</span>
         </button>
     </div>
 </div>
 
-<div id="member-screen" class="fade-in w-full hidden-el flex-col items-center gap-5" style="z-index: 10;">
+<div id="member-screen" class="fade-in w-full max-w-sm hidden-el flex-col items-center mt-6">
     
     <div class="glass-card text-center">
-        <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color: var(--text-sub)">عضو العائلة</p>
-        <h2 id="user-welcome" class="text-2xl font-black mb-6"></h2>
+        <h2 id="user-welcome" class="text-2xl font-black mb-6" style="color: var(--text-main)"></h2>
 
-        <div id="result-card" class="inner-box hidden-el">
-            <p class="text-[11px] font-bold mb-2 uppercase tracking-widest" style="color: var(--text-sub)">🎯 ستُهدي هذا العيد لـ</p>
-            <div id="target-name" class="target-text text-5xl font-black mb-6 tracking-tight"></div>
-            
-            <div id="budget-display" class="hidden-el bg-white/5 border border-white/10 rounded-xl p-3 mb-6 mx-4 flex justify-center gap-2">
-                <span class="text-[11px] font-bold" style="color: var(--text-sub)">💰 الميزانية:</span>
-                <span id="budget-amount" class="font-black text-sm text-indigo-500"></span>
+        <div id="result-card" class="hidden-el">
+            <div class="inner-box mb-5">
+                <p class="text-xs font-bold mb-1" style="color: var(--text-sub)">🎯 هديتك هذا العيد لـ</p>
+                <div id="target-name" class="text-5xl font-black mb-4" style="color: var(--text-accent); text-shadow: 0 4px 15px rgba(99,102,241,0.2);"></div>
+                
+                <div id="budget-display" class="hidden-el bg-black/10 rounded-xl p-3 flex justify-center gap-2 mb-4" style="background: var(--inner-bg);">
+                    <span class="text-xs font-bold" style="color: var(--text-sub)">💰 الميزانية:</span>
+                    <span id="budget-amount" class="font-black text-sm" style="color: var(--text-accent)"></span>
+                </div>
+
+                <button onclick="toggleWishes()" class="w-full py-2.5 rounded-xl text-xs font-bold border transition-colors" style="background: var(--card-bg); color: var(--text-main); border-color: var(--card-border);">
+                    🎁 عرض رغباته المفضلة
+                </button>
+                <div id="wishes-box" class="hidden-el flex-wrap justify-center gap-2 mt-4"></div>
             </div>
 
-            <button onclick="toggleWishes()" class="w-full py-2.5 rounded-xl text-xs font-bold mb-5 border transition-colors" style="background: var(--inner-bg); color: var(--text-main); border-color: var(--card-border);">
-                🎁 عرض رغباته المفضلة
+            <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" disabled>
+                <span id="deliver-btn-title" class="font-black text-lg">⏳ جاري الحساب...</span>
+                <span id="deliver-btn-sub" class="text-xs font-bold opacity-80">يرجى الانتظار</span>
             </button>
-            <div id="wishes-box" class="hidden-el flex-wrap justify-center gap-2 mb-6"></div>
-
-            <div class="pt-5 border-t" style="border-color: var(--card-border);">
-                
-                <div class="flex flex-col items-center justify-center gap-1 p-3 mb-4 rounded-xl border" style="background: var(--inner-bg); border-color: var(--card-border);">
-                    <span class="text-xl">⏳</span>
-                    <span id="countdown-timer-text" class="font-black text-sm">جاري حساب الوقت...</span>
-                </div>
-
-                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" disabled>
-                    <span id="deliver-btn-title" class="font-black text-lg">🔒 التسليم مغلق</span>
-                    <span id="deliver-btn-sub" class="text-[10px] font-bold tracking-widest text-indigo-200">يفتح يوم العيد</span>
-                </button>
-                
-                <div id="delivered-msg" class="hidden-el p-4 rounded-xl font-black text-sm border" style="background: rgba(34, 197, 94, 0.1); color: #16a34a; border-color: rgba(34, 197, 94, 0.2);">
-                    ✅ تم إثبات التسليم بنجاح!
-                </div>
+            
+            <div id="delivered-msg" class="hidden-el inner-box font-black text-sm text-center" style="background: rgba(34, 197, 94, 0.1); color: #16a34a; border-color: rgba(34, 197, 94, 0.2);">
+                ✅ كفيت ووفيت، تم تأكيد التسليم!
             </div>
         </div>
         
-        <div id="no-draw-msg" class="hidden-el py-12 font-black text-lg" style="color: var(--text-sub)">لم تُجرَ القرعة بعد ⏳</div>
+        <div id="no-draw-msg" class="hidden-el py-10 font-black text-lg" style="color: var(--text-sub)">لم تُجرَ القرعة بعد ⏳</div>
     </div>
 
     <div class="glass-card">
-        <h3 class="font-black text-lg mb-1 text-right">🌟 رغباتي الشخصية</h3>
+        <h3 class="font-black text-lg mb-1 text-right" style="color: var(--text-main)">🌟 رغباتي الشخصية</h3>
         <p class="text-[10px] mb-5 text-right font-bold" style="color: var(--text-sub)">اختر ما تفضله ليراه من سيهديك</p>
         
-        <div id="wishes-grid" class="grid grid-cols-2 gap-3 mb-5"></div>
+        <div id="wishes-grid" class="grid grid-cols-2 gap-2 mb-5"></div>
         
-        <input type="text" id="custom-wish-input" placeholder="أو اكتب رغبة مخصصة... ✍️" class="input-field mb-5 text-sm p-3.5">
-        <button onclick="saveWishes()" id="save-wishes-btn" class="btn-primary flex-row py-3.5 text-sm">
+        <input type="text" id="custom-wish-input" placeholder="أو اكتب رغبة مخصصة... ✍️" class="input-field mb-5 text-sm p-3">
+        <button onclick="saveWishes()" id="save-wishes-btn" class="btn-primary flex-row py-3 text-sm">
             <span id="save-btn-text">💾 حفظ اختياراتي</span>
         </button>
     </div>
 
-    <button onclick="logout()" class="font-bold text-xs py-4 transition-opacity" style="color: var(--text-sub); opacity: 0.7;">← تسجيل خروج آمن</button>
+    <button onclick="logout()" class="font-bold text-xs py-2 transition-opacity" style="color: var(--text-sub); opacity: 0.6;">← تسجيل خروج آمن</button>
 </div>
 
-<div id="admin-screen" class="fade-up w-full hidden-el flex-col items-center gap-5" style="z-index: 10;">
-    <div class="glass-card text-center mt-4">
-        <div class="text-4xl mb-3">👑</div>
-        <h2 class="text-2xl font-black mb-6">لوحة المشرف</h2>
+<div id="admin-screen" class="fade-in w-full max-w-sm hidden-el flex-col items-center mt-6">
+    <div class="glass-card text-center">
+        <div class="text-4xl mb-2">👑</div>
+        <h2 class="text-xl font-black mb-6" style="color: var(--text-main)">لوحة المشرف</h2>
 
         <div class="inner-box text-right flex flex-col gap-4 mb-6">
             <p class="text-[10px] font-bold uppercase tracking-widest" style="color: var(--text-sub)">⚙️ قيود السحب الذكية</p>
-            <div class="flex justify-between items-center font-bold text-sm">
+            <div class="flex justify-between items-center font-bold text-sm" style="color: var(--text-main)">
                 <span>فواز لا يُهدي نواف</span>
                 <input type="checkbox" id="fawaz-toggle" checked class="w-5 h-5 accent-indigo-500">
             </div>
-            <div class="flex justify-between items-center font-bold text-sm">
+            <div class="flex justify-between items-center font-bold text-sm" style="color: var(--text-main)">
                 <span>سميرة تُهدى من طارق/فواز فقط</span>
                 <input type="checkbox" id="sameera-toggle" checked class="w-5 h-5 accent-indigo-500">
             </div>
@@ -233,19 +246,19 @@
              <input type="text" id="budget-input" placeholder="مثال: 500 ريال" class="input-field text-base">
         </div>
 
-        <button onclick="runDraw()" id="draw-btn" class="btn-primary text-lg">
+        <button onclick="runDraw()" id="draw-btn" class="btn-primary flex-row text-lg">
             <span id="draw-btn-text">🎲 إجراء قرعة جديدة</span>
         </button>
     </div>
 
-    <div id="assignments-section" class="hidden-el w-full flex justify-center">
+    <div id="assignments-section" class="hidden-el w-full">
         <div class="glass-card">
-            <h3 class="text-center font-black text-lg mb-5 pb-3 border-b" style="border-color: var(--card-border);">📋 التوزيع الحالي</h3>
-            <div id="assignments-list" class="flex flex-col gap-2.5"></div>
+            <h3 class="text-center font-black text-lg mb-5 pb-3 border-b" style="border-color: var(--card-border); color: var(--text-main)">📋 التوزيع الحالي</h3>
+            <div id="assignments-list" class="flex flex-col gap-2"></div>
         </div>
     </div>
 
-    <button onclick="logout()" class="font-bold text-xs py-4 mb-4" style="color: var(--text-sub); opacity: 0.7;">← خروج المشرف</button>
+    <button onclick="logout()" class="font-bold text-xs py-2" style="color: var(--text-sub); opacity: 0.6;">← خروج المشرف</button>
 </div>
 
 <canvas id="confetti-canvas" style="position:fixed; inset:0; pointer-events:none; z-index:999; display:none;"></canvas>
@@ -261,7 +274,7 @@
     const arabicMonths = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
     window.onload = async () => {
-        const savedCode = localStorage.getItem('rajeh_gift_final_v10');
+        const savedCode = localStorage.getItem('rajeh_gift_final_v11');
         if (savedCode) {
             document.getElementById('access-code').value = savedCode;
             login(true);
@@ -284,19 +297,19 @@
 
         if (error || !user) {
             if (!isAuto) { haptic([50, 100, 50]); alert('الرمز السري غير صحيح!'); }
-            localStorage.removeItem('rajeh_gift_final_v10');
+            localStorage.removeItem('rajeh_gift_final_v11');
             btnText.innerText = 'اكتشف هديتك ←';
             return;
         }
 
-        localStorage.setItem('rajeh_gift_final_v10', code);
+        localStorage.setItem('rajeh_gift_final_v11', code);
         currentUser = user;
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
     function logout() {
         if(confirm('تأكيد تسجيل الخروج؟')){
-            localStorage.removeItem('rajeh_gift_final_v10');
+            localStorage.removeItem('rajeh_gift_final_v11');
             location.reload();
         }
     }
@@ -308,7 +321,7 @@
         const welcomeEl = document.getElementById('user-welcome');
         if (user.name === 'سميرة') {
             welcomeEl.innerHTML = "يا هلا بست الحبايب أمنا سميرة ❤️👑";
-            welcomeEl.classList.add('vip-mom');
+            welcomeEl.style.color = "#fbbf24";
         } else {
             welcomeEl.innerText = "يا هلا، " + user.name;
         }
@@ -332,7 +345,6 @@
                 document.getElementById('target-name').innerText = assign.receiver.name;
                 setTimeout(() => haptic([100, 50, 100]), 500); 
 
-                // التحقق من التسليم
                 if (assign.is_delivered) {
                     document.getElementById('delivered-msg').classList.remove('hidden-el');
                     document.getElementById('deliver-btn').classList.add('hidden-el');
@@ -350,11 +362,10 @@
         }
     }
 
-    // --- المنطق الصحيح للمؤقت والزر ---
+    // --- نظام قفل الزر والمؤقت الصارم ---
     let countdownInterval;
     function initCountdown() {
         const eidDate = new Date("2026-03-20T00:00:00").getTime();
-        const timerText = document.getElementById('countdown-timer-text');
         const deliverBtn = document.getElementById('deliver-btn');
         const btnTitle = document.getElementById('deliver-btn-title');
         const btnSub = document.getElementById('deliver-btn-sub');
@@ -364,11 +375,9 @@
             const diff = eidDate - now;
 
             if (diff < 0) { 
-                clearInterval(countdownInterval); // إيقاف المؤقت
-                if(timerText) timerText.innerText = "العيد بدأ، تقدر تسلم الهدية! 🎉"; 
+                clearInterval(countdownInterval);
                 if(deliverBtn) {
-                    deliverBtn.disabled = false; // فتح الزر
-                    deliverBtn.style.background = "linear-gradient(135deg, #6366f1, #4f46e5)";
+                    deliverBtn.disabled = false; // فتح الزر برمجياً
                     if(btnTitle) btnTitle.innerText = "📦 تأكيد تسليم الهدية";
                     if(btnSub) btnSub.innerText = "اضغط هنا لتأكيد التسليم";
                 }
@@ -377,11 +386,11 @@
             
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            if(timerText) timerText.innerText = `باقي: ${d} يوم و ${h} ساعة`;
             
-            // تأكيد الإغلاق إذا لم يأتِ الوقت
-            if(deliverBtn && deliverBtn.disabled === false) {
-                deliverBtn.disabled = true;
+            if(deliverBtn) {
+                deliverBtn.disabled = true; // قفل الزر برمجياً
+                if(btnTitle) btnTitle.innerText = "🔒 يفتح يوم العيد";
+                if(btnSub) btnSub.innerText = `باقي: ${d} يوم و ${h} ساعة`;
             }
         }, 1000);
     }
@@ -418,7 +427,7 @@
         const box = document.getElementById('wishes-box');
         box.classList.toggle('hidden-el'); box.classList.add('flex');
         box.innerHTML = receiverWishesData.length 
-            ? receiverWishesData.map(w => `<span class="px-3 py-1.5 rounded-lg text-[10px] font-bold border" style="background:var(--inner-bg); color:var(--text-main); border-color:var(--card-border)">${w}</span>`).join('') 
+            ? receiverWishesData.map(w => `<span class="px-3 py-1.5 rounded-lg text-xs font-bold border" style="background:var(--inner-bg); color:var(--text-main); border-color:var(--card-border)">${w}</span>`).join('') 
             : '<p class="text-xs font-bold" style="color:var(--text-sub)">لم يحدد هذا الشخص رغباته بعد</p>';
     }
 
@@ -446,9 +455,9 @@
         if (assigns && assigns.length > 0) {
             document.getElementById('assignments-section').classList.remove('hidden-el');
             document.getElementById('assignments-list').innerHTML = assigns.map(a => `
-                <div class="inner-box p-3.5 flex justify-between items-center text-sm">
+                <div class="inner-box admin-row p-3 flex justify-between items-center text-sm">
                     <span class="font-black text-indigo-500 w-1/3 text-right">${a.giver.name}</span>
-                    <span class="text-[9px] font-bold w-1/3 text-center" style="color: ${a.is_delivered ? '#16a34a' : 'var(--text-sub)'}">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
+                    <span class="text-[10px] font-bold w-1/3 text-center" style="color: ${a.is_delivered ? '#16a34a' : 'var(--text-sub)'}">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
                     <span class="font-black w-1/3 text-left" style="color:var(--text-main)">${a.receiver.name}</span>
                 </div>
             `).join('');
