@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هدايا العيد! 🎁</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Cairo', sans-serif; }
+        body { background: #0f1117; min-height: 100vh; }
+
+```
+    .card {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(245,158,11,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.5); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
+
+    .result-card {
+        background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.15));
+        border: 1px solid rgba(245,158,11,0.3);
+    }
+
+    .member-row {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        transition: all 0.2s;
+    }
+
+    .confetti-canvas {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 999;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeIn 0.5s ease forwards; }
+
+    @keyframes pulse-ring {
+        0% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
+        70% { box-shadow: 0 0 0 15px rgba(245,158,11,0); }
+        100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+    }
+    .pulse { animation: pulse-ring 2s infinite; }
+
+    input {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: white;
+        transition: all 0.3s;
+    }
+    input:focus {
+        outline: none;
+        border-color: #f59e0b;
+        background: rgba(245,158,11,0.1);
+        box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
+    }
+    input::placeholder { color: rgba(255,255,255,0.3); }
+</style>
+```
+
+</head>
+<body class="flex items-center justify-center p-4">
+
+<!-- شاشة الدخول -->
+
+<div id="login-screen" class="max-w-sm w-full fade-in">
+    <div class="text-center mb-10">
+        <div class="text-7xl mb-4">🎁</div>
+        <h1 class="text-3xl font-black text-white">هدايا العيد! 🌙</h1>
+        <p class="text-gray-400 mt-2 text-sm">أدخل رمزك السري للدخول</p>
+    </div>
+    <div class="card rounded-3xl p-6 space-y-4">
+        <input
+            type="text" id="access-code"
+            placeholder="رمز الدخول"
+            class="w-full text-center p-4 rounded-2xl text-lg font-bold"
+            onkeydown="if(event.key==='Enter') login()"
+        >
+        <button onclick="login()" id="login-btn" class="btn-primary w-full text-white font-black py-4 rounded-2xl text-lg">
+            دخول ←
+        </button>
+    </div>
+</div>
+
+<!-- شاشة العضو -->
+
+<div id="member-screen" class="hidden max-w-sm w-full fade-in space-y-4">
+    <div class="card rounded-3xl p-8 text-center">
+        <p class="text-gray-400 text-sm mb-1">أهلاً وسهلاً</p>
+        <h2 id="user-welcome" class="text-2xl font-black text-white mb-8"></h2>
+
+```
+    <div id="result-card" class="result-card rounded-2xl p-8 hidden">
+        <p class="text-gray-300 text-sm mb-3">🎯 ستُهدي هذا الشهر</p>
+        <div id="target-name" class="text-5xl font-black text-amber-400 my-4"></div>
+        <p class="text-gray-400 text-xs mt-4">🤫 سرّك الخاص، لا تخبر أحداً!</p>
+    </div>
+
+    <div id="no-draw-msg" class="hidden py-8">
+        <div class="text-5xl mb-4">⏳</div>
+        <p class="text-gray-300 font-bold">لم تُجرَ القرعة بعد</p>
+        <p class="text-gray-500 text-sm mt-2">انتظر إشعاراً من المشرف</p>
+    </div>
+</div>
+<button onclick="location.reload()" class="w-full text-gray-500 text-sm py-2 hover:text-gray-300 transition">
+    ← تسجيل خروج
+</button>
+```
+
+</div>
+
+<!-- لوحة المشرف -->
+
+<div id="admin-screen" class="hidden max-w-sm w-full fade-in space-y-4">
+
+```
+<div class="card rounded-3xl p-6">
+    <div class="flex items-center justify-between mb-1">
+        <span class="text-2xl">👑</span>
+        <span id="current-month" class="text-amber-400 text-sm font-bold"></span>
+    </div>
+    <h2 class="text-xl font-black text-white">لوحة المشرف</h2>
+    <p class="text-gray-400 text-xs mt-1">أجرِ أو أعِد القرعة في أي وقت</p>
+</div>
+
+<div class="card rounded-3xl p-6 text-center">
+    <p id="draw-status-text" class="text-gray-400 text-sm mb-4">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
+    <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse w-full text-white font-black py-5 rounded-2xl text-xl">
+        🎲 إجراء القرعة
+    </button>
+    <p class="text-gray-600 text-xs mt-3">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
+</div>
+
+<div id="assignments-section" class="card rounded-3xl p-6 hidden">
+    <h3 class="text-white font-black mb-4 text-center">📋 نتائج القرعة</h3>
+    <div id="assignments-list" class="space-y-2"></div>
+</div>
+
+<button onclick="location.reload()" class="w-full text-gray-500 text-sm py-2 hover:text-gray-300 transition">
+    ← تسجيل خروج
+</button>
+```
+
+</div>
+
+<!-- الكونفيتي -->
+
+<canvas id="confetti-canvas" class="confetti-canvas" style="display:none"></canvas>
+
+<script>
+    const SUPABASE_URL = 'https://oprethkloexyrhagmdod.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                    'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+    // ===== الدخول =====
+    async function login() {
+        const btn = document.getElementById('login-btn');
+        const code = document.getElementById('access-code').value.trim();
+        if (!code) return;
+
+        btn.innerText = '...جاري التحقق';
+        btn.disabled = true;
+
+        const { data: user, error } = await db
+            .from('users').select('*').eq('code', code).single();
+
+        if (error || !user) {
+            alert('الرمز غير صحيح! تأكد من كتابة الأرقام بالإنجليزية');
+            btn.innerText = 'دخول ←';
+            btn.disabled = false;
+            return;
+        }
+
+        user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
+    }
+
+    // ===== شاشة العضو =====
+    async function showMemberScreen(user) {
+        hide('login-screen'); show('member-screen');
+        document.getElementById('user-welcome').innerText = `${user.name} 👋`;
+
+        const { data: assignments } = await db
+            .from('assignments')
+            .select('*, receiver:users!receiver_id(name)')
+            .eq('giver_id', user.id)
+            .limit(1);
+
+        if (assignments && assignments.length > 0) {
+            document.getElementById('target-name').innerText = assignments[0].receiver.name;
+            show('result-card'); hide('no-draw-msg');
+        } else {
+            hide('result-card'); show('no-draw-msg');
+        }
+    }
+
+    // ===== لوحة المشرف =====
+    async function showAdminScreen() {
+        hide('login-screen'); show('admin-screen');
+        const now = new Date();
+        document.getElementById('current-month').innerText =
+            `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+        await loadCurrentAssignments();
+    }
+
+    async function loadCurrentAssignments() {
+        const { data: draw } = await db
+            .from('draws').select('*')
+            .order('created_at', { ascending: false })
+            .limit(1).maybeSingle();
+
+        if (!draw) return;
+
+        const { data: assignments } = await db
+            .from('assignments')
+            .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
+            .eq('draw_id', draw.id);
+
+        if (assignments && assignments.length > 0)
+            renderAssignments(assignments, draw.month_name);
+    }
+
+    function renderAssignments(assignments, monthName) {
+        document.getElementById('draw-status-text').innerText = `✅ تم إجراء قرعة ${monthName}`;
+        document.getElementById('assignments-list').innerHTML = assignments.map(a => `
+            <div class="member-row rounded-xl p-3 flex items-center justify-between">
+                <span class="text-white font-bold text-sm">${a.giver.name}</span>
+                <span class="text-amber-400 text-lg">← 🎁</span>
+                <span class="text-amber-400 font-bold text-sm">${a.receiver.name}</span>
+            </div>
+        `).join('');
+        show('assignments-section');
+    }
+
+    // ===== إجراء القرعة =====
+    async function runDraw() {
+        const btn = document.getElementById('draw-btn');
+        btn.innerText = '⏳ جاري السحب...';
+        btn.disabled = true;
+        btn.classList.remove('pulse');
+
+        try {
+            // 1. جلب الأعضاء
+            const { data: members, error: mErr } = await db
+                .from('users').select('*').eq('role', 'member');
+
+            if (mErr || !members || members.length < 2) {
+                alert('يجب وجود عضوان على الأقل لإجراء القرعة');
+                resetBtn(btn); return;
+            }
+
+            // 2. توليد قرعة بدون تكرار
+            const shuffled = makeDerangement(members);
+            if (!shuffled) {
+                alert('فشل توليد القرعة، حاول مرة أخرى');
+                resetBtn(btn); return;
+            }
+
+            // 3. حذف القرعات القديمة
+            const { data: oldDraws } = await db.from('draws').select('id');
+            if (oldDraws?.length > 0) {
+                const ids = oldDraws.map(d => d.id);
+                await db.from('assignments').delete().in('draw_id', ids);
+                await db.from('draws').delete().in('id', ids);
+            }
+
+            // 4. إنشاء قرعة جديدة
+            const now = new Date();
+            const monthName = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+            const { data: newDraw, error: dErr } = await db
+                .from('draws')
+                .insert({ month_name: monthName, status: 'active' })
+                .select().single();
+
+            if (dErr || !newDraw) {
+                alert('خطأ في إنشاء القرعة');
+                resetBtn(btn); return;
+            }
+
+            // 5. حفظ التوزيع
+            const newAssignments = members.map((giver, i) => ({
+                draw_id: newDraw.id,
+                giver_id: giver.id,
+                receiver_id: shuffled[i].id
+            }));
+
+            const { error: aErr } = await db.from('assignments').insert(newAssignments);
+            if (aErr) {
+                alert('خطأ في حفظ القرعة: ' + aErr.message);
+                resetBtn(btn); return;
+            }
+
+            // 6. عرض النتائج
+            const { data: final } = await db
+                .from('assignments')
+                .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
+                .eq('draw_id', newDraw.id);
+
+            renderAssignments(final, monthName);
+            fireConfetti();
+            btn.innerText = '🎲 إعادة القرعة';
+            btn.disabled = false;
+
+        } catch (err) {
+            alert('خطأ: ' + err.message);
+            resetBtn(btn);
+        }
+    }
+
+    // ===== خوارزمية القرعة (Derangement) =====
+    function makeDerangement(arr) {
+        for (let attempt = 0; attempt < 200; attempt++) {
+            const shuffled = [...arr].sort(() => Math.random() - 0.5);
+            if (shuffled.every((item, i) => item.id !== arr[i].id)) return shuffled;
+        }
+        return null;
+    }
+
+    // ===== كونفيتي 🎉 =====
+    function fireConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.display = 'block';
+
+        const colors = ['#f59e0b','#ef4444','#10b981','#3b82f6','#8b5cf6','#ec4899','#ffffff'];
+        const pieces = Array.from({length: 100}, () => ({
+            x: Math.random() * canvas.width,
+            y: -20,
+            w: Math.random() * 10 + 5,
+            h: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vy: Math.random() * 4 + 2,
+            vx: (Math.random() - 0.5) * 4,
+            rot: Math.random() * 360,
+            vr: (Math.random() - 0.5) * 8
+        }));
+
+        let frame = 0;
+        (function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const alpha = Math.max(0, 1 - frame / 130);
+            pieces.forEach(p => {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rot * Math.PI / 180);
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                ctx.restore();
+                p.y += p.vy; p.x += p.vx; p.rot += p.vr;
+            });
+            frame++;
+            if (frame < 160) requestAnimationFrame(animate);
+            else canvas.style.display = 'none';
+        })();
+    }
+
+    // ===== مساعدات =====
+    function show(id) { document.getElementById(id).classList.remove('hidden'); }
+    function hide(id) { document.getElementById(id).classList.add('hidden'); }
+    function resetBtn(btn) {
+        btn.innerText = '🎲 إجراء القرعة';
+        btn.disabled = false;
+        btn.classList.add('pulse');
+    }
+</script>
+
+</body>
+</html>
