@@ -9,143 +9,241 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        * { font-family: 'Cairo', sans-serif; }
+        * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
 
 ```
+    html, body { height: 100%; margin: 0; }
+
+    /* ===== ACCENT (ثابت في كلا الوضعين) ===== */
+    :root {
+        --accent:        #6366f1;
+        --accent-light:  #818cf8;
+        --accent-dim:    rgba(99,102,241,0.15);
+        --accent-border: rgba(99,102,241,0.35);
+    }
+
+    /* ========================================
+       🌙 الثيم الداكن (افتراضي)
+    ======================================== */
+    :root {
+        --bg:           #0d1117;
+        --glow-1:       rgba(99,102,241,0.18);
+        --glow-2:       rgba(139,92,246,0.14);
+        --glow-3:       rgba(59,130,246,0.08);
+
+        --glass-bg:     rgba(255,255,255,0.07);
+        --glass-border: rgba(255,255,255,0.13);
+        --glass-shadow: rgba(0,0,0,0.35);
+        --glass-shine:  rgba(255,255,255,0.10);
+
+        --text-primary:   #ffffff;
+        --text-secondary: rgba(255,255,255,0.45);
+        --text-muted:     rgba(255,255,255,0.25);
+
+        --input-bg:       rgba(255,255,255,0.06);
+        --input-border:   rgba(255,255,255,0.13);
+        --input-color:    #ffffff;
+        --input-ph:       rgba(255,255,255,0.30);
+
+        --row-bg:         rgba(255,255,255,0.04);
+        --row-border:     rgba(255,255,255,0.08);
+
+        --wish-bg:        rgba(255,255,255,0.05);
+        --wish-border:    rgba(255,255,255,0.10);
+        --wish-color:     rgba(255,255,255,0.50);
+        --wish-hover-b:   rgba(255,255,255,0.25);
+        --wish-hover-c:   rgba(255,255,255,0.80);
+
+        --constraints-bg: rgba(0,0,0,0.25);
+        --save-btn-bg:    rgba(255,255,255,0.07);
+        --save-btn-b:     rgba(255,255,255,0.12);
+        --save-btn-c:     rgba(255,255,255,0.60);
+
+        --result-bg:      rgba(99,102,241,0.10);
+        --result-border:  rgba(99,102,241,0.25);
+    }
+
+    /* ========================================
+       ☀️ الثيم الفاتح
+    ======================================== */
+    @media (prefers-color-scheme: light) {
+        :root {
+            --bg:           #f0f2ff;
+            --glow-1:       rgba(99,102,241,0.12);
+            --glow-2:       rgba(139,92,246,0.09);
+            --glow-3:       rgba(59,130,246,0.06);
+
+            --glass-bg:     rgba(255,255,255,0.65);
+            --glass-border: rgba(99,102,241,0.18);
+            --glass-shadow: rgba(99,102,241,0.12);
+            --glass-shine:  rgba(255,255,255,0.90);
+
+            --text-primary:   #1e1b4b;
+            --text-secondary: rgba(30,27,75,0.55);
+            --text-muted:     rgba(30,27,75,0.35);
+
+            --input-bg:       rgba(255,255,255,0.80);
+            --input-border:   rgba(99,102,241,0.25);
+            --input-color:    #1e1b4b;
+            --input-ph:       rgba(30,27,75,0.35);
+
+            --row-bg:         rgba(255,255,255,0.55);
+            --row-border:     rgba(99,102,241,0.15);
+
+            --wish-bg:        rgba(255,255,255,0.60);
+            --wish-border:    rgba(99,102,241,0.18);
+            --wish-color:     rgba(30,27,75,0.55);
+            --wish-hover-b:   rgba(99,102,241,0.40);
+            --wish-hover-c:   #4338ca;
+
+            --constraints-bg: rgba(99,102,241,0.06);
+            --save-btn-bg:    rgba(255,255,255,0.70);
+            --save-btn-b:     rgba(99,102,241,0.20);
+            --save-btn-c:     rgba(30,27,75,0.65);
+
+            --result-bg:      rgba(99,102,241,0.08);
+            --result-border:  rgba(99,102,241,0.22);
+        }
+    }
+
+    /* ===== BODY ===== */
     body {
         min-height: 100vh;
-        background: #080c14;
-        background-image:
-            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,0.12) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 50% at 80% 90%, rgba(168,143,100,0.1) 0%, transparent 55%),
-            radial-gradient(ellipse 40% 40% at 50% 50%, rgba(30,41,80,0.4) 0%, transparent 70%);
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        position: relative;
+        overflow-x: hidden;
+        transition: background 0.3s;
     }
 
-    /* ===== GLASSMORPHISM ===== */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+            radial-gradient(circle 600px at 15% 25%, var(--glow-1) 0%, transparent 70%),
+            radial-gradient(circle 500px at 85% 75%, var(--glow-2) 0%, transparent 65%),
+            radial-gradient(circle 400px at 50% 50%, var(--glow-3) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    body > div, body > canvas {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ===== GLASS ===== */
     .glass {
-        background: rgba(255,255,255,0.04);
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        border: 1px solid rgba(255,255,255,0.09);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+        background: var(--glass-bg);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 4px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
     }
 
-    .glass-strong {
-        background: rgba(255,255,255,0.07);
-        backdrop-filter: blur(32px) saturate(200%);
-        -webkit-backdrop-filter: blur(32px) saturate(200%);
-        border: 1px solid rgba(255,255,255,0.12);
-        box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-
-    /* ===== GOLD ACCENT ===== */
-    :root {
-        --gold: #c9a55a;
-        --gold-light: #e8c97a;
-        --gold-dim: rgba(201,165,90,0.15);
-        --gold-border: rgba(201,165,90,0.3);
-    }
-
-    .text-gold { color: var(--gold); }
-    .text-gold-light { color: var(--gold-light); }
-
+    /* ===== BUTTONS ===== */
     .btn-primary {
-        background: linear-gradient(135deg, #4f46e5 0%, #312e81 50%, #1e1b4b 100%);
-        border: 1px solid rgba(99,102,241,0.4);
-        box-shadow: 0 4px 24px rgba(79,70,229,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #6366f1, #4338ca);
+        border: 1px solid rgba(99,102,241,0.5);
+        box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
     }
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 32px rgba(79,70,229,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
-    }
+    .btn-primary:hover  { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(99,102,241,0.5); }
     .btn-primary:active { transform: translateY(0); }
-    .btn-primary:disabled { opacity: 0.4; transform: none; cursor: not-allowed; }
+    .btn-primary:disabled { opacity: 0.45; transform: none; cursor: not-allowed; }
 
+    /* ===== RESULT CARD ===== */
     .result-card {
-        background: linear-gradient(135deg, rgba(201,165,90,0.08), rgba(79,70,229,0.08));
-        border: 1px solid var(--gold-border);
-        box-shadow: inset 0 1px 0 rgba(201,165,90,0.1);
+        background: var(--result-bg);
+        border: 1px solid var(--result-border);
     }
 
+    /* ===== MEMBER ROW ===== */
     .member-row {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.07);
-        transition: all 0.2s;
+        background: var(--row-bg);
+        border: 1px solid var(--row-border);
     }
-    .member-row:hover { background: rgba(255,255,255,0.06); }
-
-    /* ===== TOGGLE ===== */
-    .toggle-checked { background-color: #4f46e5 !important; }
 
     /* ===== WISH BUTTON ===== */
+    .wish-btn {
+        background: var(--wish-bg);
+        border: 1px solid var(--wish-border);
+        color: var(--wish-color);
+        transition: all 0.15s;
+        cursor: pointer;
+    }
+    .wish-btn:hover { border-color: var(--wish-hover-b); color: var(--wish-hover-c); }
     .wish-btn-active {
-        background: var(--gold-dim) !important;
-        border-color: var(--gold-border) !important;
-        color: var(--gold-light) !important;
+        background: var(--accent-dim) !important;
+        border-color: var(--accent-border) !important;
+        color: var(--accent-light) !important;
     }
 
     /* ===== INPUT ===== */
-    input[type="text"] {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.12);
-        color: white;
-        transition: all 0.3s;
-    }
-    input[type="text"]:focus {
+    .code-input {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 1rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: var(--input-color);
         outline: none;
-        border-color: var(--gold);
-        background: rgba(201,165,90,0.07);
-        box-shadow: 0 0 0 3px rgba(201,165,90,0.08);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        font-family: 'Cairo', sans-serif;
     }
-    input[type="text"]::placeholder { color: rgba(255,255,255,0.25); }
+    .code-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    }
+    .code-input::placeholder { color: var(--input-ph); }
 
     /* ===== ANIMATIONS ===== */
     @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(24px); }
+        from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }
     }
-    .fade-in { animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) forwards; }
+    .fade-in { animation: fadeUp 0.4s ease forwards; }
 
-    @keyframes shimmer {
-        0%   { box-shadow: 0 0 0 0 rgba(79,70,229,0.35); }
-        70%  { box-shadow: 0 0 0 14px rgba(79,70,229,0); }
-        100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); }
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 4px 20px rgba(99,102,241,0.35); }
+        50%       { box-shadow: 0 4px 32px rgba(99,102,241,0.65); }
     }
-    .pulse { animation: shimmer 2.2s infinite; }
-
-    /* ===== DIVIDER ===== */
-    .gold-line {
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
-    }
+    .pulse { animation: pulse-glow 2s ease-in-out infinite; }
 
     .confetti-canvas {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        position: fixed; inset: 0;
         pointer-events: none; z-index: 999;
     }
 </style>
 ```
 
 </head>
-<body class="flex items-center justify-center p-4">
+<body>
 
 <!-- شاشة الدخول -->
 
-<div id="login-screen" class="max-w-sm w-full fade-in">
+<div id="login-screen" class="max-w-sm w-full fade-in" style="position:relative;z-index:1">
     <div class="text-center mb-10">
-        <div class="text-7xl mb-4">🎁</div>
-        <h1 class="text-3xl font-black text-white">هدايا العيد! 🌙</h1>
-        <p class="text-gray-400 mt-2 text-sm">أدخل رمزك السري للدخول</p>
+        <div style="font-size:4rem;margin-bottom:1rem">🎁</div>
+        <h1 style="font-size:1.8rem;font-weight:900;color:var(--text-primary);margin:0">هدايا العيد!</h1>
+        <p style="color:var(--text-secondary);margin-top:.5rem;font-size:.9rem">أدخل رمزك السري للدخول</p>
     </div>
-    <div class="glass rounded-3xl p-6 space-y-4">
+    <div class="glass" style="border-radius:1.5rem;padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
         <input
             type="text" id="access-code"
             placeholder="رمز الدخول"
-            class="w-full text-center p-4 rounded-2xl text-lg font-bold"
+            class="code-input"
             onkeydown="if(event.key==='Enter') login()"
         >
-        <button onclick="login()" id="login-btn" class="btn-primary w-full text-white font-black py-4 rounded-2xl text-lg">
+        <button onclick="login()" id="login-btn" class="btn-primary" style="width:100%;color:var(--text-primary);font-weight:900;padding:1rem;border-radius:1rem;font-size:1.1rem;border:none">
             دخول ←
         </button>
     </div>
@@ -153,47 +251,44 @@
 
 <!-- شاشة العضو -->
 
-<div id="member-screen" class="hidden max-w-sm w-full fade-in space-y-4">
+<div id="member-screen" class="fade-in" style="position:relative;z-index:1;display:none;flex-direction:column;gap:1rem;width:100%;max-width:24rem">
 
 ```
 <!-- بطاقة القرعة -->
-<div class="glass rounded-3xl p-8 text-center">
-    <p class="text-gray-400 text-sm mb-1">أهلاً وسهلاً</p>
-    <h2 id="user-welcome" class="text-2xl font-black text-white mb-6"></h2>
+<div class="glass" style="border-radius:1.5rem;padding:2rem;text-align:center">
+    <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .25rem">أهلاً وسهلاً</p>
+    <h2 id="user-welcome" style="color:var(--text-primary);font-size:1.4rem;font-weight:900;margin:0 0 1.5rem"></h2>
 
-    <div id="result-card" class="result-card rounded-2xl p-6 hidden">
-        <p class="text-gray-300 text-sm mb-2">🎯 ستُهدي هذا الشهر</p>
-        <div id="target-name" class="text-4xl font-black text-gold my-3"></div>
-        <button onclick="toggleWishes()" class="mt-2 text-xs bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-2 rounded-xl transition">
+    <div id="result-card" class="result-card" style="display:none;border-radius:1rem;padding:1.5rem">
+        <p style="color:var(--text-secondary);font-size:.85rem;margin:0 0 .5rem">🎯 ستُهدي هذا الشهر</p>
+        <div id="target-name" style="font-size:2.5rem;font-weight:900;color:var(--accent-light);margin:.75rem 0"></div>
+        <button onclick="toggleWishes()" style="font-size:.8rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--text-secondary);padding:.4rem 1rem;border-radius:.75rem;cursor:pointer;font-family:Cairo,sans-serif">
             🎁 عرض رغبات الهدية
         </button>
-        <!-- رغبات المُهدى إليه -->
-        <div id="wishes-box" class="hidden mt-4 text-right space-y-2"></div>
-        <p class="text-gray-500 text-xs mt-4">🤫 سرّك الخاص، لا تخبر أحداً!</p>
+        <div id="wishes-box" style="display:none;margin-top:1rem"></div>
+        <p style="color:var(--text-muted);font-size:.75rem;margin:1rem 0 0">🤫 سرّك الخاص، لا تخبر أحداً!</p>
     </div>
 
-    <div id="no-draw-msg" class="hidden py-8">
-        <div class="text-5xl mb-4">⏳</div>
-        <p class="text-gray-300 font-bold">لم تُجرَ القرعة بعد</p>
-        <p class="text-gray-500 text-sm mt-2">انتظر إشعاراً من المشرف</p>
+    <div id="no-draw-msg" style="display:none;padding:2rem 0">
+        <div style="font-size:3rem;margin-bottom:.75rem">⏳</div>
+        <p style="color:var(--text-secondary);font-weight:700;margin:0">لم تُجرَ القرعة بعد</p>
+        <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">انتظر إشعاراً من المشرف</p>
     </div>
 </div>
 
 <!-- بطاقة رغباتي -->
-<div class="glass rounded-3xl p-6">
-    <h3 class="text-white font-black mb-1">🌟 رغباتي في الهدية</h3>
-    <p class="text-gray-500 text-xs mb-4">اختر ما يعجبك وسيراه من سيُهديك</p>
-
-    <div id="wishes-grid" class="grid grid-cols-2 gap-2 mb-4"></div>
-
+<div class="glass" style="border-radius:1.5rem;padding:1.5rem">
+    <h3 style="color:var(--text-primary);font-weight:900;margin:0 0 .25rem">🌟 رغباتي في الهدية</h3>
+    <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 1rem">اختر ما يعجبك وسيراه من سيُهديك</p>
+    <div id="wishes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem"></div>
     <button onclick="saveWishes()" id="save-wishes-btn"
-        class="w-full bg-white/10 hover:bg-[var(--gold-dim)] border border-white/10 hover:border-[var(--gold-border)] text-gray-300 hover:text-gold font-bold py-3 rounded-2xl transition text-sm">
+        style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:var(--text-secondary);font-weight:700;padding:.75rem;border-radius:1rem;cursor:pointer;font-size:.9rem;font-family:Cairo,sans-serif;transition:all .2s">
         💾 حفظ اختياراتي
     </button>
-    <p id="save-msg" class="hidden text-green-400 text-xs text-center mt-2">✅ تم الحفظ!</p>
+    <p id="save-msg" style="display:none;color:#4ade80;font-size:.8rem;text-align:center;margin:.5rem 0 0">✅ تم الحفظ!</p>
 </div>
 
-<button onclick="location.reload()" class="w-full text-gray-500 text-sm py-2 hover:text-gray-300 transition">
+<button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
     ← تسجيل خروج
 </button>
 ```
@@ -202,56 +297,58 @@
 
 <!-- لوحة المشرف -->
 
-<div id="admin-screen" class="hidden max-w-sm w-full fade-in space-y-4">
+<div id="admin-screen" style="display:none;flex-direction:column;gap:1rem;width:100%;max-width:24rem;position:relative;z-index:1" class="fade-in">
 
 ```
-<div class="glass rounded-3xl p-6">
-    <div class="flex items-center justify-between mb-1">
-        <span class="text-2xl">👑</span>
-        <span id="current-month" class="text-gold text-sm font-bold"></span>
+<div class="glass" style="border-radius:1.5rem;padding:1.25rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem">
+        <span style="font-size:1.5rem">👑</span>
+        <span id="current-month" style="color:var(--accent-light);font-size:.85rem;font-weight:700"></span>
     </div>
-    <h2 class="text-xl font-black text-white">لوحة المشرف</h2>
-    <p class="text-gray-400 text-xs mt-1">أجرِ أو أعِد القرعة في أي وقت</p>
+    <h2 style="color:var(--text-primary);font-size:1.2rem;font-weight:900;margin:0">لوحة المشرف</h2>
+    <p style="color:var(--text-secondary);font-size:.8rem;margin:.25rem 0 0">أجرِ أو أعِد القرعة في أي وقت</p>
 </div>
 
-<div class="glass rounded-3xl p-6 text-center">
-    <p id="draw-status-text" class="text-gray-400 text-sm mb-4">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
+<div class="glass" style="border-radius:1.5rem;padding:1.5rem;text-align:center">
+    <p id="draw-status-text" style="color:var(--text-secondary);font-size:.85rem;margin:0 0 1rem">اضغط لإجراء قرعة جديدة لجميع الأعضاء</p>
 
-    <!-- القيود الخاصة -->
-    <div class="bg-black/20 rounded-2xl p-4 mb-4 text-right space-y-3">
-        <p class="text-gray-300 text-xs font-bold mb-2">⚙️ قيود القرعة</p>
-
-        <!-- قيد فواز-نواف -->
-        <div class="flex items-center justify-between">
-            <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="fawaz-toggle" checked class="sr-only peer">
-                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-indigo-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
+    <div style="background:var(--constraints-bg);border-radius:1rem;padding:1rem;margin-bottom:1rem;text-align:right">
+        <p style="color:var(--text-secondary);font-size:.8rem;font-weight:700;margin:0 0 .75rem">⚙️ قيود القرعة</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+            <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
+                <input type="checkbox" id="fawaz-toggle" checked onchange="updateToggle(this,'fawaz-track')" style="opacity:0;width:0;height:0;position:absolute">
+                <span id="fawaz-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
+                    <span style="width:18px;height:18px;background:white;border-radius:50%;transition:.2s;margin-right:auto"></span>
+                </span>
             </label>
-            <span class="text-gray-300 text-xs">فواز لا يُهدي نواف</span>
+            <span style="color:var(--text-secondary);font-size:.85rem">فواز لا يُهدي نواف</span>
         </div>
-
-        <!-- قيد سميرة (قابل للتفعيل) -->
-        <div class="flex items-center justify-between">
-            <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="sameera-toggle" checked class="sr-only peer">
-                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-indigo-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+            <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
+                <input type="checkbox" id="sameera-toggle" checked onchange="updateToggle(this,'sameera-track')" style="opacity:0;width:0;height:0;position:absolute">
+                <span id="sameera-track" style="position:absolute;inset:0;background:#4f46e5;border-radius:999px;transition:.2s;display:flex;align-items:center;padding:0 3px">
+                    <span style="width:18px;height:18px;background:white;border-radius:50%;transition:.2s;margin-right:auto"></span>
+                </span>
             </label>
-            <span class="text-gray-300 text-xs">سميرة تُهدى من طارق أو فواز فقط</span>
+            <span style="color:var(--text-secondary);font-size:.85rem">سميرة تُهدى من طارق أو فواز فقط</span>
         </div>
     </div>
 
-    <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse w-full text-white font-black py-5 rounded-2xl text-xl">
+    <button onclick="runDraw()" id="draw-btn" class="btn-primary pulse"
+        style="width:100%;color:var(--text-primary);font-weight:900;padding:1.2rem;border-radius:1rem;font-size:1.2rem;font-family:Cairo,sans-serif">
         🎲 إجراء القرعة
     </button>
-    <p class="text-gray-600 text-xs mt-3">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
+    <p style="color:var(--text-muted);font-size:.75rem;margin:.75rem 0 0">⚠️ ستُحذف القرعة السابقة وتُنشأ قرعة جديدة</p>
 </div>
 
-<div id="assignments-section" class="glass rounded-3xl p-6 hidden">
-    <h3 class="text-white font-black mb-4 text-center">📋 نتائج القرعة</h3>
-    <div id="assignments-list" class="space-y-2"></div>
+<div id="assignments-section" style="display:none">
+    <div class="glass" style="border-radius:1.5rem;padding:1.5rem">
+        <h3 style="color:var(--text-primary);font-weight:900;text-align:center;margin:0 0 1rem">📋 نتائج القرعة</h3>
+        <div id="assignments-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
+    </div>
 </div>
 
-<button onclick="location.reload()" class="w-full text-gray-500 text-sm py-2 hover:text-gray-300 transition">
+<button onclick="location.reload()" style="width:100%;color:var(--text-muted);font-size:.85rem;background:none;border:none;cursor:pointer;padding:.5rem;font-family:Cairo,sans-serif">
     ← تسجيل خروج
 </button>
 ```
@@ -316,8 +413,8 @@
     // ===== شاشة العضو =====
     async function showMemberScreen(user) {
         currentUser = user;
-        hide('login-screen'); show('member-screen');
-        document.getElementById('user-welcome').innerText = `${user.name} 👋`;
+        hide('login-screen');
+        show('member-screen'); = `${user.name} 👋`;
 
         // بناء شبكة الرغبات
         buildWishesGrid(user.wishes || '');
@@ -394,26 +491,26 @@
 
     function toggleWishes() {
         const box = document.getElementById('wishes-box');
-        const isHidden = box.classList.contains('hidden');
+        const isHidden = box.style.display === 'none' || box.style.display === '';
 
         if (isHidden) {
             if (receiverWishes.length === 0) {
-                box.innerHTML = '<p class="text-gray-500 text-xs text-center py-2">لم يحدد رغباته بعد ⏳</p>';
+                box.innerHTML = '<p style="color:var(--text-muted);font-size:.8rem;text-align:center;padding:.5rem 0">لم يحدد رغباته بعد ⏳</p>';
             } else {
                 box.innerHTML = `
-                    <p class="text-gray-400 text-xs mb-2 text-center">يرغب في:</p>
-                    <div class="flex flex-wrap gap-2 justify-center">
+                    <p style="color:var(--text-secondary);font-size:.8rem;margin:0 0 .5rem;text-align:center">يرغب في:</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center">
                         ${receiverWishes.map(w => {
                             const opt = GIFT_OPTIONS.find(o => o.label === w);
-                            return `<span class="bg-[var(--gold-dim)] border border-[var(--gold-border)] text-gold-light text-xs px-3 py-1 rounded-full">
+                            return `<span style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent-light);font-size:.8rem;padding:.25rem .75rem;border-radius:999px">
                                 ${opt ? opt.emoji : '🎁'} ${w}
                             </span>`;
                         }).join('')}
                     </div>`;
             }
-            show('wishes-box');
+            box.style.display = 'block';
         } else {
-            hide('wishes-box');
+            box.style.display = 'none';
         }
     }
 
@@ -446,10 +543,10 @@
     function renderAssignments(assignments, monthName) {
         document.getElementById('draw-status-text').innerText = `✅ تم إجراء قرعة ${monthName}`;
         document.getElementById('assignments-list').innerHTML = assignments.map(a => `
-            <div class="member-row rounded-xl p-3 flex items-center justify-between">
-                <span class="text-white font-bold text-sm">${a.giver.name}</span>
-                <span class="text-gold text-lg">← 🎁</span>
-                <span class="text-gold font-bold text-sm">${a.receiver.name}</span>
+            <div class="member-row" style="border-radius:.75rem;padding:.75rem;display:flex;align-items:center;justify-content:space-between">
+                <span style="color:var(--text-primary);font-weight:700;font-size:.9rem">${a.giver.name}</span>
+                <span style="color:var(--accent-light);font-size:1rem">← 🎁</span>
+                <span style="color:var(--accent-light);font-weight:700;font-size:.9rem">${a.receiver.name}</span>
             </div>
         `).join('');
         show('assignments-section');
@@ -637,8 +734,18 @@
     }
 
     // ===== مساعدات =====
-    function show(id) { document.getElementById(id).classList.remove('hidden'); }
-    function hide(id) { document.getElementById(id).classList.add('hidden'); }
+    function show(id) {
+        const el = document.getElementById(id);
+        const isScreen = ['member-screen','admin-screen','assignments-section'].includes(id);
+        el.style.display = isScreen ? 'flex' : 'block';
+    }
+    function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+    function updateToggle(checkbox, trackId) {
+        const track = document.getElementById(trackId);
+        track.style.background = checkbox.checked ? '#4f46e5' : '#374151';
+    }
+
     function resetBtn(btn) {
         btn.innerText = '🎲 إجراء القرعة';
         btn.disabled = false;
