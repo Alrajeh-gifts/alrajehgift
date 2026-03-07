@@ -15,12 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* ================================================================
-           💎 نظام التصميم الهندسي الموزون (Geometric UI System)
-        ================================================================ */
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* دعم الـ Dynamic Island في الآيفون */
         html, body { 
             height: 100%; margin: 0; padding: 0; 
             background: var(--bg-app); transition: background 0.4s ease;
@@ -28,44 +24,38 @@
         
         body {
             display: flex; flex-direction: column; align-items: center;
-            /* السر هنا: ترك مسافة آمنة وديناميكية من الأعلى والأسفل */
             padding-top: max(2.5rem, env(safe-area-inset-top));
             padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
             padding-left: 1.25rem; padding-right: 1.25rem;
             min-height: 100dvh;
         }
 
-        /* --- الألوان (داكن ونهاري) --- */
+        /* --- الألوان (داكن) --- */
         :root {
             --bg-app: #0b0c10;
             --text-main: #ffffff;
             --text-sub: rgba(255, 255, 255, 0.65);
-            
             --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.1);
             --inner-bg: rgba(255, 255, 255, 0.03);
             --card-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5);
-            
             --accent: #6366f1;
             --accent-glow: rgba(99, 102, 241, 0.4);
-            
             --liquid-1: rgba(99, 102, 241, 0.3);
             --liquid-2: rgba(139, 92, 246, 0.2);
         }
 
+        /* --- الألوان (نهاري) --- */
         @media (prefers-color-scheme: light) {
             :root {
                 --bg-app: #f4f6f9;
                 --text-main: #0f172a; 
                 --text-sub: #475569;
-                
                 --card-bg: rgba(255, 255, 255, 0.9);
                 --card-border: rgba(99, 102, 241, 0.2);
                 --inner-bg: rgba(99, 102, 241, 0.04);
                 --card-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.15);
-                
                 --accent: #4f46e5;
-                
                 --liquid-1: rgba(99, 102, 241, 0.15);
                 --liquid-2: rgba(236, 72, 153, 0.1);
             }
@@ -73,7 +63,6 @@
             .target-text { color: #4338ca !important; }
         }
 
-        /* --- الخلفية السائلة --- */
         .liquid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .blob { position: absolute; border-radius: 50%; filter: blur(85px); opacity: 0.7; }
         .blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: var(--liquid-1); animation: float1 22s infinite alternate; }
@@ -81,27 +70,25 @@
         @keyframes float1 { 0% { transform: translate(0,0); } 100% { transform: translate(40px, 40px); } }
         @keyframes float2 { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
 
-        /* --- هندسة البطاقات والمربعات --- */
         .glass-card {
             background: var(--card-bg);
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--card-border);
-            border-radius: 2rem; /* توحيد زوايا البطاقات الكبيرة */
-            padding: 1.75rem; /* مساحة داخلية موزونة وموحدة */
+            border-radius: 2rem; 
+            padding: 1.75rem; 
             box-shadow: var(--card-shadow);
-            width: 100%; max-width: 23rem; /* عرض ثابت يمنع التمدد المزعج (368px) */
+            width: 100%; max-width: 23rem; 
             z-index: 10; position: relative;
         }
 
         .inner-box {
             background: var(--inner-bg);
             border: 1px solid var(--card-border);
-            border-radius: 1.25rem; /* توحيد زوايا المربعات الداخلية */
+            border-radius: 1.25rem; 
             padding: 1.25rem;
             width: 100%;
         }
 
-        /* --- الأزرار والحقول --- */
         .btn-primary {
             background: linear-gradient(135deg, #6366f1, #4f46e5);
             color: #ffffff; border: none; border-radius: 1.25rem;
@@ -110,8 +97,16 @@
             transition: all 0.2s ease; cursor: pointer; width: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem;
         }
-        .btn-primary:active { transform: scale(0.96); box-shadow: 0 4px 15px -5px var(--accent-glow); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-primary:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 4px 15px -5px var(--accent-glow); }
+        
+        /* القفل الحقيقي للزر */
+        .btn-primary:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            background: #475569 !important; /* لون رمادي باهت عند القفل */
+            box-shadow: none; 
+            transform: none;
+        }
 
         .input-field {
             background: var(--inner-bg); border: 1px solid var(--card-border);
@@ -121,7 +116,6 @@
         }
         .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
 
-        /* --- الرغبات --- */
         .wish-chip {
             background: var(--inner-bg); border: 1px solid var(--card-border);
             color: var(--text-sub); border-radius: 1rem; padding: 0.85rem;
@@ -133,7 +127,6 @@
             box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); font-weight: 900; transform: translateY(-2px);
         }
 
-        /* --- الأنيميشن وتنسيقات مساعدة --- */
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .hidden-el { display: none !important; }
@@ -157,7 +150,7 @@
     <div class="glass-card flex flex-col gap-5">
         <input type="password" id="access-code" placeholder="الرمز السري" class="input-field text-2xl tracking-widest">
         <button onclick="login()" id="login-btn" class="btn-primary">
-            <span>اكتشف هديتك ←</span>
+            <span id="login-btn-text">اكتشف هديتك ←</span>
         </button>
     </div>
 </div>
@@ -183,9 +176,15 @@
             <div id="wishes-box" class="hidden-el flex-wrap justify-center gap-2 mb-6"></div>
 
             <div class="pt-5 border-t" style="border-color: var(--card-border);">
+                
+                <div class="flex flex-col items-center justify-center gap-1 p-3 mb-4 rounded-xl border" style="background: var(--inner-bg); border-color: var(--card-border);">
+                    <span class="text-xl">⏳</span>
+                    <span id="countdown-timer-text" class="font-black text-sm">جاري حساب الوقت...</span>
+                </div>
+
                 <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary" disabled>
-                    <span class="font-black text-lg">🔒 التسليم مغلق</span>
-                    <span id="countdown-timer" class="text-[10px] font-bold opacity-80 tracking-widest text-indigo-200">يفتح يوم العيد...</span>
+                    <span id="deliver-btn-title" class="font-black text-lg">🔒 التسليم مغلق</span>
+                    <span id="deliver-btn-sub" class="text-[10px] font-bold tracking-widest text-indigo-200">يفتح يوم العيد</span>
                 </button>
                 
                 <div id="delivered-msg" class="hidden-el p-4 rounded-xl font-black text-sm border" style="background: rgba(34, 197, 94, 0.1); color: #16a34a; border-color: rgba(34, 197, 94, 0.2);">
@@ -204,7 +203,9 @@
         <div id="wishes-grid" class="grid grid-cols-2 gap-3 mb-5"></div>
         
         <input type="text" id="custom-wish-input" placeholder="أو اكتب رغبة مخصصة... ✍️" class="input-field mb-5 text-sm p-3.5">
-        <button onclick="saveWishes()" id="save-wishes-btn" class="btn-primary flex-row py-3.5 text-sm">💾 حفظ اختياراتي</button>
+        <button onclick="saveWishes()" id="save-wishes-btn" class="btn-primary flex-row py-3.5 text-sm">
+            <span id="save-btn-text">💾 حفظ اختياراتي</span>
+        </button>
     </div>
 
     <button onclick="logout()" class="font-bold text-xs py-4 transition-opacity" style="color: var(--text-sub); opacity: 0.7;">← تسجيل خروج آمن</button>
@@ -232,7 +233,9 @@
              <input type="text" id="budget-input" placeholder="مثال: 500 ريال" class="input-field text-base">
         </div>
 
-        <button onclick="runDraw()" id="draw-btn" class="btn-primary text-lg">🎲 إجراء قرعة جديدة</button>
+        <button onclick="runDraw()" id="draw-btn" class="btn-primary text-lg">
+            <span id="draw-btn-text">🎲 إجراء قرعة جديدة</span>
+        </button>
     </div>
 
     <div id="assignments-section" class="hidden-el w-full flex justify-center">
@@ -258,7 +261,7 @@
     const arabicMonths = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
     window.onload = async () => {
-        const savedCode = localStorage.getItem('rajeh_gift_v9');
+        const savedCode = localStorage.getItem('rajeh_gift_final_v10');
         if (savedCode) {
             document.getElementById('access-code').value = savedCode;
             login(true);
@@ -271,29 +274,29 @@
 
     async function login(isAuto = false) {
         if(!isAuto) haptic(50); 
-        const btn = document.getElementById('login-btn');
+        const btnText = document.getElementById('login-btn-text');
         const code = document.getElementById('access-code').value.trim();
         
         if (!code) return;
-        if (!isAuto) btn.querySelector('span').innerText = 'جاري التحقق...';
+        if (!isAuto) btnText.innerText = 'جاري التحقق...';
 
         const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
 
         if (error || !user) {
             if (!isAuto) { haptic([50, 100, 50]); alert('الرمز السري غير صحيح!'); }
-            localStorage.removeItem('rajeh_gift_v9');
-            btn.querySelector('span').innerText = 'اكتشف هديتك ←';
+            localStorage.removeItem('rajeh_gift_final_v10');
+            btnText.innerText = 'اكتشف هديتك ←';
             return;
         }
 
-        localStorage.setItem('rajeh_gift_v9', code);
+        localStorage.setItem('rajeh_gift_final_v10', code);
         currentUser = user;
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
     function logout() {
         if(confirm('تأكيد تسجيل الخروج؟')){
-            localStorage.removeItem('rajeh_gift_v9');
+            localStorage.removeItem('rajeh_gift_final_v10');
             location.reload();
         }
     }
@@ -329,6 +332,7 @@
                 document.getElementById('target-name').innerText = assign.receiver.name;
                 setTimeout(() => haptic([100, 50, 100]), 500); 
 
+                // التحقق من التسليم
                 if (assign.is_delivered) {
                     document.getElementById('delivered-msg').classList.remove('hidden-el');
                     document.getElementById('deliver-btn').classList.add('hidden-el');
@@ -346,28 +350,39 @@
         }
     }
 
-    // --- المؤقت والقفل الذكي ---
+    // --- المنطق الصحيح للمؤقت والزر ---
+    let countdownInterval;
     function initCountdown() {
         const eidDate = new Date("2026-03-20T00:00:00").getTime();
-        setInterval(() => {
+        const timerText = document.getElementById('countdown-timer-text');
+        const deliverBtn = document.getElementById('deliver-btn');
+        const btnTitle = document.getElementById('deliver-btn-title');
+        const btnSub = document.getElementById('deliver-btn-sub');
+
+        countdownInterval = setInterval(() => {
             const now = new Date().getTime();
             const diff = eidDate - now;
-            const timerEl = document.getElementById('countdown-timer');
-            const deliverBtn = document.getElementById('deliver-btn');
-            
-            if (!timerEl) return;
 
             if (diff < 0) { 
-                if (deliverBtn && deliverBtn.disabled) {
-                    deliverBtn.disabled = false;
-                    deliverBtn.innerHTML = `<span class="font-black text-lg">📦 تأكيد تسليم الهدية</span><span class="text-[10px] font-bold opacity-80 tracking-widest text-indigo-200">اضغط هنا لتأكيد التسليم</span>`;
+                clearInterval(countdownInterval); // إيقاف المؤقت
+                if(timerText) timerText.innerText = "العيد بدأ، تقدر تسلم الهدية! 🎉"; 
+                if(deliverBtn) {
+                    deliverBtn.disabled = false; // فتح الزر
+                    deliverBtn.style.background = "linear-gradient(135deg, #6366f1, #4f46e5)";
+                    if(btnTitle) btnTitle.innerText = "📦 تأكيد تسليم الهدية";
+                    if(btnSub) btnSub.innerText = "اضغط هنا لتأكيد التسليم";
                 }
                 return; 
             }
             
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            timerEl.innerText = `يفتح يوم العيد (باقي: ${d} يوم و ${h} ساعة)`;
+            if(timerText) timerText.innerText = `باقي: ${d} يوم و ${h} ساعة`;
+            
+            // تأكيد الإغلاق إذا لم يأتِ الوقت
+            if(deliverBtn && deliverBtn.disabled === false) {
+                deliverBtn.disabled = true;
+            }
         }, 1000);
     }
     initCountdown();
@@ -387,15 +402,15 @@
 
     async function saveWishes() {
         haptic(50);
-        const btn = document.getElementById('save-wishes-btn');
+        const btnText = document.getElementById('save-btn-text');
         const selected = [...document.querySelectorAll('.wish-active')].map(b => b.innerText);
         const custom = document.getElementById('custom-wish-input').value.trim();
         if (custom) selected.push(custom);
         
-        btn.innerText = 'جاري الحفظ...';
+        btnText.innerText = '⏳ جاري الحفظ...';
         await db.from('users').update({ wishes: selected.join(',') }).eq('id', currentUser.id);
         alert('تم الحفظ بنجاح! ✅');
-        btn.innerText = '💾 حفظ اختياراتي';
+        btnText.innerText = '💾 حفظ اختياراتي';
     }
 
     function toggleWishes() {
@@ -410,13 +425,15 @@
     async function markAsDelivered() {
         if(!confirm('هل أنت متأكد أنك قمت بتسليم الهدية؟ 🎁')) return;
         haptic([50, 50, 50]);
-        const btn = document.getElementById('deliver-btn');
-        btn.innerHTML = '<span class="font-black text-lg">جاري التحديث...</span>';
+        const btnTitle = document.getElementById('deliver-btn-title');
+        const btnSub = document.getElementById('deliver-btn-sub');
+        btnTitle.innerText = "⏳ جاري التحديث...";
+        btnSub.innerText = "";
         
         const { error } = await db.from('assignments').update({ is_delivered: true }).eq('id', currentAssignmentId);
         if(!error) {
             fireConfetti();
-            btn.classList.add('hidden-el');
+            document.getElementById('deliver-btn').classList.add('hidden-el');
             document.getElementById('delivered-msg').classList.remove('hidden-el');
         }
     }
@@ -431,7 +448,7 @@
             document.getElementById('assignments-list').innerHTML = assigns.map(a => `
                 <div class="inner-box p-3.5 flex justify-between items-center text-sm">
                     <span class="font-black text-indigo-500 w-1/3 text-right">${a.giver.name}</span>
-                    <span class="text-[9px] font-bold w-1/3 text-center" style="color: ${a.is_delivered ? '#16a34a' : 'var(--text-sub)'}">${a.is_delivered ? '✅ سُلّمت' : '⏳'}</span>
+                    <span class="text-[9px] font-bold w-1/3 text-center" style="color: ${a.is_delivered ? '#16a34a' : 'var(--text-sub)'}">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
                     <span class="font-black w-1/3 text-left" style="color:var(--text-main)">${a.receiver.name}</span>
                 </div>
             `).join('');
@@ -441,9 +458,9 @@
     async function runDraw() {
         haptic(100);
         if(!confirm('سيتم إجراء قرعة وتطبيق نظام منع التكرار لـ 3 أشهر. متأكد؟')) return;
-        const btn = document.getElementById('draw-btn');
-        btn.innerText = 'جاري السحب الذكي... 🎲';
-        btn.disabled = true;
+        const btnText = document.getElementById('draw-btn-text');
+        btnText.innerText = 'جاري السحب الذكي... 🎲';
+        document.getElementById('draw-btn').disabled = true;
 
         const { data: members } = await db.from('users').select('*').eq('role', 'member');
         const fC = document.getElementById('fawaz-toggle').checked;
@@ -473,7 +490,7 @@
             }
         }
 
-        if (!shuffled) { alert('فشل السحب بسبب كثرة القيود وعدم التكرار!'); btn.disabled = false; btn.innerText = '🎲 إجراء قرعة جديدة'; return; }
+        if (!shuffled) { alert('فشل السحب بسبب كثرة القيود وعدم التكرار!'); document.getElementById('draw-btn').disabled = false; btnText.innerText = '🎲 إجراء قرعة جديدة'; return; }
 
         const dName = `هدايا ${arabicMonths[new Date().getMonth()]} ${new Date().getFullYear()}`;
 
@@ -509,11 +526,7 @@
             if (++frame < 220) requestAnimationFrame(anim); else canvas.style.display = 'none';
         })();
     }
-
-    const manifestObj = { "name": "هدايا الراجح", "short_name": "هدايا", "start_url": ".", "display": "standalone", "background_color": "#0b0c10", "theme_color": "#6366f1", "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>", "sizes": "192x192", "type": "image/svg+xml"}] };
-    document.getElementById('manifest-link').href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj));
 </script>
 
 </body>
 </html>
-
