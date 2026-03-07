@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -31,74 +30,74 @@ body{display:flex;flex-direction:column;align-items:center;
 
 .lbg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
 .blob{position:absolute;border-radius:50%;filter:blur(72px);mix-blend-mode:screen;opacity:0.5;will-change:transform}
-.b1{width:520px;height:520px;background:radial-gradient(circle,var(–la),transparent 70%);top:-10%;right:-12%;animation:b1 22s ease-in-out infinite alternate}
-.b2{width:420px;height:420px;background:radial-gradient(circle,var(–lb),transparent 70%);bottom:-8%;left:-10%;animation:b2 27s ease-in-out infinite alternate}
-.b3{width:340px;height:340px;background:radial-gradient(circle,var(–lc),transparent 70%);top:38%;left:18%;animation:b3 18s ease-in-out infinite alternate-reverse}
-.b4{width:260px;height:260px;background:radial-gradient(circle,var(–ld),transparent 70%);top:18%;left:-6%;animation:b4 24s ease-in-out infinite alternate}
+.b1{width:520px;height:520px;background:radial-gradient(circle,var(--la),transparent 70%);top:-10%;right:-12%;animation:b1 22s ease-in-out infinite alternate}
+.b2{width:420px;height:420px;background:radial-gradient(circle,var(--lb),transparent 70%);bottom:-8%;left:-10%;animation:b2 27s ease-in-out infinite alternate}
+.b3{width:340px;height:340px;background:radial-gradient(circle,var(--lc),transparent 70%);top:38%;left:18%;animation:b3 18s ease-in-out infinite alternate-reverse}
+.b4{width:260px;height:260px;background:radial-gradient(circle,var(--ld),transparent 70%);top:18%;left:-6%;animation:b4 24s ease-in-out infinite alternate}
 @keyframes b1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-8%,12%) scale(1.1)}}
 @keyframes b2{0%{transform:translate(0,0) scale(1.05)}100%{transform:translate(10%,-8%) scale(0.92)}}
 @keyframes b3{0%{transform:translate(0,0) scale(0.95)}100%{transform:translate(-10%,8%) scale(1.12)}}
 @keyframes b4{0%{transform:translate(0,0) scale(1)}100%{transform:translate(8%,14%) scale(1.08)}}
-.lbg::after{content:’’;position:absolute;inset:0;
+.lbg::after{content:'';position:absolute;inset:0;
 background:radial-gradient(ellipse 100% 55% at 50% 0%,rgba(5,7,20,.35),transparent),
 radial-gradient(ellipse 100% 55% at 50% 100%,rgba(5,7,20,.42),transparent)}
 
 .wrap{width:100%;max-width:22rem;z-index:10;display:flex;flex-direction:column;gap:1.05rem;flex:1;justify-content:center}
 
-.card{background:var(–glass);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);
-border:1px solid var(–border);border-top-color:var(–border-hi);border-radius:1.6rem;
-padding:1.45rem 1.35rem;box-shadow:var(–shadow);position:relative;overflow:hidden}
-.card::before{content:’’;position:absolute;inset:0;
+.card{background:var(--glass);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);
+border:1px solid var(--border);border-top-color:var(--border-hi);border-radius:1.6rem;
+padding:1.45rem 1.35rem;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;
 background:linear-gradient(135deg,rgba(255,255,255,.055) 0%,transparent 60%);
 border-radius:inherit;pointer-events:none}
-.card::after{content:’’;position:absolute;top:0;left:-120%;width:50%;height:100%;
+.card::after{content:'';position:absolute;top:0;left:-120%;width:50%;height:100%;
 background:linear-gradient(to right,transparent,rgba(255,255,255,.065),transparent);
 transform:skewX(-18deg);animation:glint 14s infinite;pointer-events:none}
 @keyframes glint{0%{left:-120%}10%{left:220%}100%{left:220%}}
 
-.inner{background:var(–inner);border:1px solid var(–ib);border-radius:1.05rem;
+.inner{background:var(--inner);border:1px solid var(--ib);border-radius:1.05rem;
 padding:.95rem;box-shadow:inset 0 2px 8px rgba(0,0,0,.4)}
 
-.divl{height:1px;background:linear-gradient(to left,transparent,var(–border-hi),transparent);margin:.85rem 0}
+.divl{height:1px;background:linear-gradient(to left,transparent,var(--border-hi),transparent);margin:.85rem 0}
 
-.btn{width:100%;background:var(–btn);border:none;border-radius:1.05rem;padding:.95rem 1rem;
-color:#fff!important;font-family:‘Cairo’,sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;
+.btn{width:100%;background:var(--btn);border:none;border-radius:1.05rem;padding:.95rem 1rem;
+color:#fff!important;font-family:'Cairo',sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;
 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;
-box-shadow:var(–btn-sh);transition:transform .2s cubic-bezier(.175,.885,.32,1.275),box-shadow .2s;
+box-shadow:var(--btn-sh);transition:transform .2s cubic-bezier(.175,.885,.32,1.275),box-shadow .2s;
 position:relative;overflow:hidden}
-.btn::after{content:’’;position:absolute;inset:0;
+.btn::after{content:'';position:absolute;inset:0;
 background:linear-gradient(to bottom,rgba(255,255,255,.12),transparent);
 border-radius:inherit;pointer-events:none}
 .btn:active:not(:disabled){transform:scale(.97);box-shadow:0 5px 15px rgba(99,102,241,.3)}
-.btn:disabled{background:var(–inner)!important;color:var(–t3)!important;
-border:1px solid var(–ib);box-shadow:none;cursor:not-allowed}
+.btn:disabled{background:var(--inner)!important;color:var(--t3)!important;
+border:1px solid var(--ib);box-shadow:none;cursor:not-allowed}
 .btn.row{flex-direction:row;gap:.4rem}
 
-.inp{width:100%;background:var(–inner);border:1px solid var(–ib);border-radius:1.05rem;
-padding:.88rem 1rem;color:var(–t1);font-family:‘Cairo’,sans-serif;font-weight:700;
+.inp{width:100%;background:var(--inner);border:1px solid var(--ib);border-radius:1.05rem;
+padding:.88rem 1rem;color:var(--t1);font-family:'Cairo',sans-serif;font-weight:700;
 font-size:.9rem;text-align:center;outline:none;
 transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 2px 8px rgba(0,0,0,.35)}
 .inp:focus{border-color:rgba(99,102,241,.6);
 box-shadow:inset 0 2px 8px rgba(0,0,0,.35),0 0 0 3px rgba(99,102,241,.15)}
-.inp::placeholder{color:var(–t3);font-size:.82rem;font-weight:600}
+.inp::placeholder{color:var(--t3);font-size:.82rem;font-weight:600}
 
-.chip{background:var(–inner);border:1px solid var(–ib);border-radius:.75rem;padding:.75rem .3rem;
-color:var(–t2);font-family:‘Cairo’,sans-serif;font-size:.76rem;font-weight:700;
+.chip{background:var(--inner);border:1px solid var(--ib);border-radius:.75rem;padding:.75rem .3rem;
+color:var(--t2);font-family:'Cairo',sans-serif;font-size:.76rem;font-weight:700;
 cursor:pointer;transition:all .2s;text-align:center}
-.chip.on{background:var(–btn);border-color:rgba(99,102,241,.5);color:#fff!important;
+.chip.on{background:var(--btn);border-color:rgba(99,102,241,.5);color:#fff!important;
 font-weight:900;box-shadow:0 5px 16px rgba(99,102,241,.4);transform:translateY(-2px)}
 
-.cap{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(–t3)}
+.cap{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3)}
 .hide{display:none!important}
 .fi{animation:fi .65s cubic-bezier(.16,1,.3,1) both}
 @keyframes fi{from{opacity:0;transform:translateY(24px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
 .d1{animation-delay:.05s}.d2{animation-delay:.13s}.d3{animation-delay:.21s}
 
-.arow{background:var(–inner);border:1px solid var(–ib);border-radius:.85rem;
+.arow{background:var(--inner);border:1px solid var(--ib);border-radius:.85rem;
 padding:.7rem .9rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
 .badge{font-size:10px;font-weight:800;padding:.2rem .55rem;border-radius:999px;border:1px solid}
 .badge.ok{color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.08)}
-.badge.pen{color:var(–t3);border-color:var(–ib)}
+.badge.pen{color:var(--t3);border-color:var(--ib)}
 
 @keyframes npop{0%{transform:scale(.6);opacity:0;filter:blur(8px)}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1;filter:none}}
 .npop{animation:npop .7s cubic-bezier(.175,.885,.32,1.275) forwards}
@@ -108,7 +107,7 @@ border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical
 @keyframes sp{to{transform:rotate(360deg)}}
 
 ::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:var(–border);border-radius:2px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
 
 </head>
@@ -120,8 +119,6 @@ border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical
   <div class="blob b3"></div>
   <div class="blob b4"></div>
 </div>
-
-<!-- شاشة الدخول -->
 
 <div id="s-login" class="wrap fi">
   <div style="text-align:center;margin-bottom:1.4rem">
@@ -141,16 +138,11 @@ border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical
   <p style="text-align:center;color:var(--t3);font-size:.68rem;font-weight:600;margin-top:.4rem">﷽</p>
 </div>
 
-<!-- شاشة العضو -->
-
 <div id="s-member" class="wrap hide" style="padding-bottom:1rem">
-
   <div class="card fi d1" style="text-align:center">
     <p class="cap" style="margin-bottom:.45rem">عضو العائلة الكريمة ✓</p>
     <h2 id="el-welcome" style="font-size:1.3rem;font-weight:900;color:var(--t1);margin-bottom:1.1rem"></h2>
 
-```
-<!-- نتيجة القرعة -->
 <div id="zone-result" class="hide">
   <div class="inner" style="margin-bottom:.95rem;text-align:center">
     <p class="cap" style="margin-bottom:.55rem">🎯 هديتك هذا العيد تروح لـ</p>
@@ -191,11 +183,7 @@ border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical
   القرعة ما جاء وقتها بعد ⏳
   <p style="font-size:.7rem;color:var(--t3);margin-top:.35rem;font-weight:600">راسل المشرف لو عندك استفسار</p>
 </div>
-```
-
   </div>
-
-  <!-- بطاقة الأمنيات -->
 
   <div class="card fi d2">
     <h3 style="font-weight:900;font-size:1rem;color:var(--t1);margin-bottom:.2rem">✨ أمنياتي الشخصية</h3>
@@ -216,8 +204,6 @@ margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
 
 </div>
 
-<!-- لوحة المشرف -->
-
 <div id="s-admin" class="wrap hide" style="padding-bottom:1rem">
 
   <div class="card fi d1" style="text-align:center">
@@ -225,7 +211,6 @@ margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
     <h2 style="font-weight:900;font-size:1.35rem;color:var(--t1);margin-bottom:.15rem">لوحة تحكم المشرف</h2>
     <p style="color:var(--t2);font-size:.73rem;font-weight:700;margin-bottom:1.3rem">إدارة قرعة العائلة الكريمة</p>
 
-```
 <div class="inner" style="text-align:right;margin-bottom:1rem">
   <p class="cap" style="margin-bottom:.85rem">⚙️ قيود القرعة الذكية</p>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;
@@ -248,14 +233,13 @@ margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
 <button class="btn row" onclick="runDraw()" id="btn-draw">
   <span id="txt-draw">🎲 ابدأ القرعة الإلكترونية</span>
 </button>
-```
 
   </div>
 
   <div id="sec-assigns" class="card fi d2 hide">
     <h3 style="text-align:center;font-weight:900;font-size:.93rem;color:var(--t1);
       padding-bottom:.75rem;margin-bottom:.75rem;border-bottom:1px solid var(--border)">
-      📋 التوزيع الحالي للقرعة
+      📋 أحدث توزيع للقرعة
     </h3>
     <div id="list-assigns" style="display:flex;flex-direction:column;gap:.45rem"></div>
   </div>
@@ -274,7 +258,7 @@ margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
 const SURL='https://oprethkloexyrhagmdod.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db=supabase.createClient(SURL,SKEY);
-const STORE='eid_gift_v3';
+const STORE='eid_gift_v4';
 let me=null,assignId=null,rxWishes=[];
 const arM=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
@@ -369,7 +353,7 @@ function countdown(){
     const m=Math.floor(diff%3600000/60000);
     btn.disabled=true;
     $('ttl-deliver').textContent='🔒 يُفتح يوم العيد';
-    $('sub-deliver').textContent='باقي '+d+' يوم '+h+' ساعة '+m+' دقيقة';
+    $('sub-deliver').textContent='باقي '+d+' يوم و '+h+' ساعة';
     setTimeout(tick,30000);
   };
   tick();
@@ -447,9 +431,15 @@ async function saveWishes(){
 /* ── مشرف ── */
 async function loadAdmin(){
   screen('s-admin');
+  // تعديل الإدارة: جلب أحدث قرعة فقط لكي لا تتداخل القرعات القديمة بالجديدة
+  const {data: lastDraw} = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(1).maybeSingle();
+  if(!lastDraw) return;
+
   const{data:asgns}=await db.from('assignments')
     .select('*,giver:users!giver_id(name),receiver:users!receiver_id(name)')
+    .eq('draw_id', lastDraw.id)
     .order('created_at',{ascending:false});
+
   if(asgns&&asgns.length>0){
     renderAssigns(asgns);
     show('sec-assigns','block');
@@ -466,7 +456,7 @@ function renderAssigns(asgns){
 }
 
 async function runDraw(){
-  if(!confirm('⚠️ باحذف التوزيع الحالي وأبدأ قرعة جديدة — تؤكد؟'))return;
+  if(!confirm('⚠️ سيتم إجراء قرعة جديدة للشهر الحالي — تؤكد؟'))return;
   haptic(80);
   $('txt-draw').innerHTML='<span class="spin"></span> جارٍ السحب...';
   $('btn-draw').disabled=true;
@@ -494,18 +484,22 @@ async function runDraw(){
     if(sh.some((m,idx)=>m.id===members[idx].id))continue;
     const map={};
     members.forEach((m,idx)=>{map[m.name]=sh[idx].name;});
-    if(fC&&map['فواز']==='نواف')continue;
+    
+    // التعديل السحري: التأكد من أن الاسم موجود فعلاً في القرعة لكي لا تفشل
+    if(fC && map['فواز'] && map['فواز']==='نواف')continue;
     if(sC){
       const g=Object.keys(map).find(k=>map[k]==='سميرة');
-      if(!['طارق','فواز'].includes(g))continue;
+      if(g && !['طارق','فواز'].includes(g))continue;
     }
+
     if(Object.entries(map).some(([g,r])=>pastPairs.includes(g+'->'+r)))continue;
     result={sh,map};break;
   }
 
   if(!result){toast('ما قدرت أسوي القرعة — جرّب تقليل القيود','err');resetDraw();return;}
 
-  await db.from('assignments').delete().neq('id',0);
+  // تم إلغاء سطر الحذف (delete) للحفاظ على ذاكرة الـ 3 أشهر
+
   const dName='هدايا العيد — '+arM[new Date().getMonth()]+' '+new Date().getFullYear();
   const{data:nd,error:de}=await db.from('draws').insert({month_name:dName,budget}).select().single();
   if(de){toast('خطأ في إنشاء القرعة ❌','err');resetDraw();return;}
