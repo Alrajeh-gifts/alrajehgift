@@ -17,109 +17,153 @@
     
     <style>
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { min-height: 100%; margin: 0; background: #090a0f; color: white; overflow-x: hidden; }
-
+        
+        /* المتغيرات الأساسية (الوضع الداكن الافتراضي) */
         :root {
-            --accent: #6366f1;
+            --bg: #090a0f;
+            --text-main: #ffffff;
+            --text-sub: rgba(255, 255, 255, 0.7);
             --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(0, 0, 0, 0.4);
+            --accent: #6366f1;
+            --card-result: rgba(99, 102, 241, 0.1);
         }
 
-        body::before {
-            content: ''; position: fixed; inset: -150px;
-            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.35) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.30) 0%, transparent 50%);
-            filter: blur(90px); z-index: 0; pointer-events: none;
+        /* تعديلات النمط النهاري (Light Mode) */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f7fa;
+                --text-main: #1e1b4b;
+                --text-sub: #475569;
+                --glass-bg: rgba(255, 255, 255, 0.8);
+                --glass-border: rgba(99, 102, 241, 0.2);
+                --input-bg: #ffffff;
+                --card-result: rgba(99, 102, 241, 0.05);
+            }
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        /* خلفية السائل المتحرك */
+        .liquid-bg {
+            position: fixed; inset: -150px;
+            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            filter: blur(80px); z-index: -1;
         }
 
         .glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(32px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            z-index: 10;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
         }
 
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; }
-        .btn-primary:active { transform: scale(0.96); opacity: 0.9; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #ffffff !important;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-primary:active { transform: scale(0.95); opacity: 0.9; }
 
-        .fade-in { animation: fadeUp 0.5s ease forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        input {
+            background: var(--input-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--glass-border) !important;
+        }
+        input::placeholder { color: var(--text-sub); opacity: 0.5; }
 
-        .wish-item-active { background: #6366f1 !important; color: white !important; border-color: #6366f1 !important; }
+        .fade-in { animation: fadeUp 0.5s ease-out forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .wish-active { background: #6366f1 !important; color: white !important; }
     </style>
 </head>
 <body>
 
-<div id="login-screen" class="max-w-sm w-full fade-in px-4" style="display:flex;flex-direction:column; margin-top: 15vh;">
-    <div class="text-center mb-10">
-        <div style="font-size:5rem; filter: drop-shadow(0 10px 15px rgba(99,102,241,0.4))">🎁</div>
-        <h1 class="text-3xl font-black mt-4">هدايا العيد</h1>
-        <p class="text-gray-400 mt-2">أدخل الرمز السري للمفاجأة</p>
+<div class="liquid-bg"></div>
+
+<div id="login-screen" class="max-w-sm w-full fade-in px-6" style="margin-top: 15vh;">
+    <div class="text-center mb-8">
+        <div style="font-size: 5rem; filter: drop-shadow(0 10px 15px rgba(99,102,241,0.3))">🎁</div>
+        <h1 class="text-3xl font-black mt-4" style="color: var(--text-main)">هدايا العيد</h1>
+        <p style="color: var(--text-sub)">أدخل الرمز السري للمفاجأة</p>
     </div>
     <div class="glass rounded-3xl p-6 flex flex-col gap-4">
         <input type="text" id="access-code" placeholder="الرمز السري" 
-               class="bg-black/40 border border-white/10 text-white text-center p-4 rounded-2xl font-bold text-xl outline-none focus:border-indigo-500 transition-all">
-        <button onclick="login()" id="login-btn" class="btn-primary w-full font-black py-4 rounded-2xl text-lg cursor-pointer shadow-lg shadow-indigo-500/20">
+               class="text-center p-4 rounded-2xl font-bold text-xl outline-none focus:ring-2 ring-indigo-500">
+        <button onclick="login()" id="login-btn" class="btn-primary w-full font-black py-4 rounded-2xl text-lg cursor-pointer">
             اكتشف هديتك ←
         </button>
     </div>
 </div>
 
-<div id="member-screen" class="fade-in w-full max-w-sm px-4" style="display:none;flex-direction:column;gap:1.5rem">
-    <div class="glass rounded-3xl p-8 text-center mt-10 shadow-2xl">
-        <p class="text-gray-400 text-sm">أهلاً وسهلاً</p>
-        <h2 id="user-welcome" class="text-2xl font-black mb-6"></h2>
+<div id="member-screen" class="fade-in w-full max-w-sm px-4" style="display:none; flex-direction:column; gap:1.5rem; padding-bottom: 2rem;">
+    <div class="glass rounded-3xl p-8 text-center mt-10 shadow-xl">
+        <p style="color: var(--text-sub)" class="text-sm">أهلاً وسهلاً</p>
+        <h2 id="user-welcome" class="text-2xl font-black mb-6" style="color: var(--text-main)"></h2>
 
-        <div id="result-card" class="p-6 rounded-2xl border border-indigo-500/30 bg-indigo-500/5" style="display:none;">
-            <p class="text-gray-400 text-sm mb-2">🎯 هديتك ستكون لـ</p>
-            <div id="target-name" class="text-4xl font-black text-indigo-400 mb-6 tracking-tight"></div>
+        <div id="result-card" class="p-6 rounded-2xl border border-indigo-500/20" style="display:none; background: var(--card-result)">
+            <p style="color: var(--text-sub)" class="text-xs mb-1">🎯 هديتك ستكون لـ</p>
+            <div id="target-name" class="text-4xl font-black text-indigo-500 mb-6 tracking-tight"></div>
             
-            <button onclick="toggleWishes()" class="bg-white/5 border border-white/10 text-white px-6 py-2 rounded-full text-xs font-bold mb-4 active:scale-95 transition-all">
+            <button onclick="toggleWishes()" class="bg-indigo-500/10 border border-indigo-500/20 px-6 py-2 rounded-full text-xs font-bold mb-4" style="color: var(--text-main)">
                 🎁 رغبات الشخص
             </button>
-            <div id="wishes-box" style="display:none;" class="mb-4"></div>
+            <div id="wishes-box" style="display:none;" class="mb-4 flex-wrap justify-center gap-2"></div>
 
-            <div class="pt-6 border-t border-white/5 mt-4">
-                <div class="bg-indigo-500/20 border border-indigo-500/20 p-3 rounded-2xl mb-4 flex items-center justify-center gap-3">
+            <div class="pt-6 border-t border-indigo-500/10 mt-4">
+                <div class="bg-indigo-500/10 p-3 rounded-2xl mb-4 flex items-center justify-center gap-2 border border-indigo-500/10">
                     <span class="text-lg">⏳</span>
-                    <span id="countdown-timer" class="text-sm font-bold text-indigo-100">...</span>
+                    <span id="countdown-timer" class="text-sm font-bold" style="color: var(--text-main)">...</span>
                 </div>
 
                 <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary w-full py-3 rounded-2xl font-black text-sm">
                     📦 تأكيد تسليم الهدية
                 </button>
-                <div id="delivered-msg" style="display:none;" class="bg-green-500/10 border border-green-500/30 text-green-400 p-4 rounded-2xl font-bold">
+                <div id="delivered-msg" style="display:none;" class="bg-green-500/10 text-green-600 p-4 rounded-2xl font-bold text-sm">
                     ✅ تم التسليم بنجاح!
                 </div>
             </div>
         </div>
         
         <div id="no-draw-msg" style="display:none;" class="py-10">
-            <p class="text-gray-400 font-bold">لم تُجرَ القرعة بعد، انتظر الإشعار 🔔</p>
+            <p style="color: var(--text-sub)" class="font-bold">لم تُجرَ القرعة بعد، انتظر الإشعار 🔔</p>
         </div>
     </div>
 
     <div class="glass rounded-3xl p-6">
-        <h3 class="font-black text-lg mb-4 text-right">🌟 رغباتي الشخصية</h3>
+        <h3 class="font-black text-lg mb-4 text-right" style="color: var(--text-main)">🌟 رغباتي الشخصية</h3>
         <div id="wishes-grid" class="grid grid-cols-2 gap-2 mb-4"></div>
         <input type="text" id="custom-wish-input" placeholder="أو اكتب رغبتك هنا..." 
-               class="bg-black/40 border border-white/10 text-white w-full p-3 rounded-xl text-sm outline-none mb-4">
-        <button onclick="saveWishes()" id="save-wishes-btn" class="w-full bg-indigo-500/10 border border-indigo-500/20 text-white py-3 rounded-xl font-bold">💾 حفظ الرغبات</button>
+               class="w-full p-3 rounded-xl text-sm outline-none mb-4">
+        <button onclick="saveWishes()" id="save-wishes-btn" class="w-full py-3 rounded-xl font-bold border border-indigo-500/30" style="color: var(--text-main); background: rgba(99,102,241,0.05)">💾 حفظ الرغبات</button>
     </div>
 
-    <button onclick="location.reload()" class="text-gray-500 font-bold text-sm py-4">← خروج</button>
+    <button onclick="location.reload()" class="font-bold text-sm py-4" style="color: var(--text-sub)">← خروج</button>
 </div>
 
 <div id="admin-screen" style="display:none;" class="w-full max-w-sm px-4 fade-in flex flex-col gap-4">
     <div class="glass rounded-3xl p-6 mt-10 text-center">
-        <h2 class="text-xl font-black">لوحة التحكم 👑</h2>
-        <p class="text-gray-400 text-sm mt-1">إدارة قرعة هدايا العيد</p>
+        <h2 class="text-xl font-black" style="color: var(--text-main)">لوحة التحكم 👑</h2>
     </div>
     <div class="glass rounded-3xl p-6">
-        <button onclick="runDraw()" id="draw-btn" class="btn-primary w-full py-4 rounded-2xl font-black text-xl mb-4">🎲 ابدأ القرعة الآن</button>
+        <button onclick="runDraw()" id="draw-btn" class="btn-primary w-full py-4 rounded-2xl font-black text-xl mb-6">🎲 ابدأ القرعة الآن</button>
         <div id="assignments-list" class="flex flex-col gap-2"></div>
     </div>
-    <button onclick="location.reload()" class="text-gray-500 font-bold text-sm text-center">← خروج</button>
+    <button onclick="location.reload()" class="font-bold text-sm text-center py-4" style="color: var(--text-sub)">← خروج</button>
 </div>
 
 <script>
@@ -130,17 +174,12 @@
     let currentUser = null;
     let currentAssignmentId = null;
 
-    // --- خاصية الاهتزاز المحدثة ---
     function doHaptic(pattern) {
-        if ("vibrate" in navigator) {
-            navigator.vibrate(pattern);
-        }
+        if ("vibrate" in navigator) navigator.vibrate(pattern);
     }
 
     async function login() {
-        // بمجرد الضغط، نهز الجهاز (لفتح صلاحية الاهتزاز للمتصفح)
         doHaptic(60); 
-
         const btn = document.getElementById('login-btn');
         const code = document.getElementById('access-code').value.trim();
         if (!code) return;
@@ -173,9 +212,7 @@
         if (assign) {
             currentAssignmentId = assign.id;
             document.getElementById('target-name').innerText = assign.receiver.name;
-            
-            // اهتزاز مزدوج لحظة كشف الاسم
-            setTimeout(() => doHaptic([100, 50, 100]), 200); 
+            setTimeout(() => doHaptic([100, 50, 100]), 300); 
             
             if (assign.is_delivered) {
                 document.getElementById('delivered-msg').style.display = 'block';
@@ -194,10 +231,7 @@
         const eid = new Date("2026-03-20T00:00:00").getTime();
         setInterval(() => {
             const diff = eid - new Date().getTime();
-            if (diff < 0) {
-                document.getElementById('countdown-timer').innerText = "عيدكم مبارك! 🌙";
-                return;
-            }
+            if (diff < 0) { document.getElementById('countdown-timer').innerText = "عيدكم مبارك! 🌙"; return; }
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             document.getElementById('countdown-timer').innerText = `باقي للعيد: ${d} يوم و ${h} ساعة`;
@@ -211,20 +245,20 @@
         const savedArray = (saved || '').split(',');
         grid.innerHTML = options.map(opt => `
             <button onclick="toggleWishBtn(this)" 
-                    class="p-3 rounded-xl border border-white/10 text-xs transition-all ${savedArray.includes(opt) ? 'wish-item-active' : 'bg-white/5 text-gray-400'}">
+                    class="p-3 rounded-xl border border-indigo-500/10 text-xs transition-all ${savedArray.includes(opt) ? 'wish-active' : 'bg-indigo-500/5'}">
                 ${opt}
             </button>
         `).join('');
     }
 
     function toggleWishBtn(btn) {
-        btn.classList.toggle('wish-item-active');
-        doHaptic(30); // اهتزاز خفيف جداً عند اختيار رغبة
+        btn.classList.toggle('wish-active');
+        doHaptic(30);
     }
 
     async function saveWishes() {
         const btn = document.getElementById('save-wishes-btn');
-        const selected = [...document.querySelectorAll('.wish-item-active')].map(b => b.innerText.trim());
+        const selected = [...document.querySelectorAll('.wish-active')].map(b => b.innerText.trim());
         const custom = document.getElementById('custom-wish-input').value.trim();
         if (custom) selected.push(custom);
 
@@ -232,16 +266,14 @@
         await db.from('users').update({ wishes: selected.join(',') }).eq('id', currentUser.id);
         btn.innerText = '💾 حفظ الرغبات';
         doHaptic(50);
-        document.getElementById('save-msg').style.display = 'block';
-        setTimeout(() => document.getElementById('save-msg').style.display = 'none', 2000);
+        alert('تم الحفظ بنجاح!');
     }
 
     function toggleWishes() {
         const box = document.getElementById('wishes-box');
         box.style.display = box.style.display === 'none' ? 'flex' : 'none';
-        box.className = "flex flex-wrap gap-2 justify-center mt-4";
         const data = window.receiverWishesData || [];
-        box.innerHTML = data.length ? data.map(w => `<span class="bg-indigo-500/20 border border-indigo-500/30 px-3 py-1 rounded-lg text-xs">${w}</span>`).join('') : '<p class="text-xs text-gray-500">لم يحدد الشخص رغباته بعد</p>';
+        box.innerHTML = data.length ? data.map(w => `<span class="bg-indigo-500/10 border border-indigo-500/20 px-4 py-2 rounded-xl text-xs font-bold">${w}</span>`).join('') : '<p class="text-xs opacity-50">لم يحدد الشخص رغباته بعد</p>';
         doHaptic(20);
     }
 
@@ -258,9 +290,9 @@
         const { data: assignments } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)');
         if (assignments) {
             document.getElementById('assignments-list').innerHTML = assignments.map(a => `
-                <div class="bg-white/5 p-3 rounded-xl flex justify-between items-center text-sm border border-white/5">
-                    <span class="font-bold text-indigo-300">${a.giver.name}</span>
-                    <span class="text-gray-600">←</span>
+                <div class="bg-indigo-500/5 p-4 rounded-2xl flex justify-between items-center text-sm border border-indigo-500/10 mb-2">
+                    <span class="font-bold text-indigo-600">${a.giver.name}</span>
+                    <span class="opacity-30">←</span>
                     <span class="font-bold">${a.receiver.name}</span>
                 </div>
             `).join('');
@@ -268,7 +300,7 @@
     }
 
     async function runDraw() {
-        if (!confirm('سيتم مسح القرعة الحالية وعمل قرعة جديدة. هل أنت متأكد؟')) return;
+        if (!confirm('سيتم إنشاء قرعة جديدة. هل أنت متأكد؟')) return;
         const btn = document.getElementById('draw-btn');
         btn.innerText = '⏳ جاري السحب...';
         
@@ -286,7 +318,7 @@
         }
         if (!shuffled) { alert('فشل السحب، جرب مرة أخرى'); btn.innerText = '🎲 ابدأ القرعة الآن'; return; }
         
-        await db.from('assignments').delete().neq('id', 0); // مسح القديم
+        await db.from('assignments').delete().neq('id', 0);
         await db.from('draws').insert({ month_name: 'عيد الفطر' });
         const { data: newDraw } = await db.from('draws').select('id').order('created_at', {ascending:false}).limit(1).single();
         const inserts = members.map((m, idx) => ({ draw_id: newDraw.id, giver_id: m.id, receiver_id: shuffled[idx].id }));
