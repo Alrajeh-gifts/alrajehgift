@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#6366f1">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>">
     <link rel="manifest" id="manifest-link">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,78 +17,142 @@
     
     <style>
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+        html, body { min-height: 100%; margin: 0; }
+
+        /* ===== المتغيرات الأساسية (الوضع الداكن) ===== */
         :root {
-            --bg: #090a0f;
-            --text-main: #ffffff;
-            --text-sub: rgba(255, 255, 255, 0.6);
-            --glass: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --input-bg: rgba(0, 0, 0, 0.3);
+            --bg: #08090d;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-top: rgba(255, 255, 255, 0.15);
+            --input-bg: rgba(0, 0, 0, 0.35);
+            --accent: #6366f1;
+            --accent-dim: rgba(99, 102, 241, 0.15);
+            --liquid-1: rgba(99, 102, 241, 0.3);
+            --liquid-2: rgba(139, 92, 246, 0.25);
         }
 
+        /* ===== تعديلات النمط النهاري (Light Mode) لضمان الوضوح التام ===== */
         @media (prefers-color-scheme: light) {
             :root {
-                --bg: #f8fafc;
-                --text-main: #0f172a;
-                --text-sub: #64748b;
-                --glass: rgba(255, 255, 255, 0.9);
-                --glass-border: rgba(99, 102, 241, 0.15);
+                --bg: #f1f4f9;
+                --text-primary: #111827; /* كحلي غامق جداً للقراءة */
+                --text-secondary: #4b5563;
+                --text-muted: #9ca3af;
+                --glass-bg: rgba(255, 255, 255, 0.85);
+                --glass-border: rgba(99, 102, 241, 0.2);
+                --glass-border-top: rgba(255, 255, 255, 1);
                 --input-bg: #ffffff;
+                --accent-dim: rgba(99, 102, 241, 0.1);
+                --liquid-1: rgba(99, 102, 241, 0.2);
+                --liquid-2: rgba(236, 72, 153, 0.15);
             }
+            .btn-primary { color: #ffffff !important; }
+            #budget-display { background: rgba(99, 102, 241, 0.05) !important; color: #111827 !important; }
         }
 
-        body { background: var(--bg); color: var(--text-main); min-height: 100vh; margin: 0; display: flex; flex-direction: column; align-items: center; transition: background 0.3s; }
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.4s ease;
+        }
 
-        .glass { background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        /* السائل المتحرك */
+        body::before {
+            content: ''; position: fixed; inset: -150px;
+            background: radial-gradient(circle at 20% 30%, var(--liquid-1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, var(--liquid-2) 0%, transparent 50%);
+            filter: blur(80px); z-index: 0; pointer-events: none;
+            animation: swim 20s ease-in-out infinite alternate;
+        }
+        @keyframes swim { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(50px, 40px) scale(1.1); } }
 
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff !important; transition: all 0.2s; border: none; }
-        .btn-primary:active { transform: scale(0.92); }
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-border-top);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
 
-        input { background: var(--input-bg) !important; color: var(--text-main) !important; border: 1px solid var(--glass-border) !important; outline: none; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            box-shadow: 0 10px 25px -5px rgba(99,102,241,0.5);
+            border: none; cursor: pointer;
+        }
+        .btn-primary:active { transform: scale(0.95); }
+
+        .code-input {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .fade-in { animation: fadeUp 0.6s ease-out forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .wish-active { background: #6366f1 !important; color: white !important; border-color: #6366f1 !important; }
         
-        .fade-in { animation: fade 0.5s ease-out; }
-        @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .wish-btn { background: rgba(99, 102, 241, 0.05); color: var(--text-main); border: 1px solid var(--glass-border); }
-        .wish-active { background: #6366f1 !important; color: #fff !important; }
+        #assignments-section, #member-screen, #admin-screen { width: 100%; max-width: 24rem; }
     </style>
 </head>
 <body>
 
-<div id="login-screen" class="max-w-sm w-full fade-in px-6 mt-20">
+<div id="login-screen" class="w-full max-w-sm fade-in" style="margin-top: 12vh;">
     <div class="text-center mb-10">
-        <span class="text-7xl">🎁</span>
+        <div style="font-size:5rem; filter: drop-shadow(0 10px 15px rgba(99,102,241,0.3))">🎁</div>
         <h1 class="text-3xl font-black mt-4">هدايا العيد</h1>
-        <p class="mt-2 opacity-70">أدخل الرمز السري</p>
+        <p class="opacity-70 mt-2">أدخل الرمز السري للدخول</p>
     </div>
     <div class="glass rounded-3xl p-6 flex flex-col gap-4">
-        <input type="password" id="access-code" placeholder="الرمز السري" class="text-center p-4 rounded-2xl font-bold text-2xl">
-        <button onclick="login()" id="login-btn" class="btn-primary w-full font-black py-4 rounded-2xl text-lg shadow-xl shadow-indigo-500/20">
-            تسجيل الدخول
+        <input type="password" id="access-code" placeholder="الرمز السري" class="code-input p-4 rounded-2xl font-bold text-2xl outline-none">
+        <button onclick="login()" id="login-btn" class="btn-primary w-full font-black py-4 rounded-2xl text-lg">
+            تسجيل الدخول ←
         </button>
     </div>
 </div>
 
-<div id="member-screen" class="fade-in w-full max-w-sm px-4 hidden flex-col gap-6 py-10">
-    <div class="glass rounded-3xl p-8 text-center shadow-xl">
+<div id="member-screen" class="fade-in" style="display:none; flex-direction:column; gap:1.5rem">
+    <div class="glass rounded-3xl p-8 text-center mt-10">
         <p class="text-sm opacity-60">أهلاً وسهلاً</p>
         <h2 id="user-welcome" class="text-2xl font-black mb-6"></h2>
 
-        <div id="result-card" class="p-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 hidden">
+        <div id="result-card" class="p-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5" style="display:none;">
             <p class="text-xs opacity-60 mb-1">🎯 ستُهدي هذا العيد</p>
-            <div id="target-name" class="text-4xl font-black text-indigo-500 mb-6 tracking-tight"></div>
+            <div id="target-name" class="text-4xl font-black text-indigo-500 mb-6"></div>
             
-            <div class="bg-indigo-500/10 p-3 rounded-2xl mb-6 flex items-center justify-center gap-2 border border-indigo-500/10">
-                <span id="countdown-timer" class="text-sm font-bold">...</span>
+            <div id="budget-display" class="bg-indigo-500/10 p-3 rounded-xl mb-6 flex items-center justify-center gap-2 border border-indigo-500/10" style="display:none">
+                <span class="text-xs opacity-70">💰 الميزانية:</span>
+                <span id="budget-amount" class="font-black text-sm"></span>
             </div>
 
-            <button onclick="toggleWishes()" class="w-full bg-white/5 border border-white/10 py-2 rounded-xl text-xs font-bold mb-4">🎁 رغبات الشخص</button>
+            <button onclick="toggleWishes()" class="bg-indigo-500/10 border border-indigo-500/20 px-6 py-2 rounded-full text-xs font-bold mb-4">
+                🎁 عرض رغبات الشخص
+            </button>
             <div id="wishes-box" class="hidden flex-wrap justify-center gap-2 mb-4"></div>
 
-            <div class="pt-4 border-t border-indigo-500/10">
-                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary w-full py-3 rounded-2xl font-black text-sm">📦 تأكيد التسليم</button>
-                <div id="delivered-msg" class="hidden text-green-500 font-bold">✅ تم التسليم بنجاح!</div>
+            <div class="pt-6 border-t border-indigo-500/10 mt-4">
+                <div class="bg-indigo-500/5 p-3 rounded-2xl mb-4 flex items-center justify-center gap-2 border border-indigo-500/10">
+                    <span>⏳</span>
+                    <span id="countdown-timer" class="text-sm font-bold opacity-80">جاري الحساب...</span>
+                </div>
+
+                <button id="deliver-btn" onclick="markAsDelivered()" class="btn-primary w-full py-3 rounded-2xl font-black text-sm">
+                    📦 تأكيد تسليم الهدية
+                </button>
+                <div id="delivered-msg" class="hidden bg-green-500/10 text-green-500 p-4 rounded-2xl font-bold">✅ تم التسليم بنجاح!</div>
             </div>
         </div>
         
@@ -95,20 +160,45 @@
     </div>
 
     <div class="glass rounded-3xl p-6">
-        <h3 class="font-black mb-4">🌟 رغباتي</h3>
+        <h3 class="font-black mb-4">🌟 رغباتي في الهدية</h3>
         <div id="wishes-grid" class="grid grid-cols-2 gap-2 mb-4"></div>
-        <button onclick="saveWishes()" id="save-wishes-btn" class="w-full py-3 rounded-xl font-bold border border-indigo-500/30 text-sm">💾 حفظ</button>
+        <input type="text" id="custom-wish-input" placeholder="أو اكتب هديتك هنا..." class="code-input w-full p-3 rounded-xl text-sm outline-none mb-4">
+        <button onclick="saveWishes()" id="save-wishes-btn" class="w-full bg-indigo-500/10 border border-indigo-500/20 py-3 rounded-xl font-bold">💾 حفظ اختياراتي</button>
     </div>
 
-    <button onclick="location.reload()" class="opacity-40 font-bold text-sm">← تسجيل خروج</button>
+    <button onclick="location.reload()" class="opacity-50 font-bold text-sm py-4">← تسجيل خروج</button>
 </div>
 
-<div id="admin-screen" class="w-full max-w-sm px-4 fade-in hidden flex-col gap-4 mt-10">
-    <div class="glass rounded-3xl p-6 text-center">
-        <h2 class="text-xl font-black">المشرف 👑</h2>
-        <button onclick="runDraw()" id="draw-btn" class="btn-primary w-full py-4 rounded-2xl font-black mt-6">🎲 إجراء القرعة</button>
-        <div id="assignments-list" class="mt-6 flex flex-col gap-2"></div>
+<div id="admin-screen" class="fade-in" style="display:none; flex-direction:column; gap:1.25rem">
+    <div class="glass rounded-3xl p-6 mt-10 text-center">
+        <h2 class="text-xl font-black">لوحة المشرف 👑</h2>
+        <div class="bg-indigo-500/5 p-4 rounded-2xl mt-4 text-right flex flex-col gap-3 border border-indigo-500/10">
+            <p class="text-xs font-bold opacity-60">⚙️ القيود النشطة</p>
+            <div class="flex justify-between items-center text-sm">
+                <span>فواز لا يُهدي نواف</span>
+                <input type="checkbox" id="fawaz-toggle" checked>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+                <span>سميرة تُهدى من طارق أو فواز</span>
+                <input type="checkbox" id="sameera-toggle" checked>
+            </div>
+        </div>
+        <div class="mt-4 text-right">
+             <label class="text-xs font-bold opacity-60 block mb-2">💰 الميزانية (اختياري)</label>
+             <input type="text" id="budget-input" placeholder="مثلاً: 300 ريال" class="code-input w-full p-3 rounded-xl text-sm outline-none">
+        </div>
+        <button onclick="runDraw()" id="draw-btn" class="btn-primary w-full py-4 rounded-2xl font-black text-xl mt-6">🎲 إجراء القرعة الآن</button>
+        <p id="draw-status-text" class="text-xs mt-3 opacity-50"></p>
     </div>
+
+    <div id="assignments-section" class="hidden">
+        <div class="glass rounded-3xl p-6">
+            <h3 class="text-center font-black mb-4">📋 النتائج الحالية</h3>
+            <div id="assignments-list" class="flex flex-col gap-2"></div>
+        </div>
+    </div>
+
+    <button onclick="location.reload()" class="opacity-50 font-bold text-sm py-4 text-center">← تسجيل خروج</button>
 </div>
 
 <script>
@@ -119,17 +209,15 @@
     let currentUser = null;
     let currentAssignmentId = null;
 
-    // دالة الاهتزاز - تعمل فقط بعد تفاعل المستخدم
+    // دالة الاهتزاز المحسنة للجوال
     function haptic(pattern) {
         if ("vibrate" in navigator) {
-            try { navigator.vibrate(pattern); } catch (e) { console.log(e); }
+            try { navigator.vibrate(pattern); } catch (e) {}
         }
     }
 
     async function login() {
-        // أهم خطوة لآيفون: نهز الجهاز فور اللمس لتفعيل الصلاحية
-        haptic(50);
-
+        haptic(60); 
         const btn = document.getElementById('login-btn');
         const code = document.getElementById('access-code').value.trim();
         if (!code) return;
@@ -140,8 +228,8 @@
         const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
 
         if (error || !user) {
-            alert('خطأ في الرمز!');
-            btn.innerText = 'تسجيل الدخول';
+            alert('الرمز غير صحيح!');
+            btn.innerText = 'تسجيل الدخول ←';
             btn.disabled = false;
             return;
         }
@@ -151,21 +239,24 @@
     }
 
     async function showMemberScreen(user) {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('member-screen').classList.remove('hidden');
+        document.getElementById('login-screen').style.display = 'none';
         document.getElementById('member-screen').style.display = 'flex';
-        document.getElementById('user-welcome').innerText = user.name;
+        document.getElementById('user-welcome').innerText = user.name + " 👋";
 
         buildWishesGrid(user.wishes || '');
+
+        const { data: drawData } = await db.from('draws').select('*').order('created_at', {ascending: false}).limit(1).maybeSingle();
+        if (drawData && drawData.budget) {
+            document.getElementById('budget-amount').innerText = drawData.budget;
+            document.getElementById('budget-display').style.display = 'flex';
+        }
 
         const { data: assign } = await db.from('assignments').select('*, receiver:users!receiver_id(name, wishes)').eq('giver_id', user.id).limit(1).maybeSingle();
 
         if (assign) {
             currentAssignmentId = assign.id;
             document.getElementById('target-name').innerText = assign.receiver.name;
-            
-            // اهتزاز عند ظهور الاسم
-            setTimeout(() => haptic([100, 50, 100]), 500);
+            setTimeout(() => haptic([100, 50, 100]), 500); 
 
             if (assign.is_delivered) {
                 document.getElementById('delivered-msg').classList.remove('hidden');
@@ -173,7 +264,7 @@
             } else {
                 document.getElementById('deliver-btn').classList.remove('hidden');
             }
-            document.getElementById('result-card').classList.remove('hidden');
+            document.getElementById('result-card').style.display = 'block';
             window.receiverWishesData = (assign.receiver.wishes || '').split(',').filter(Boolean);
         } else {
             document.getElementById('no-draw-msg').classList.remove('hidden');
@@ -184,7 +275,7 @@
         const eid = new Date("2026-03-20T00:00:00").getTime();
         setInterval(() => {
             const diff = eid - new Date().getTime();
-            if (diff < 0) { document.getElementById('countdown-timer').innerText = "عيد مبارك!"; return; }
+            if (diff < 0) { document.getElementById('countdown-timer').innerText = "كل عام وأنتم بخير! 🎉"; return; }
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             document.getElementById('countdown-timer').innerText = `باقي للعيد: ${d} يوم و ${h} ساعة`;
@@ -193,24 +284,29 @@
     initCountdown();
 
     function buildWishesGrid(saved) {
-        const options = ['عطور', 'ملابس', 'إلكترونيات', 'قهوة', 'ساعة', 'كتاب'];
+        const options = ['عطور وعناية', 'ملابس', 'تقنية', 'قهوة وحلويات', 'ساعة', 'كتاب'];
         const grid = document.getElementById('wishes-grid');
         const savedArray = (saved || '').split(',');
         grid.innerHTML = options.map(opt => `
-            <button onclick="toggleWish(this)" class="wish-btn p-3 rounded-xl text-xs font-bold ${savedArray.includes(opt) ? 'wish-active' : ''}">${opt}</button>
+            <button onclick="toggleWish(this)" class="p-3 rounded-xl border border-indigo-500/10 text-xs font-bold transition-all ${savedArray.includes(opt) ? 'wish-active' : 'bg-indigo-500/5 opacity-70'}">
+                ${opt}
+            </button>
         `).join('');
     }
 
     function toggleWish(btn) {
         btn.classList.toggle('wish-active');
+        btn.classList.toggle('opacity-70');
         haptic(30);
     }
 
     async function saveWishes() {
         haptic(50);
         const selected = [...document.querySelectorAll('.wish-active')].map(b => b.innerText);
+        const custom = document.getElementById('custom-wish-input').value.trim();
+        if (custom) selected.push(custom);
         await db.from('users').update({ wishes: selected.join(',') }).eq('id', currentUser.id);
-        alert('تم الحفظ!');
+        alert('تم حفظ رغباتك بنجاح! ✅');
     }
 
     function toggleWishes() {
@@ -219,42 +315,66 @@
         box.classList.toggle('hidden');
         box.classList.add('flex');
         const data = window.receiverWishesData || [];
-        box.innerHTML = data.length ? data.map(w => `<span class="bg-indigo-500/20 px-3 py-1 rounded-lg text-xs font-bold">${w}</span>`).join('') : 'لم يحدد رغباته';
+        box.innerHTML = data.length ? data.map(w => `<span class="bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-lg text-xs font-bold">${w}</span>`).join('') : '<p class="text-xs opacity-50">لم يحدد الشخص رغباته بعد</p>';
     }
 
     async function markAsDelivered() {
-        if(!confirm('تأكيد التسليم؟')) return;
+        if(!confirm('هل تود تأكيد تسليم الهدية؟')) return;
         haptic([50, 50, 50]);
         await db.from('assignments').update({ is_delivered: true }).eq('id', currentAssignmentId);
         location.reload();
     }
 
-    function showAdminScreen() {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('admin-screen').classList.remove('hidden');
+    async function showAdminScreen() {
+        document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-screen').style.display = 'flex';
+        const { data: assignments } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)');
+        if (assignments && assignments.length > 0) {
+            document.getElementById('assignments-section').classList.remove('hidden');
+            document.getElementById('assignments-list').innerHTML = assignments.map(a => `
+                <div class="bg-indigo-500/5 p-3 rounded-2xl flex justify-between items-center text-sm border border-indigo-500/10">
+                    <span class="font-bold text-indigo-500">${a.giver.name}</span>
+                    <span class="opacity-20 text-xs">${a.is_delivered ? '✅ سُلّمت' : '⏳ بالانتظار'}</span>
+                    <span class="font-bold">${a.receiver.name}</span>
+                </div>
+            `).join('');
+        }
     }
 
     async function runDraw() {
         haptic(100);
+        if(!confirm('سيتم حذف القرعة الحالية وإنشاء واحدة جديدة، هل أنت متأكد؟')) return;
+        const btn = document.getElementById('draw-btn');
+        btn.innerText = 'جاري السحب... 🎲';
+        btn.disabled = true;
+
         const { data: members } = await db.from('users').select('*').eq('role', 'member');
+        const fawazC = document.getElementById('fawaz-toggle').checked;
+        const sameeraC = document.getElementById('sameera-toggle').checked;
+        const budget = document.getElementById('budget-input').value.trim();
+
         let shuffled = null;
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < 10000; i++) {
             const temp = [...members].sort(() => Math.random() - 0.5);
             if (!temp.some((m, idx) => m.id === members[idx].id)) {
                 const map = {}; members.forEach((m, idx) => map[m.name] = temp[idx].name);
-                if (map['فواز'] === 'نواف') continue;
-                const giverOfS = Object.keys(map).find(k => map[k] === 'سميرة');
-                if (!['طارق', 'فواز'].includes(giverOfS)) continue;
+                if (fawazC && map['فواز'] === 'نواف') continue;
+                if (sameeraC) {
+                    const giverOfS = Object.keys(map).find(k => map[k] === 'سميرة');
+                    if (!['طارق', 'فواز'].includes(giverOfS)) continue;
+                }
                 shuffled = temp; break;
             }
         }
-        if (!shuffled) return alert('فشل السحب');
+
+        if (!shuffled) { alert('فشل السحب بسبب القيود، حاول مرة أخرى'); btn.disabled = false; return; }
+
         await db.from('assignments').delete().neq('id', 0);
-        const { data: d } = await db.from('draws').insert({ month_name: 'العيد' }).select().single();
+        const { data: d } = await db.from('draws').insert({ month_name: 'العيد', budget: budget }).select().single();
         const inserts = members.map((m, idx) => ({ draw_id: d.id, giver_id: m.id, receiver_id: shuffled[idx].id }));
         await db.from('assignments').insert(inserts);
-        alert('تمت القرعة!');
+
+        alert('تمت القرعة بنجاح! 🎉');
         location.reload();
     }
 </script>
