@@ -2,581 +2,66 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>هدايا العيد 🎁</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#050714">
+<title>فحص الاتصال النهائي</title>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-:root{
-  --bg:#050714;
-  --la:#6366f1;--lb:#06b6d4;--lc:#8b5cf6;--ld:#0ea5e9;
-  --glass:rgba(255,255,255,0.06);
-  --border:rgba(255,255,255,0.11);
-  --border-hi:rgba(255,255,255,0.22);
-  --shadow:0 20px 60px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.14);
-  --t1:#f0f4ff;--t2:rgba(200,210,255,0.6);--t3:rgba(200,210,255,0.32);
-  --btn:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#06b6d4 100%);
-  --btn-sh:0 10px 30px rgba(99,102,241,0.45);
-  --inner:rgba(0,0,12,0.38);--ib:rgba(255,255,255,0.055);
-}
-html,body{height:100%;background:var(--bg);font-family:'Cairo',sans-serif;color:var(--t1);overflow-x:hidden}
-body{display:flex;flex-direction:column;align-items:center;
-  padding:max(2rem,env(safe-area-inset-top)) 1rem max(2rem,env(safe-area-inset-bottom));
-  min-height:100dvh;position:relative}
-
-.lbg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.blob{position:absolute;border-radius:50%;filter:blur(72px);mix-blend-mode:screen;opacity:0.5;will-change:transform}
-.b1{width:520px;height:520px;background:radial-gradient(circle,var(--la),transparent 70%);top:-10%;right:-12%;animation:b1 22s ease-in-out infinite alternate}
-.b2{width:420px;height:420px;background:radial-gradient(circle,var(--lb),transparent 70%);bottom:-8%;left:-10%;animation:b2 27s ease-in-out infinite alternate}
-.b3{width:340px;height:340px;background:radial-gradient(circle,var(--lc),transparent 70%);top:38%;left:18%;animation:b3 18s ease-in-out infinite alternate-reverse}
-.b4{width:260px;height:260px;background:radial-gradient(circle,var(--ld),transparent 70%);top:18%;left:-6%;animation:b4 24s ease-in-out infinite alternate}
-@keyframes b1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-8%,12%) scale(1.1)}}
-@keyframes b2{0%{transform:translate(0,0) scale(1.05)}100%{transform:translate(10%,-8%) scale(0.92)}}
-@keyframes b3{0%{transform:translate(0,0) scale(0.95)}100%{transform:translate(-10%,8%) scale(1.12)}}
-@keyframes b4{0%{transform:translate(0,0) scale(1)}100%{transform:translate(8%,14%) scale(1.08)}}
-.lbg::after{content:'';position:absolute;inset:0;
-background:radial-gradient(ellipse 100% 55% at 50% 0%,rgba(5,7,20,.35),transparent),
-radial-gradient(ellipse 100% 55% at 50% 100%,rgba(5,7,20,.42),transparent)}
-
-.wrap{width:100%;max-width:22rem;z-index:10;display:flex;flex-direction:column;gap:1.05rem;flex:1;justify-content:center}
-
-.card{background:var(--glass);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);
-border:1px solid var(--border);border-top-color:var(--border-hi);border-radius:1.6rem;
-padding:1.45rem 1.35rem;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;inset:0;
-background:linear-gradient(135deg,rgba(255,255,255,.055) 0%,transparent 60%);
-border-radius:inherit;pointer-events:none}
-.card::after{content:'';position:absolute;top:0;left:-120%;width:50%;height:100%;
-background:linear-gradient(to right,transparent,rgba(255,255,255,.065),transparent);
-transform:skewX(-18deg);animation:glint 14s infinite;pointer-events:none}
-@keyframes glint{0%{left:-120%}10%{left:220%}100%{left:220%}}
-
-.inner{background:var(--inner);border:1px solid var(--ib);border-radius:1.05rem;
-padding:.95rem;box-shadow:inset 0 2px 8px rgba(0,0,0,.4)}
-
-.divl{height:1px;background:linear-gradient(to left,transparent,var(--border-hi),transparent);margin:.85rem 0}
-
-.btn{width:100%;background:var(--btn);border:none;border-radius:1.05rem;padding:.95rem 1rem;
-color:#fff!important;font-family:'Cairo',sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;
-box-shadow:var(--btn-sh);transition:transform .2s cubic-bezier(.175,.885,.32,1.275),box-shadow .2s;
-position:relative;overflow:hidden}
-.btn::after{content:'';position:absolute;inset:0;
-background:linear-gradient(to bottom,rgba(255,255,255,.12),transparent);
-border-radius:inherit;pointer-events:none}
-.btn:active:not(:disabled){transform:scale(.97);box-shadow:0 5px 15px rgba(99,102,241,.3)}
-.btn:disabled{background:var(--inner)!important;color:var(--t3)!important;
-border:1px solid var(--ib);box-shadow:none;cursor:not-allowed}
-.btn.row{flex-direction:row;gap:.4rem}
-
-.inp{width:100%;background:var(--inner);border:1px solid var(--ib);border-radius:1.05rem;
-padding:.88rem 1rem;color:var(--t1);font-family:'Cairo',sans-serif;font-weight:700;
-font-size:.9rem;text-align:center;outline:none;
-transition:border-color .2s,box-shadow .2s;box-shadow:inset 0 2px 8px rgba(0,0,0,.35)}
-.inp:focus{border-color:rgba(99,102,241,.6);
-box-shadow:inset 0 2px 8px rgba(0,0,0,.35),0 0 0 3px rgba(99,102,241,.15)}
-.inp::placeholder{color:var(--t3);font-size:.82rem;font-weight:600}
-
-.chip{background:var(--inner);border:1px solid var(--ib);border-radius:.75rem;padding:.75rem .3rem;
-color:var(--t2);font-family:'Cairo',sans-serif;font-size:.76rem;font-weight:700;
-cursor:pointer;transition:all .2s;text-align:center}
-.chip.on{background:var(--btn);border-color:rgba(99,102,241,.5);color:#fff!important;
-font-weight:900;box-shadow:0 5px 16px rgba(99,102,241,.4);transform:translateY(-2px)}
-
-.cap{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3)}
-.hide{display:none!important}
-.fi{animation:fi .65s cubic-bezier(.16,1,.3,1) both}
-@keyframes fi{from{opacity:0;transform:translateY(24px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-.d1{animation-delay:.05s}.d2{animation-delay:.13s}.d3{animation-delay:.21s}
-
-.arow{background:var(--inner);border:1px solid var(--ib);border-radius:.85rem;
-padding:.7rem .9rem;display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
-.badge{font-size:10px;font-weight:800;padding:.2rem .55rem;border-radius:999px;border:1px solid}
-.badge.ok{color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.08)}
-.badge.pen{color:var(--t3);border-color:var(--ib)}
-
-@keyframes npop{0%{transform:scale(.6);opacity:0;filter:blur(8px)}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1;filter:none}}
-.npop{animation:npop .7s cubic-bezier(.175,.885,.32,1.275) forwards}
-
-.spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.15);border-top-color:rgba(255,255,255,.85);
-border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle}
-@keyframes sp{to{transform:rotate(360deg)}}
-
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    body { background: #000; color: #0f0; font-family: monospace; padding: 20px; text-align: center; }
+    #log { text-align: left; background: #111; padding: 15px; border: 1px solid #333; margin-top: 20px; height: 300px; overflow-y: auto; font-size: 12px; }
+    button { padding: 20px; font-size: 20px; cursor: pointer; background: #0f0; color: #000; border: none; font-weight: bold; width: 100%; }
 </style>
-
 </head>
 <body>
 
-<div class="lbg">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-  <div class="blob b4"></div>
-</div>
-
-<div id="s-login" class="wrap fi">
-  <div style="text-align:center;margin-bottom:1.4rem">
-    <div style="font-size:3.8rem;filter:drop-shadow(0 0 22px rgba(99,102,241,.75));margin-bottom:.55rem">🎁</div>
-    <h1 style="font-size:1.85rem;font-weight:900;letter-spacing:-.5px;color:var(--t1)">هدايا العيد</h1>
-    <p class="cap" style="margin-top:.35rem;letter-spacing:3px">قُرعة العائلة الكريمة • ٢٠٢٦</p>
-  </div>
-  <div class="card fi d1" style="display:flex;flex-direction:column;gap:.9rem">
-    <p class="cap" style="text-align:center">أدخل رمزك السري</p>
-    <input type="password" id="inp-code" class="inp" placeholder="تاريخ ميلادك بالهجري"
-      onkeydown="if(event.key==='Enter')login()">
-    <button class="btn row" onclick="login()" id="btn-login">
-      <span id="txt-login">دخول القرعة</span>
-      <span style="opacity:.65">←</span>
-    </button>
-  </div>
-  <p style="text-align:center;color:var(--t3);font-size:.68rem;font-weight:600;margin-top:.4rem">﷽</p>
-</div>
-
-<div id="s-member" class="wrap hide" style="padding-bottom:1rem">
-  <div class="card fi d1" style="text-align:center">
-    <p class="cap" style="margin-bottom:.45rem">عضو العائلة الكريمة ✓</p>
-    <h2 id="el-welcome" style="font-size:1.3rem;font-weight:900;color:var(--t1);margin-bottom:1.1rem"></h2>
-
-<div id="zone-result" class="hide">
-  <div class="inner" style="margin-bottom:.95rem;text-align:center">
-    <p class="cap" style="margin-bottom:.55rem">🎯 هديتك هذا العيد تروح لـ</p>
-    <div id="el-target" class="npop" style="font-size:2.6rem;font-weight:900;
-      background:linear-gradient(135deg,#a5b4fc,#67e8f9);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-      background-clip:text;margin-bottom:.25rem"></div>
-    <p style="color:var(--t2);font-size:.73rem;font-weight:700">حظّك وقع عليه — فرّح قلبه بهديتك 🎁</p>
-
-    <div class="divl"></div>
-
-    <div id="row-budget" class="hide" style="display:flex;justify-content:center;align-items:center;gap:.45rem;margin-bottom:.7rem">
-      <span style="color:var(--t2);font-size:.73rem;font-weight:700">💰 الميزانية المقترحة:</span>
-      <span id="el-budget" style="font-weight:900;font-size:.83rem;color:#a5b4fc"></span>
-    </div>
-
-    <button id="btn-toggle-wishes" onclick="toggleWishes()"
-      style="width:100%;padding:.6rem;border-radius:.8rem;font-size:.78rem;font-weight:800;
-        font-family:'Cairo',sans-serif;background:var(--inner);border:1px solid var(--ib);
-        color:var(--t1);cursor:pointer;transition:.2s">
-      🎀 اعرض أمنياته المفضلة
-    </button>
-    <div id="box-wishes" class="hide" style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.65rem"></div>
-  </div>
-
-  <button id="btn-deliver" onclick="markDelivered()" class="btn" disabled style="margin-bottom:.7rem">
-    <span id="ttl-deliver" style="font-weight:900">🔒 يُفتح يوم العيد</span>
-    <span id="sub-deliver" style="font-size:.71rem;opacity:.62;font-weight:700">جارٍ العدّ التنازلي...</span>
-  </button>
-
-  <div id="msg-delivered" class="inner hide" style="text-align:center;color:#4ade80;font-weight:900;
-    font-size:.88rem;background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.2)">
-    ✅ بيّض الله وجهك — تم التسليم بنجاح!
-  </div>
-</div>
-
-<div id="zone-nodraw" class="hide" style="padding:2.5rem 0;color:var(--t2);font-weight:800;font-size:.95rem">
-  القرعة ما جاء وقتها بعد ⏳
-  <p style="font-size:.7rem;color:var(--t3);margin-top:.35rem;font-weight:600">راسل المشرف لو عندك استفسار</p>
-</div>
-  </div>
-
-  <div class="card fi d2">
-    <h3 style="font-weight:900;font-size:1rem;color:var(--t1);margin-bottom:.2rem">✨ أمنياتي الشخصية</h3>
-    <p style="color:var(--t2);font-size:.71rem;font-weight:700;margin-bottom:.9rem">اختر ما يعجبك — من يهديك راح يشوفه</p>
-    <div id="grid-wishes" style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.9rem"></div>
-    <input type="text" id="inp-custom" class="inp" placeholder="أو اكتب رغبة خاصة... ✍️"
-      style="margin-bottom:.85rem;font-size:.86rem;padding:.82rem 1rem">
-    <button class="btn row" onclick="saveWishes()">
-      <span id="txt-save">💾 احفظ أمنياتي</span>
-    </button>
-  </div>
-
-<button onclick="logout()"
-style="color:var(--t3);font-size:.7rem;font-weight:700;background:none;border:none;cursor:pointer;
-margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
-← تسجيل الخروج
-</button>
-
-</div>
-
-<div id="s-admin" class="wrap hide" style="padding-bottom:1rem">
-
-  <div class="card fi d1" style="text-align:center">
-    <div style="font-size:2.4rem;filter:drop-shadow(0 0 18px rgba(99,102,241,.65));margin-bottom:.4rem">👑</div>
-    <h2 style="font-weight:900;font-size:1.35rem;color:var(--t1);margin-bottom:.15rem">لوحة تحكم المشرف</h2>
-    <p style="color:var(--t2);font-size:.73rem;font-weight:700;margin-bottom:1.3rem">إدارة قرعة العائلة الكريمة</p>
-
-<div class="inner" style="text-align:right;margin-bottom:1rem">
-  <p class="cap" style="margin-bottom:.85rem">⚙️ قيود القرعة الذكية</p>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;
-    font-size:.83rem;font-weight:700;color:var(--t1)">
-    <label for="tog-fawaz" style="cursor:pointer">فواز ما يُهدي نواف</label>
-    <input type="checkbox" id="tog-fawaz" checked style="width:1.05rem;height:1.05rem;accent-color:#6366f1;cursor:pointer">
-  </div>
-  <div style="display:flex;justify-content:space-between;align-items:center;
-    font-size:.83rem;font-weight:700;color:var(--t1)">
-    <label for="tog-sameera" style="cursor:pointer">سميرة تُهدى من طارق أو فواز بس</label>
-    <input type="checkbox" id="tog-sameera" checked style="width:1.05rem;height:1.05rem;accent-color:#6366f1;cursor:pointer">
-  </div>
-</div>
-
-<div style="text-align:right;margin-bottom:1rem">
-  <label class="cap" style="display:block;margin-bottom:.45rem">💰 حدّد الميزانية (اختياري)</label>
-  <input type="text" id="inp-budget" class="inp" placeholder="مثال: 300 ريال">
-</div>
-
-<button class="btn row" onclick="runDraw()" id="btn-draw">
-  <span id="txt-draw">🎲 ابدأ القرعة الإلكترونية</span>
-</button>
-
-  </div>
-
-  <div id="sec-assigns" class="card fi d2 hide">
-    <h3 style="text-align:center;font-weight:900;font-size:.93rem;color:var(--t1);
-      padding-bottom:.75rem;margin-bottom:.75rem;border-bottom:1px solid var(--border)">
-      📋 أحدث توزيع للقرعة
-    </h3>
-    <div id="list-assigns" style="display:flex;flex-direction:column;gap:.45rem"></div>
-  </div>
-
-<button onclick="logout()"
-style="color:var(--t3);font-size:.7rem;font-weight:700;background:none;border:none;cursor:pointer;
-margin:.1rem auto;font-family:'Cairo',sans-serif;padding:.35rem">
-← تسجيل خروج المشرف
-</button>
-
-</div>
-
-<canvas id="cvs" style="position:fixed;inset:0;pointer-events:none;z-index:999;display:none"></canvas>
+    <h2>فحص نظام القرعة الذكي 🛠️</h2>
+    <button onclick="startFinalTest()">اضغط لتشغيل الفحص الآن</button>
+    <div id="log">-- بانتظار بدء الفحص --</div>
 
 <script>
-const SURL='https://oprethkloexyrhagmdod.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
-const db=supabase.createClient(SURL,SKEY);
-const STORE='eid_gift_v4';
-let me=null,assignId=null,rxWishes=[];
-const arM=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+// تأكد أن هذه الروابط مطابقة لمشروعك في Supabase
+const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
+const db = supabase.createClient(SURL, SKEY);
 
-const $=id=>document.getElementById(id);
-const show=(id,flex)=>{const e=$(id);e.classList.remove('hide');if(flex)e.style.display=flex};
-const hide=id=>$(id).classList.add('hide');
-function haptic(p){try{navigator.vibrate?.(p)}catch(_){}}
-
-function screen(s){
-  ['s-login','s-member','s-admin'].forEach(id=>{
-    if(id===s){show(id,'flex')}else{$(id).classList.add('hide');$(id).style.display=''}
-  });
+function logger(msg, color = "#0f0") {
+    const l = document.getElementById('log');
+    l.innerHTML += `<div style="color:${color}">> ${msg}</div>`;
+    l.scrollTop = l.scrollHeight;
 }
 
-/* ── دخول ── */
-window.onload=()=>{
-  const s=localStorage.getItem(STORE);
-  if(s){$('inp-code').value=s;login(true);}
-};
-
-async function login(auto=false){
-  if(!auto)haptic(40);
-  const code=$('inp-code').value.trim();
-  if(!code)return;
-  $('txt-login').innerHTML='<span class="spin"></span>';
-  const{data:u,error}=await db.from('users').select('*').eq('code',code).single();
-  if(error||!u){
-    if(!auto){haptic([50,100,50]);toast('الرمز غير صحيح ❌','err');}
-    localStorage.removeItem(STORE);
-    $('txt-login').textContent='دخول القرعة';
-    return;
-  }
-  localStorage.setItem(STORE,code);
-  me=u;
-  u.role==='admin'?loadAdmin():loadMember(u);
-}
-
-function logout(){
-  if(!confirm('متأكد من تسجيل الخروج؟'))return;
-  localStorage.removeItem(STORE);
-  location.reload();
-}
-
-/* ── عضو ── */
-async function loadMember(u){
-  screen('s-member');
-  haptic(30);
-  const w=$('el-welcome');
-  if(u.name==='سميرة'){
-    w.innerHTML='يا هلا يا قلب البيت — أمنا سميرة 👑❤️';
-    w.style.cssText='font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,#f9a8d4,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.1rem';
-  }else{
-    w.textContent='يا هلا يا '+u.name+' 👋';
-  }
-  buildGrid(u.wishes||'');
-  const{data:dr}=await db.from('draws').select('*').order('created_at',{ascending:false}).limit(1).maybeSingle();
-  if(!dr){show('zone-nodraw','block');return;}
-  if(dr.budget){$('el-budget').textContent=dr.budget+' ريال';show('row-budget','flex');}
-  const{data:asgn}=await db.from('assignments')
-    .select('*,receiver:users!receiver_id(name,wishes)')
-    .eq('giver_id',u.id).eq('draw_id',dr.id).maybeSingle();
-  if(!asgn){show('zone-nodraw','block');return;}
-  assignId=asgn.id;
-  $('el-target').textContent=asgn.receiver.name;
-  rxWishes=(asgn.receiver.wishes||'').split(',').filter(Boolean);
-  show('zone-result','block');
-  setTimeout(()=>haptic([80,40,80]),400);
-  if(asgn.is_delivered){
-    hide('btn-deliver');
-    show('msg-delivered','block');
-  }else{
-    show('btn-deliver','flex');
-    hide('msg-delivered');
-    countdown();
-  }
-}
-
-function countdown(){
-  const eid=new Date('2026-03-20T00:00:00').getTime();
-  const tick=()=>{
-    const btn=$('btn-deliver');
-    if(!btn)return;
-    const diff=eid-Date.now();
-    if(diff<=0){
-      btn.disabled=false;
-      $('ttl-deliver').textContent='📦 تأكيد تسليم الهدية';
-      $('sub-deliver').textContent='اضغط لتسجيل التسليم الرسمي';
-      return;
-    }
-    const d=Math.floor(diff/86400000);
-    const h=Math.floor(diff%86400000/3600000);
-    const m=Math.floor(diff%3600000/60000);
-    btn.disabled=true;
-    $('ttl-deliver').textContent='🔒 يُفتح يوم العيد';
-    $('sub-deliver').textContent='باقي '+d+' يوم و '+h+' ساعة';
-    setTimeout(tick,30000);
-  };
-  tick();
-}
-
-function toggleWishes(){
-  const box=$('box-wishes');
-  const btn=$('btn-toggle-wishes');
-  const isHidden=box.classList.contains('hide');
-  if(isHidden){
-    box.classList.remove('hide');
-    box.style.display='flex';
-    btn.textContent='🔼 إخفاء الأمنيات';
-    box.innerHTML=rxWishes.length
-      ?rxWishes.map(w=>`<span style="padding:.28rem .65rem;border-radius:.5rem;font-size:.74rem;font-weight:800;background:var(--inner);border:1px solid var(--ib);color:var(--t1)">${w}</span>`).join('')
-      :'<p style="font-size:.76rem;color:var(--t2);font-weight:700;padding:.25rem">ما حدّد أمنياته بعد ⏳</p>';
-  }else{
-    hide('box-wishes');
-    btn.textContent='🎀 اعرض أمنياته المفضلة';
-  }
-}
-
-async function markDelivered(){
-  if(!confirm('📦 هل سلّمت الهدية فعلاً وتبي تسجّلها؟'))return;
-  haptic([50,50,50]);
-  $('ttl-deliver').innerHTML='<span class="spin"></span>';
-  $('sub-deliver').textContent='';
-  $('btn-deliver').disabled=true;
-  const{error}=await db.from('assignments').update({is_delivered:true}).eq('id',assignId);
-  if(!error){
-    fireConfetti();
-    hide('btn-deliver');
-    show('msg-delivered','block');
-    haptic([100,80,100,80,150]);
-    toast('جزاك الله خيراً! 🎉','ok');
-  }else{
-    toast('حدث خطأ، حاول مجدداً','err');
-    $('btn-deliver').disabled=false;
-    $('ttl-deliver').textContent='📦 تأكيد تسليم الهدية';
-  }
-}
-
-/* ── الأمنيات ── */
-const OPTS=[
-  {l:'عطور وعناية',i:'🌸'},{l:'ملابس وأناقة',i:'👔'},
-  {l:'إلكترونيات',i:'📱'},{l:'قهوة وحلويات',i:'☕'},
-  {l:'ساعة فاخرة',i:'⌚'},{l:'كتب واستجمام',i:'📚'},
-];
-
-function buildGrid(saved){
-  const arr=saved.split(',').filter(Boolean);
-  $('grid-wishes').innerHTML=OPTS.map(o=>`
-    <button onclick="toggleChip(this)" class="chip${arr.includes(o.l)?' on':''}">
-      <div>${o.i}</div><div>${o.l}</div>
-    </button>`).join('');
-}
-
-function toggleChip(el){el.classList.toggle('on');haptic(18);}
-
-async function saveWishes(){
-  haptic(40);
-  $('txt-save').innerHTML='<span class="spin"></span>';
-  const sel=[...document.querySelectorAll('.chip.on')].map(b=>{
-    const lines=b.textContent.trim().split('\n');
-    return lines[lines.length-1].trim();
-  });
-  const custom=$('inp-custom').value.trim();
-  if(custom)sel.push(custom);
-  const{error}=await db.from('users').update({wishes:sel.join(',')}).eq('id',me.id);
-  if(!error){toast('✅ تم حفظ أمنياتك','ok');$('inp-custom').value='';}
-  else toast('حدث خطأ في الحفظ ❌','err');
-  $('txt-save').textContent='💾 احفظ أمنياتي';
-}
-
-/* ── مشرف ── */
-async function loadAdmin(){
-  screen('s-admin');
-  // تعديل الإدارة: جلب أحدث قرعة فقط لكي لا تتداخل القرعات القديمة بالجديدة
-  const {data: lastDraw} = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(1).maybeSingle();
-  if(!lastDraw) return;
-
-  const{data:asgns}=await db.from('assignments')
-    .select('*,giver:users!giver_id(name),receiver:users!receiver_id(name)')
-    .eq('draw_id', lastDraw.id)
-    .order('created_at',{ascending:false});
-
-  if(asgns&&asgns.length>0){
-    renderAssigns(asgns);
-    show('sec-assigns','block');
-  }
-}
-
-function renderAssigns(asgns){
-  $('list-assigns').innerHTML=asgns.map(a=>`
-    <div class="arow">
-      <span style="font-weight:900;color:#a5b4fc;width:33%;text-align:right">${a.giver.name}</span>
-      <span class="badge ${a.is_delivered?'ok':'pen'}">${a.is_delivered?'✅ سُلّمت':'⏳ بانتظار'}</span>
-      <span style="font-weight:900;color:var(--t1);width:33%;text-align:left">${a.receiver.name}</span>
-    </div>`).join('');
-}
-
-async function runDraw(){
-  if(!confirm('⚠️ سيتم إجراء قرعة جديدة للشهر الحالي — تؤكد؟'))return;
-  haptic(80);
-  $('txt-draw').innerHTML='<span class="spin"></span> جارٍ السحب...';
-  $('btn-draw').disabled=true;
-
-  const{data:members}=await db.from('users').select('*').eq('role','member');
-  if(!members||members.length<2){toast('عدد الأعضاء غير كافٍ','err');resetDraw();return;}
-
-  const fC=$('tog-fawaz').checked;
-  const sC=$('tog-sameera').checked;
-  const budget=$('inp-budget').value.trim();
-
-  /* القرعات السابقة لتفادي التكرار */
-  const{data:past}=await db.from('draws').select('id').order('created_at',{ascending:false}).limit(3);
-  let pastPairs=[];
-  if(past?.length){
-    const{data:pa}=await db.from('assignments')
-      .select('giver:users!giver_id(name),receiver:users!receiver_id(name)')
-      .in('draw_id',past.map(d=>d.id));
-    if(pa)pastPairs=pa.map(a=>a.giver.name+'->'+a.receiver.name);
-  }
-
-  let result=null;
-  for(let i=0;i<10000;i++){
-    const sh=[...members].sort(()=>Math.random()-.5);
-    if(sh.some((m,idx)=>m.id===members[idx].id))continue;
-    const map={};
-    members.forEach((m,idx)=>{map[m.name]=sh[idx].name;});
+async function startFinalTest() {
+    logger("بدء الفحص الحقيقي...");
     
-    // التعديل السحري: التأكد من أن الاسم موجود فعلاً في القرعة لكي لا تفشل
-    if(fC && map['فواز'] && map['فواز']==='نواف')continue;
-    if(sC){
-      const g=Object.keys(map).find(k=>map[k]==='سميرة');
-      if(g && !['طارق','فواز'].includes(g))continue;
+    try {
+        // الخطوة 1: فحص الاتصال بجدول المستخدمين
+        logger("1. محاولة جلب المستخدمين...");
+        const { data: users, error: e1 } = await db.from('users').select('id, name');
+        if (e1) throw new Error("فشل الاتصال بجدول users: " + e1.message);
+        logger(`تم العثور على (${users.length}) مستخدمين.`);
+
+        // الخطوة 2: فحص جدول القرعات
+        logger("2. محاولة إنشاء سجل في جدول draws...");
+        const { data: draw, error: e2 } = await db.from('draws').insert({ month_name: 'تجربة فحص' }).select().single();
+        if (e2) throw new Error("فشل الكتابة في جدول draws: " + e2.message);
+        logger("تم إنشاء سجل القرعة بنجاح.");
+
+        // الخطوة 3: فحص جدول التوزيعات
+        logger("3. محاولة كتابة توزيع تجريبي في assignments...");
+        const { error: e3 } = await db.from('assignments').insert({
+            draw_id: draw.id,
+            giver_id: users[0].id,
+            receiver_id: users[1].id
+        });
+        if (e3) throw new Error("فشل الكتابة في جدول assignments: " + e3.message);
+        logger("تم حفظ التوزيع التجريبي بنجاح!");
+
+        logger("🎉 النظام سليم 100% والآن يعمل!", "yellow");
+        alert("اشتغلت! النظام الآن قادر على القراءة والكتابة.");
+
+    } catch (err) {
+        logger("❌ خطأ فادح: " + err.message, "red");
+        console.error(err);
     }
-
-    if(Object.entries(map).some(([g,r])=>pastPairs.includes(g+'->'+r)))continue;
-    result={sh,map};break;
-  }
-
-  if(!result){toast('ما قدرت أسوي القرعة — جرّب تقليل القيود','err');resetDraw();return;}
-
-  // تم إلغاء سطر الحذف (delete) للحفاظ على ذاكرة الـ 3 أشهر
-
-  const dName='هدايا العيد — '+arM[new Date().getMonth()]+' '+new Date().getFullYear();
-  const{data:nd,error:de}=await db.from('draws').insert({month_name:dName,budget}).select().single();
-  if(de){toast('خطأ في إنشاء القرعة ❌','err');resetDraw();return;}
-
-  const{error:ae}=await db.from('assignments').insert(
-    members.map((m,idx)=>({draw_id:nd.id,giver_id:m.id,receiver_id:result.sh[idx].id,is_delivered:false}))
-  );
-  if(ae){toast('خطأ في حفظ التوزيع ❌','err');resetDraw();return;}
-
-  fireConfetti();
-  haptic([100,80,100,80,200]);
-  toast('🎉 تمت القرعة بنجاح — يارب تفرح بها العائلة!','ok');
-  setTimeout(()=>location.reload(),2600);
-}
-
-function resetDraw(){
-  $('btn-draw').disabled=false;
-  $('txt-draw').textContent='🎲 ابدأ القرعة الإلكترونية';
-}
-
-/* ── Toast ── */
-function toast(msg,type='info'){
-  document.getElementById('_toast')?.remove();
-  const t=document.createElement('div');
-  t.id='_toast';
-  const C={ok:{bg:'rgba(34,197,94,.12)',b:'rgba(74,222,128,.3)',c:'#4ade80'},
-            err:{bg:'rgba(239,68,68,.12)',b:'rgba(248,113,113,.3)',c:'#f87171'},
-            info:{bg:'rgba(99,102,241,.12)',b:'rgba(129,140,248,.3)',c:'#a5b4fc'}};
-  const s=C[type]||C.info;
-  Object.assign(t.style,{
-    position:'fixed',bottom:'1.8rem',left:'50%',
-    transform:'translateX(-50%) translateY(16px)',
-    background:s.bg,backdropFilter:'blur(20px)',webkitBackdropFilter:'blur(20px)',
-    border:`1px solid ${s.b}`,borderRadius:'1rem',
-    padding:'.7rem 1.1rem',color:s.c,
-    fontFamily:"'Cairo',sans-serif",fontWeight:'800',fontSize:'.83rem',
-    zIndex:'9999',maxWidth:'88vw',textAlign:'center',
-    boxShadow:'0 8px 28px rgba(0,0,0,.4)',
-    transition:'opacity .3s,transform .3s',opacity:'0',
-  });
-  t.textContent=msg;
-  document.body.appendChild(t);
-  requestAnimationFrame(()=>{t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';});
-  setTimeout(()=>{
-    t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)';
-    setTimeout(()=>t.remove(),350);
-  },3000);
-}
-
-/* ── كونفيتي ── */
-function fireConfetti(){
-  const cv=$('cvs'),ctx=cv.getContext('2d');
-  cv.width=window.innerWidth;cv.height=window.innerHeight;
-  cv.style.display='block';
-  const pal=['#6366f1','#8b5cf6','#06b6d4','#a5b4fc','#67e8f9','#fff','#c4b5fd','#38bdf8'];
-  const ps=Array.from({length:190},()=>({
-    x:Math.random()*cv.width,y:-15,
-    w:Math.random()*9+3,h:Math.random()*5+2,
-    c:pal[Math.floor(Math.random()*pal.length)],
-    vx:(Math.random()-.5)*7,vy:Math.random()*5+2.5,
-    r:Math.random()*360,vr:(Math.random()-.5)*16,
-  }));
-  let f=0;
-  (function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    const a=Math.max(0,1-f/200);
-    ps.forEach(p=>{
-      ctx.save();ctx.globalAlpha=a;ctx.translate(p.x,p.y);
-      ctx.rotate(p.r*Math.PI/180);ctx.fillStyle=p.c;
-      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
-      p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.vy+=0.06;
-    });
-    if(++f<245)requestAnimationFrame(draw);
-    else cv.style.display='none';
-  })();
 }
 </script>
-
 </body>
 </html>
