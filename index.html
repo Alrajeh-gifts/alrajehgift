@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قرعة الهدايا العائلية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body { font-family: 'Cairo', sans-serif; background-color: #f9fafb; }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="login-screen" class="max-w-md w-full glass p-8 rounded-3xl shadow-xl border border-white">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">🎁 قرعة العائلة</h1>
+            <p class="text-gray-500 mt-2">أدخل الرمز الخاص بك للمشاهدة</p>
+        </div>
+        <input type="text" id="access-code" placeholder="رمز الدخول (مثلاً: 1010)" class="w-full text-center p-4 rounded-2xl border border-gray-200 mb-4 outline-none focus:ring-2 focus:ring-teal-500 transition">
+        <button onclick="login()" id="login-btn" class="w-full bg-teal-600 text-white font-bold py-4 rounded-2xl hover:bg-teal-700 transition">دخول</button>
+    </div>
+
+    <div id="member-screen" class="hidden max-w-md w-full space-y-4">
+        <div class="glass p-8 rounded-3xl shadow-xl border border-white text-center">
+            <h2 id="user-welcome" class="text-xl font-bold text-gray-800 mb-6">مرحباً</h2>
+            <div id="result-card" class="py-10 px-6 bg-teal-50 rounded-2xl border border-teal-100">
+                <p class="text-gray-600 mb-2">الشخص الذي ستقوم بإهدائه هو:</p>
+                <div id="target-name" class="text-4xl font-black text-teal-700">...</div>
+            </div>
+            <p id="no-draw-msg" class="hidden text-gray-500 py-10">لم يتم إجراء القرعة لهذا الشهر بعد ⏳</p>
+        </div>
+        <button onclick="location.reload()" class="w-full text-gray-400 text-sm">تسجيل خروج</button>
+    </div>
+
+    <script>
+        // إعدادات الربط
+        const SUPABASE_URL = 'https://oprethkloexyrhfxtfsw.supabase.co';
+        const SUPABASE_KEY = 'المفتاح_الطويل_الذي_نسخته_من_موقع_supabase'; 
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function login() {
+            const btn = document.getElementById('login-btn');
+            const code = document.getElementById('access-code').value;
+            btn.innerText = 'جاري التحقق...';
+
+            const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
+
+            if (error || !user) {
+                alert('الرمز غير صحيح!');
+                btn.innerText = 'دخول';
+                return;
+            }
+
+            showMemberScreen(user);
+        }
+
+        async function showMemberScreen(user) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('member-screen').classList.remove('hidden');
+            document.getElementById('user-welcome').innerText = `مرحباً يا ${user.name}`;
+
+            // جلب آخر قرعة
+            const { data: assignments } = await db.from('assignments').select('*, receiver:users!receiver_id(name)').eq('giver_id', user.id).order('created_at', { ascending: false }).limit(1);
+
+            if (assignments && assignments.length > 0) {
+                document.getElementById('target-name').innerText = assignments[0].receiver.name;
+            } else {
+                document.getElementById('result-card').classList.add('hidden');
+                document.getElementById('no-draw-msg').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
