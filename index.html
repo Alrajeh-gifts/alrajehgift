@@ -16,8 +16,7 @@
     
     <style>
         /* ================================================================
-           💎 نظام الكريستال السائل المشرق (Fresh Crystal V13)
-           الهدف: دقة واحترافية، بدون كآبة، ألوان تفتح النفس.
+           💎 نظام الكريستال السائل المشرق (Fresh Crystal V13.1)
         ================================================================ */
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -33,29 +32,25 @@
 
         /* --- متغيرات الوضع الداكن (الفخم والمشرق) --- */
         :root {
-            --bg-app: #07080d; /* كحلي ليلي عميق (أفخم من الأسود الصرف) */
+            --bg-app: #07080d; 
             --text-main: #ffffff;
             --text-sub: rgba(255, 255, 255, 0.65);
-            --text-accent: #37ebf3; /* أزرق سماوي فاقع ومشرق للاسم */
+            --text-accent: #37ebf3; 
             
-            /* ألوان السائل المشعة والمنعشة (Aurora Colors) */
-            --liquid-1: rgba(55, 235, 243, 0.45); /* أزرق سماوي */
-            --liquid-2: rgba(236, 72, 153, 0.35);  /* وردي ناعم */
+            --liquid-1: rgba(55, 235, 243, 0.45); 
+            --liquid-2: rgba(236, 72, 153, 0.35);  
             
-            /* هندسة الكريستال (أكثر شفافية ورقي) */
             --glass-bg: rgba(255, 255, 255, 0.035);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-edge: rgba(255, 255, 255, 0.2); /* لمعة حافة أنعم */
+            --glass-edge: rgba(255, 255, 255, 0.2); 
             --glass-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.7);
             
-            /* العناصر المحفورة بلمسة أنعم */
             --inner-bg: rgba(0, 0, 0, 0.3);
             --inner-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4);
             --inner-border: rgba(255, 255, 255, 0.04);
             
-            /* أزرار منعشة */
             --btn-primary: linear-gradient(135deg, #37ebf3, #6366f1);
-            --btn-text: #07080d; /* نص غامق على الزر الفاتح */
+            --btn-text: #07080d; 
             --wish-bg: rgba(255, 255, 255, 0.03);
             --wish-active: #37ebf3;
         }
@@ -66,7 +61,7 @@
                 --bg-app: #f1f6fa;
                 --text-main: #0a0f1e; 
                 --text-sub: #4f5a73;
-                --text-accent: #37ebf3; /* نفس السماوي المشرق */
+                --text-accent: #37ebf3; 
                 
                 --liquid-1: rgba(55, 235, 243, 0.2);
                 --liquid-2: rgba(99, 102, 241, 0.1);
@@ -81,7 +76,7 @@
                 --inner-border: rgba(55, 235, 243, 0.12);
                 
                 --btn-primary: linear-gradient(135deg, #37ebf3, #4f46e5);
-                --btn-text: #ffffff; /* نص أبيض على الزر النهاري */
+                --btn-text: #ffffff; 
                 --wish-bg: rgba(55, 235, 243, 0.06);
                 --wish-active: #37ebf3;
             }
@@ -117,7 +112,6 @@
             position: relative; overflow: hidden;
         }
 
-        /* اللمعة الكريستالية */
         .glass-card::after {
             content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
@@ -195,7 +189,7 @@
     <div class="glass-card flex flex-col gap-4">
         <input type="password" id="access-code" placeholder=" ( تاريخ ميلادك بالهجري ) " class="input-field tracking-widest">
         <button onclick="login()" id="login-btn" class="btn-primary flex-row">
-            <span id="login-btn-text">اكتشف هديتك مبكراً ←</span>
+            <span id="login-btn-text">اكتشف هديتك ←</span>
         </button>
     </div>
 </div>
@@ -322,9 +316,9 @@
         const { data: user, error } = await db.from('users').select('*').eq('code', code).single();
 
         if (error || !user) {
-            if (!isAuto) { haptic([50, 100, 50]); alert('عذراً، هذا الرمز غير موجود أو غير صحيح! تأكد من تاريخ الميلاد بالهجري.'); }
+            if (!isAuto) { haptic([50, 100, 50]); alert('عذراً، الرمز غير صحيح! تأكد من كتابة تاريخ الميلاد بالهجري بشكل صحيح.'); }
             localStorage.removeItem('rajeh_gift_fresh_v13');
-            btnText.innerText = 'اكتشف هديتك مبكراً ←';
+            btnText.innerText = 'اكتشف هديتك ←';
             return;
         }
 
@@ -347,7 +341,6 @@
         
         const welcomeEl = document.getElementById('user-welcome');
         if (user.name === 'سميرة') {
-            // ترحيب الوالدة الخاص باللون الذهبي
             welcomeEl.innerHTML = "يا هلا بست الحبايب أمنا سميرة ❤️👑";
             welcomeEl.style.color = "#fbbf24"; 
             welcomeEl.style.textShadow = "0 4px 20px rgba(251,191,36,0.3)";
@@ -372,7 +365,6 @@
             if (assign) {
                 currentAssignmentId = assign.id;
                 document.getElementById('target-name').innerText = assign.receiver.name;
-                // اهتزاز Apple عند كشف الاسم
                 setTimeout(() => haptic([100, 50, 100]), 500); 
 
                 if (assign.is_delivered) {
@@ -392,7 +384,6 @@
         }
     }
 
-    // --- نظام قفل الزر والمؤقت الصارم (الاحترافي) ---
     let countdownInterval;
     function initCountdown() {
         const eidDate = new Date("2026-03-20T00:00:00").getTime();
@@ -407,7 +398,7 @@
             if (diff < 0) { 
                 clearInterval(countdownInterval);
                 if(deliverBtn) {
-                    deliverBtn.disabled = false; // يفتح الزر وتعود له ألوانه وتأثيراته
+                    deliverBtn.disabled = false; 
                     if(btnTitle) btnTitle.innerText = "📦 تأكيد تسليم الهدية";
                     if(btnSub) btnSub.innerText = "اضغط هنا لتأكيد التسليم الرسمي بالنظام";
                     deliverBtn.style.opacity = '1';
@@ -419,7 +410,7 @@
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             
             if(deliverBtn) {
-                deliverBtn.disabled = true; // الزر يظل مقفلاً
+                deliverBtn.disabled = true; 
                 if(btnTitle) btnTitle.innerText = "🔒 يفتح يوم العيد";
                 if(btnSub) btnSub.innerText = `باقي: ${d} يوم و ${h} ساعة`;
                 deliverBtn.style.opacity = '0.7';
@@ -464,7 +455,7 @@
     }
 
     async function markAsDelivered() {
-        if(!confirm('📦 تأكيد تسليم الهدية: هل قمت بتسليم الهدية فعلياً وتريد تسجيل ذلك بالنظام؟') == false) {
+        if(confirm('📦 تأكيد تسليم الهدية: هل قمت بتسليم الهدية فعلياً وتريد تسجيل ذلك بالنظام؟')) {
             haptic([50, 50, 50]);
             const btnTitle = document.getElementById('deliver-btn-title');
             const btnSub = document.getElementById('deliver-btn-sub');
@@ -477,7 +468,7 @@
                 fireConfetti();
                 document.getElementById('deliver-btn').classList.add('hidden-el');
                 document.getElementById('delivered-msg').classList.remove('hidden-el');
-                triggerHaptic([100, 100, 100]); // احتفال طويل
+                triggerHaptic([100, 100, 100]); 
             }
         }
     }
@@ -502,51 +493,51 @@
 
     async function runDraw() {
         haptic(100);
-        if(!confirm('⚠️ تحذير: سيتم حذف التوزيع الحالي للكل وإجراء سحب إلكتروني جديد كلياً. هل أنت متأكد؟')) {
-            const btnText = document.getElementById('draw-btn-text');
-            btnText.innerText = 'جاري السحب الإلكتروني... 🎲';
-            document.getElementById('draw-btn').disabled = true;
+        if(!confirm('⚠️ تحذير: سيتم حذف التوزيع الحالي للكل وإجراء سحب إلكتروني جديد كلياً. هل أنت متأكد؟')) return;
 
-            const { data: members } = await db.from('users').select('*').eq('role', 'member');
-            const fC = document.getElementById('fawaz-toggle').checked;
-            const sC = document.getElementById('sameera-toggle').checked;
-            const budget = document.getElementById('budget-input').value.trim();
+        const btnText = document.getElementById('draw-btn-text');
+        btnText.innerText = 'جاري السحب الإلكتروني... 🎲';
+        document.getElementById('draw-btn').disabled = true;
 
-            const { data: recentDraws } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(3);
-            let recentPairs = [];
-            if (recentDraws && recentDraws.length > 0) {
-                const { data: recentAssigns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').in('draw_id', recentDraws.map(d=>d.id));
-                if (recentAssigns) recentPairs = recentAssigns.map(a => ({ giver: a.giver.name, receiver: a.receiver.name }));
-            }
+        const { data: members } = await db.from('users').select('*').eq('role', 'member');
+        const fC = document.getElementById('fawaz-toggle').checked;
+        const sC = document.getElementById('sameera-toggle').checked;
+        const budget = document.getElementById('budget-input').value.trim();
 
-            let shuffled = null;
-            for (let i = 0; i < 10000; i++) {
-                const temp = [...members].sort(() => Math.random() - 0.5);
-                if (!temp.some((m, idx) => m.id === members[idx].id)) {
-                    const map = {}; members.forEach((m, idx) => map[m.name] = temp[idx].name);
-                    if (fC && map['فواز'] === 'نواف') continue;
-                    if (sC) {
-                        const giverOfS = Object.keys(map).find(k => map[k] === 'سميرة');
-                        if (!['طارق', 'فواز'].includes(giverOfS)) continue;
-                    }
-                    if (recentPairs.some(pair => map[pair.giver] === pair.receiver)) continue;
-
-                    shuffled = temp; break;
-                }
-            }
-
-            if (!shuffled) { alert('تعذّر السحب! عدد القيود يتعارض مع عدد الأعضاء المتاحين. جرب تقليل القيود الذكية.'); document.getElementById('draw-btn').disabled = false; btnText.innerText = '🎲 إجراء سحب إلكتروني جديد'; return; }
-
-            const dName = `هدايا العيد ${arabicMonths[new Date().getMonth()]} ${new Date().getFullYear()}`;
-
-            await db.from('assignments').delete().neq('id', 0);
-            const { data: d } = await db.from('draws').insert({ month_name: dName, budget: budget }).select().single();
-            await db.from('assignments').insert(members.map((m, idx) => ({ draw_id: d.id, giver_id: m.id, receiver_id: shuffled[idx].id, is_delivered: false })));
-
-            fireConfetti();
-            alert('🎉 مبروك! تمت القرعة بنجاح لجميع أفراد العائلة.');
-            location.reload();
+        const { data: recentDraws } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(3);
+        let recentPairs = [];
+        if (recentDraws && recentDraws.length > 0) {
+            const { data: recentAssigns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').in('draw_id', recentDraws.map(d=>d.id));
+            if (recentAssigns) recentPairs = recentAssigns.map(a => ({ giver: a.giver.name, receiver: a.receiver.name }));
         }
+
+        let shuffled = null;
+        for (let i = 0; i < 10000; i++) {
+            const temp = [...members].sort(() => Math.random() - 0.5);
+            if (!temp.some((m, idx) => m.id === members[idx].id)) {
+                const map = {}; members.forEach((m, idx) => map[m.name] = temp[idx].name);
+                if (fC && map['فواز'] === 'نواف') continue;
+                if (sC) {
+                    const giverOfS = Object.keys(map).find(k => map[k] === 'سميرة');
+                    if (!['طارق', 'فواز'].includes(giverOfS)) continue;
+                }
+                if (recentPairs.some(pair => map[pair.giver] === pair.receiver)) continue;
+
+                shuffled = temp; break;
+            }
+        }
+
+        if (!shuffled) { alert('تعذّر السحب! عدد القيود يتعارض مع عدد الأعضاء المتاحين. جرب تقليل القيود الذكية.'); document.getElementById('draw-btn').disabled = false; btnText.innerText = '🎲 إجراء سحب إلكتروني جديد'; return; }
+
+        const dName = `هدايا العيد ${arabicMonths[new Date().getMonth()]} ${new Date().getFullYear()}`;
+
+        await db.from('assignments').delete().neq('id', 0);
+        const { data: d } = await db.from('draws').insert({ month_name: dName, budget: budget }).select().single();
+        await db.from('assignments').insert(members.map((m, idx) => ({ draw_id: d.id, giver_id: m.id, receiver_id: shuffled[idx].id, is_delivered: false })));
+
+        fireConfetti();
+        alert('🎉 مبروك! تمت القرعة بنجاح لجميع أفراد العائلة.');
+        location.reload();
     }
 
     function fireConfetti() {
@@ -556,24 +547,31 @@
         canvas.style.display = 'block';
         const colors = ['#37ebf3','#a5b4fc','#ec4899','#ffffff','#facc15'];
         const pieces = Array.from({length: 180}, () => ({
-            x: Math.random() * canvas.width, y: -20, w: Math.random() * 8 + 4, h: Math.random() * 5 + 3,
+            x: Math.random() * canvas.width, y: -20,
+            w: Math.random() * 12 + 6, h: Math.random() * 8 + 4,
             color: colors[Math.floor(Math.random() * colors.length)],
-            vy: Math.random() * 5 + 3, vx: (Math.random() - 0.5) * 5, r: Math.random() * 360
+            vy: Math.random() * 5 + 3, vx: (Math.random() - 0.5) * 6,
+            r: Math.random() * 360, vr: (Math.random() - 0.5) * 15
         }));
         let frame = 0;
         (function anim() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             pieces.forEach(p => {
                 ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI/180);
-                ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - frame/200);
+                ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - frame/220);
                 ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
-                p.y += p.vy; p.x += p.vx;
+                p.y += p.vy; p.x += p.vx; p.r += p.vr;
             });
-            if (++frame < 220) requestAnimationFrame(anim); else canvas.style.display = 'none';
+            if (++frame < 240) requestAnimationFrame(anim); 
+            else canvas.style.display = 'none';
         })();
     }
 
-    const manifestObj = { "name": "هدايا الراجح", "short_name": "هدايا", "start_url": ".", "display": "standalone", "background_color": "#07080d", "theme_color": "#37ebf3", "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>", "sizes": "192x192", "type": "image/svg+xml"}] };
+    const manifestObj = {
+        "name": "هدايا العيد الراجح", "short_name": "هدايا", "start_url": ".", "display": "standalone",
+        "background_color": "#07080d", "theme_color": "#37ebf3",
+        "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>", "sizes": "192x192", "type": "image/svg+xml"}]
+    };
     document.getElementById('manifest-link').href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestObj));
 </script>
 
