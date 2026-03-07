@@ -22,18 +22,14 @@
 
         /* ===== 🌙 الثيم الداكن (Liquid Glass Mode) ===== */
         :root {
-            /* خلفية سوداء عميقة لإبراز الألوان */
             --bg:           #0d1117; 
             
-            /* ألوان السائل المتحرك خلف الزجاج */
-            --liquid-1:     rgba(99, 102, 241, 0.25); /* Indigo */
-            --liquid-2:     rgba(139, 92, 246, 0.20); /* Violet */
-            --liquid-3:     rgba(59, 130, 246, 0.10); /* Blue Dim */
+            --liquid-1:     rgba(99, 102, 241, 0.25);
+            --liquid-2:     rgba(139, 92, 246, 0.20);
+            --liquid-3:     rgba(59, 130, 246, 0.10);
 
-            /* تأثير الزجاج السائل من Apple */
             --glass-bg:         rgba(255, 255, 255, 0.07);
             --glass-border:     rgba(255, 255, 255, 0.05);
-            /* حدود رفيعة علوية وجانبية لتعطي البروز 3D */
             --glass-border-top: rgba(255, 255, 255, 0.12);
             --glass-border-left:rgba(255, 255, 255, 0.08);
             --glass-shadow:     rgba(0, 0, 0, 0.40);
@@ -71,11 +67,9 @@
             padding: 2rem 1rem;
             position: relative;
             overflow-x: hidden;
-            /* للتأكد من سلاسة حركة السائل خلف الزجاج */
             transform: translateZ(0); 
         }
 
-        /* تنسيق الشاشات وتوسيطها */
         #login-screen, #member-screen, #admin-screen {
             margin-top: auto;
             margin-bottom: auto;
@@ -83,17 +77,16 @@
             max-width: 24rem;
         }
 
-        /* ===== تصميم السائل المتحرك خلف الزجاج (Liquid Background) ===== */
+        /* ===== تصميم السائل المتحرك ===== */
         body::before, body::after {
             content: '';
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px); /* بلور قوي لدمج الألوان */
+            filter: blur(80px);
             z-index: 0;
             pointer-events: none;
         }
 
-        /* السائل الأساسي (جوي) */
         body::before {
             inset: -100px;
             background:
@@ -103,7 +96,6 @@
             animation: liquid-swim 15s ease-in-out infinite alternate;
         }
 
-        /* السائل الثانوي لإعطاء عمق إضافي */
         body::after {
             width: 600px; height: 600px;
             bottom: -200px; left: -200px;
@@ -112,7 +104,6 @@
             animation: liquid-swim 20s ease-in-out infinite alternate-reverse;
         }
 
-        /* حركة بطيئة جداً وانسيابية للألوان خلف الزجاج */
         @keyframes liquid-swim {
             0% { transform: translate(0, 0) scale(1); }
             50% { transform: translate(50px, 30px) scale(1.1); }
@@ -121,10 +112,9 @@
 
         body > div, body > canvas { position: relative; z-index: 1; }
 
-        /* ===== الزجاج السائل (The Liquid Glass Card) 💎 ===== */
+        /* ===== الزجاج السائل 💎 ===== */
         .glass {
             background: var(--glass-bg);
-            /* سر Apple: blur قوي مع زيادة التشبع saturate لإبراز ألوان الخلفية */
             -webkit-backdrop-filter: blur(28px) saturate(200%);
             backdrop-filter: blur(28px) saturate(200%);
             
@@ -132,14 +122,11 @@
             border-top: 1px solid var(--glass-border-top);
             border-left: 1px solid var(--glass-border-left);
             
-            box-shadow: 
-                0 20px 50px -10px var(--glass-shadow);
-                
+            box-shadow: 0 20px 50px -10px var(--glass-shadow);
             position: relative;
             overflow: hidden;
         }
 
-        /* لمعة زجاجية خفيفة جداً تمر على الكرت لفخامة أكثر */
         .glass::after {
             content: '';
             position: absolute;
@@ -154,9 +141,8 @@
             100% { left: 200%; }
         }
 
-        /* تنسيق الأزرار باللون الجديد الـ Indigo */
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #4f46e5); /* Indigo to Darker Indigo */
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
             border: 1px solid rgba(255,255,255,0.15);
             border-bottom: 2px solid rgba(0,0,0,0.3);
             box-shadow: 0 10px 25px -5px rgba(99,102,241,0.5);
@@ -283,7 +269,7 @@
     </button>
 </div>
 
-<div id="admin-screen" style="display:none;flex-direction:column;gap:1.25rem;position:relative;z-index:1" class="fade-in">
+<div id="admin-screen" style="display:none;flex-direction:column;gap:1.25rem;position:relative;z-index:1;width:100%;max-width:24rem" class="fade-in">
     <div class="glass" style="border-radius:1.5rem;padding:1.25rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem">
             <span style="font-size:1.5rem">👑</span>
@@ -345,7 +331,6 @@
 <canvas id="confetti-canvas" class="confetti-canvas" style="display:none"></canvas>
 
 <script>
-    // Supabase Configuration
     const SUPABASE_URL = 'https://oprethkloexyrhagmdod.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -353,7 +338,6 @@
     const MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
                     'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
-    // Reduced and generalized gift options
     const GIFT_OPTIONS = [
         { emoji: '🌸', label: 'عطور وعناية' },
         { emoji: '👕', label: 'ملابس وإكسسوارات' },
@@ -367,7 +351,6 @@
     let receiverWishes = [];
     let currentAssignmentId = null;
 
-    // ===== الدخول =====
     async function login() {
         const btn = document.getElementById('login-btn');
         const codeInput = document.getElementById('access-code');
@@ -384,14 +367,13 @@
             alert('الرمز غير صحيح! تأكد من كتابة الأرقام بالإنجليزية');
             btn.innerText = 'دخول ←';
             btn.disabled = false;
-            codeInput.value = ''; // Clear input on error
+            codeInput.value = ''; 
             return;
         }
 
         user.role === 'admin' ? showAdminScreen() : showMemberScreen(user);
     }
 
-    // ===== شاشة العضو =====
     async function showMemberScreen(user) {
         currentUser = user;
         hide('login-screen');
@@ -400,7 +382,6 @@
 
         buildWishesGrid(user.wishes || '');
 
-        // جلب الميزانية المقترحة من آخر قرعة
         try {
             const { data: latestDraw } = await db.from('draws').select('budget').order('created_at', { ascending: false }).limit(1).maybeSingle();
             if (latestDraw && latestDraw.budget) {
@@ -409,9 +390,8 @@
             } else {
                 hide('budget-display');
             }
-        } catch(e) { /* ignore budget error */ }
+        } catch(e) {}
 
-        // Fetch current assignment
         try {
             const { data: assignments, error } = await db
                 .from('assignments')
@@ -433,7 +413,6 @@
                      receiverWishes = [];
                 }
 
-                // Delivery Status
                 if (assignment.is_delivered) {
                     show('delivered-msg');
                     hide('deliver-btn');
@@ -449,7 +428,6 @@
                 document.getElementById('no-draw-msg').style.display = 'block';
             }
         } catch {
-            // Fallback if receiver join fails or column is_delivered missing
             const { data: assignments } = await db
                 .from('assignments')
                 .select('*, receiver:users!receiver_id(name)')
@@ -462,7 +440,7 @@
                 document.getElementById('target-name').innerText = assignment.receiver.name;
                 receiverWishes = [];
                 hide('delivered-msg');
-                hide('deliver-btn'); // Can't mark delivered in fallback
+                hide('deliver-btn');
                 document.getElementById('result-card').style.display = 'block';
                 document.getElementById('no-draw-msg').style.display = 'none';
             } else {
@@ -472,7 +450,6 @@
         }
     }
 
-    // Build wishes grid separating predefined and custom
     function buildWishesGrid(savedWishes) {
         const savedArray = savedWishes ? savedWishes.split(',').filter(Boolean) : [];
         const predefinedLabels = GIFT_OPTIONS.map(o => o.label);
@@ -484,7 +461,6 @@
             if (predefinedLabels.includes(wish)) {
                 activePredefined.push(wish);
             } else {
-                // Assuming only one custom wish exists
                 customWish = wish;
             }
         });
@@ -502,7 +478,6 @@
             </button>
         `).join('');
 
-        // Set custom wish input
         document.getElementById('custom-wish-input').value = customWish;
     }
 
@@ -510,25 +485,20 @@
         const isActive = btn.classList.contains('wish-btn-active');
         if (isActive) {
             btn.classList.remove('wish-btn-active');
-            // Re-apply hover styles handled by CSS, but ensure dim bg removed
         } else {
             btn.classList.add('wish-btn-active');
         }
         hide('save-msg');
     }
 
-    // Save predefined + custom wishes
     async function saveWishes() {
         const btn = document.getElementById('save-wishes-btn');
-        // Get active predefined wishes
         const selected = [...document.querySelectorAll('.wish-btn')]
             .filter(b => b.classList.contains('wish-btn-active'))
             .map(b => b.dataset.wish);
 
-        // Get and sanitize custom wish
         const customWish = document.getElementById('custom-wish-input').value.trim();
         if (customWish) {
-            // Replace commas to not break splitting
             selected.push(customWish.replace(/,/g, ' '));
         }
 
@@ -551,7 +521,6 @@
         }
     }
 
-    // Show receiver wishes
     function toggleWishes() {
         const box = document.getElementById('wishes-box');
         const isHidden = box.style.display === 'none' || box.style.display === '';
@@ -570,7 +539,7 @@
                             <span>${opt.emoji}</span><span>${w}</span>
                         </span>`;
                     } else {
-                        customWish = w; // Assume non-predefined is custom
+                        customWish = w; 
                         return '';
                     }
                 }).join('');
@@ -588,10 +557,9 @@
         }
     }
 
-    // ===== تأكيد تسليم الهدية (Member) =====
     async function markAsDelivered() {
         if (!currentAssignmentId) return;
-        const confirmDelivery = confirm('هل أنت متأكد أنك سلمت الهدية؟ לא ניתן לבטל פעולה זו.');
+        const confirmDelivery = confirm('هل أنت متأكد أنك سلمت الهدية؟ لا يمكن التراجع عن هذا الإجراء.');
         if (!confirmDelivery) return;
 
         const btn = document.getElementById('deliver-btn');
@@ -604,7 +572,7 @@
             .eq('id', currentAssignmentId);
 
         if (error) {
-            alert('حدث خطأ أثناء التحديث (تأكد من وجود عمود is_delivered).');
+            alert('حدث خطأ أثناء التحديث.');
             btn.innerText = '📦 تأكيد تسليم الهدية';
             btn.disabled = false;
         } else {
@@ -614,7 +582,6 @@
         }
     }
 
-    // ===== لوحة المشرف =====
     async function showAdminScreen() {
         hide('login-screen'); show('admin-screen');
         const now = new Date();
@@ -632,7 +599,6 @@
 
             if (!draw) return;
 
-            // Load budget into input
             if (draw.budget) {
                 document.getElementById('budget-input').value = draw.budget;
             }
@@ -644,7 +610,7 @@
 
             if (assignments && assignments.length > 0)
                 renderAssignments(assignments, draw.month_name);
-        } catch(e) { /* ignore error on load */ }
+        } catch(e) {}
     }
 
     function renderAssignments(assignments, monthName) {
@@ -666,7 +632,7 @@
         show('assignments-section');
     }
 
-    // ===== إجراء القرعة (Admin) =====
+    // ===== إجراء القرعة (Admin) المحدث =====
     async function runDraw() {
         const btn = document.getElementById('draw-btn');
         btn.innerText = '⏳ جاري السحب...';
@@ -674,7 +640,6 @@
         btn.classList.remove('pulse');
 
         try {
-            // 1. Fetch Members
             const { data: members, error: mErr } = await db
                 .from('users').select('*').eq('role', 'member');
 
@@ -683,7 +648,6 @@
                 resetBtn(btn); return;
             }
 
-            // 2. Fetch History (last 2 draws)
             const { data: recentDraws } = await db
                 .from('draws').select('id')
                 .order('created_at', { ascending: false })
@@ -704,17 +668,17 @@
                 }
             }
 
-            // 3. Generate Draw with Constraints
             const sameeraConstraint = document.getElementById('sameera-toggle').checked;
             const fawazConstraint = document.getElementById('fawaz-toggle').checked;
+            
+            // استدعاء الخوارزمية الذكية الجديدة
             const shuffled = makeDerangement(members, sameeraConstraint, fawazConstraint, recentPairs);
             
             if (!shuffled) {
-                alert('تعذّر توليد قرعة تحترم جميع القيود، جرّب تخفيف بعض القيود وأعد المحاولة.');
+                alert('تعذّر توليد قرعة. تأكد من وجود طارق وفواز ضمن الأعضاء لتلبية قيود سميرة.');
                 resetBtn(btn); return;
             }
 
-            // 4. Cleanup old draws (keep only 2)
             try {
                 const { data: allDraws } = await db
                     .from('draws').select('id')
@@ -727,9 +691,8 @@
                         await db.from('draws').delete().in('id', toDelete);
                     }
                 }
-            } catch(e) { /* ignore cleanup error */ }
+            } catch(e) {}
 
-            // 5. Create new draw
             const now = new Date();
             const monthName = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
             const budgetVal = document.getElementById('budget-input').value.trim();
@@ -740,26 +703,23 @@
                 .select().single();
 
             if (dErr || !newDraw) {
-                alert('خطأ في إنشاء القرعة (تأكد من وجود عمود budget).');
+                alert('خطأ في إنشاء القرعة.');
                 resetBtn(btn); return;
             }
 
-            // 6. Save Assignments
             const newAssignments = members.map((giver, i) => ({
                 draw_id: newDraw.id,
                 giver_id: giver.id,
                 receiver_id: shuffled[i].id,
-                is_delivered: false // Explicitly set default
+                is_delivered: false
             }));
 
             const { error: aErr } = await db.from('assignments').insert(newAssignments);
             if (aErr) {
                 alert('خطأ في حفظ النتائج: ' + aErr.message);
-                // Consider deleting the draw on assignment save error
                 resetBtn(btn); return;
             }
 
-            // 7. Render final results
             const { data: final } = await db
                 .from('assignments')
                 .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
@@ -776,42 +736,48 @@
         }
     }
 
-    // Constraint Satisfaction Drawing Algorithm
+    // ===== الخوارزمية الذكية (Smart Algorithm) =====
     function makeDerangement(arr, sameeraConstraint = false, fawazConstraint = false, recentPairs = []) {
-        for (let attempt = 0; attempt < 1000; attempt++) {
-            const shuffled = [...arr].sort(() => Math.random() - 0.5);
+        // دالة داخلية لتجربة القرعة مع تمرير أزواج التاريخ لتجنبها
+        function tryDraw(pairsToAvoid) {
+            for (let attempt = 0; attempt < 1500; attempt++) {
+                const shuffled = [...arr].sort(() => Math.random() - 0.5);
 
-            // Constraint: No self-gifting
-            if (shuffled.some((item, i) => item.id === arr[i].id)) continue;
+                // 1. لا أحد يهدي نفسه
+                if (shuffled.some((item, i) => item.id === arr[i].id)) continue;
 
-            const giverToReceiver = {};
-            arr.forEach((giver, i) => {
-                giverToReceiver[giver.name] = shuffled[i].name;
-            });
+                const giverToReceiver = {};
+                arr.forEach((giver, i) => { giverToReceiver[giver.name] = shuffled[i].name; });
 
-            // Specific Constraint: فواز !=> نواف
-            if (fawazConstraint && giverToReceiver['فواز'] === 'نواف') continue;
+                // 2. قيد فواز (اختياري)
+                if (fawazConstraint && giverToReceiver['فواز'] === 'نواف') continue;
 
-            // Specific Constraint: سميرة from טארק or فواز only
-            if (sameeraConstraint) {
-                const giverOfSameera = Object.keys(giverToReceiver)
-                    .find(giver => giverToReceiver[giver] === 'سميرة');
-                if (!giverOfSameera) continue; // Should not happen in derangement
-                if (!['طارق', 'فواز'].includes(giverOfSameera)) continue;
+                // 3. قيد سميرة (اختياري وصارم جداً)
+                if (sameeraConstraint) {
+                    const giverOfSameera = Object.keys(giverToReceiver).find(giver => giverToReceiver[giver] === 'سميرة');
+                    if (!giverOfSameera || !['طارق', 'فواز'].includes(giverOfSameera)) continue;
+                }
+
+                // 4. قيد عدم التكرار
+                if (pairsToAvoid.length > 0) {
+                    const hasRepeat = pairsToAvoid.some(pair => giverToReceiver[pair.giver] === pair.receiver);
+                    if (hasRepeat) continue;
+                }
+
+                return shuffled; // نجحت القرعة
             }
-
-            // History Constraint: No repeat of same giver->receiver from last 2 draws
-            const hasRepeat = recentPairs.some(pair =>
-                giverToReceiver[pair.giver] === pair.receiver
-            );
-            if (hasRepeat) continue;
-
-            return shuffled; // Successful draw
+            return null; // فشلت القرعة
         }
-        return null; // Failed to satisfy constraints
+
+        // المحاولة الأولى: تطبيق جميع القيود + منع تكرار التاريخ
+        let result = tryDraw(recentPairs);
+        if (result) return result;
+
+        // المحاولة الثانية: إذا فشلت، نتجاهل قيد التاريخ لمنع الطريق المسدود (Deadlock)
+        console.warn('تم تجاهل قيد التاريخ بسبب التعارض مع القيود الأخرى لإتمام القرعة.');
+        return tryDraw([]); 
     }
 
-    // ===== Confetti Animation 🎉 =====
     function fireConfetti() {
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
@@ -819,7 +785,6 @@
         canvas.height = window.innerHeight;
         canvas.style.display = 'block';
 
-        // Custom indigo/violet confetti palette
         const colors = ['#6366f1','#a5b4fc','#c9a55a','#ffffff','#818cf8'];
         const pieces = Array.from({length: 120}, () => ({
             x: Math.random() * canvas.width,
@@ -836,7 +801,7 @@
         let frame = 0;
         (function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const alpha = Math.max(0, 1 - frame / 140); // Fade out
+            const alpha = Math.max(0, 1 - frame / 140);
             pieces.forEach(p => {
                 ctx.save();
                 ctx.translate(p.x, p.y);
@@ -851,16 +816,14 @@
             if (frame < 170) requestAnimationFrame(animate);
             else {
                 canvas.style.display = 'none';
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clean up
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         })();
     }
 
-    // ===== Helpers =====
     function show(id) {
         const el = document.getElementById(id);
         if(!el) return;
-        // Screens use flex, intermediate divs block
         const isScreen = ['member-screen','admin-screen','assignments-section'].includes(id);
         el.style.display = isScreen ? 'flex' : 'block';
     }
@@ -870,7 +833,7 @@
     }
     function updateToggle(checkbox, trackId) {
         const track = document.getElementById(trackId);
-        track.style.background = checkbox.checked ? '#4f46e5' : '#374151'; // Indigo vs Gray
+        track.style.background = checkbox.checked ? '#4f46e5' : '#374151';
     }
     function resetBtn(btn) {
         btn.innerText = '🎲 إجراء القرعة';
