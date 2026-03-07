@@ -145,9 +145,12 @@
     <div class="bg-black/20 rounded-2xl p-4 mb-4 text-right space-y-3">
         <p class="text-gray-300 text-xs font-bold mb-2">⚙️ قيود القرعة</p>
 
-        <!-- قيد دائم -->
+        <!-- قيد فواز-نواف -->
         <div class="flex items-center justify-between">
-            <span class="text-gray-500 text-xs">🔒 دائم</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="fawaz-toggle" checked class="sr-only peer">
+                <div class="w-10 h-5 bg-gray-600 peer-checked:bg-amber-500 rounded-full transition-all after:content-[''] after:absolute after:top-0.5 after:right-0.5 after:bg-white after:rounded-full after:w-4 after:h-4 after:transition-all peer-checked:after:translate-x-[-20px]"></div>
+            </label>
             <span class="text-gray-300 text-xs">فواز لا يُهدي نواف</span>
         </div>
 
@@ -287,23 +290,51 @@
                 resetBtn(btn); return;
             }
 
-            // 2. توليد قرعة بدون تكرار مع القيود
+            // 2. جلب آخر قرعتين (السجل) لتجنب التكرار
+            const { data: recentDraws } = await db
+                .from('draws').select('id')
+                .order('created_at', { ascending: false })
+                .limit(2);
+
+            let recentPairs = []; // [{ giver: 'اسم', receiver: 'اسم' }]
+            if (recentDraws && recentDraws.length > 0) {
+                const recentIds = recentDraws.map(d => d.id);
+                const { data: recentAssignments } = await db
+                    .from('assignments')
+                    .select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)')
+                    .in('draw_id', recentIds);
+                if (recentAssignments) {
+                    recentPairs = recentAssignments.map(a => ({
+                        giver: a.giver.name,
+                        receiver: a.receiver.name
+                    }));
+                }
+            }
+
+            // 3. توليد القرعة مع كل القيود
             const sameeraConstraint = document.getElementById('sameera-toggle').checked;
-            const shuffled = makeDerangement(members, sameeraConstraint);
+            const fawazConstraint = document.getElementById('fawaz-toggle').checked;
+            const shuffled = makeDerangement(members, sameeraConstraint, fawazConstraint, recentPairs);
             if (!shuffled) {
-                alert('فشل توليد القرعة، حاول مرة أخرى');
+                alert('تعذّر توليد قرعة تحترم جميع القيود، جرّب تخفيف بعض القيود وأعد المحاولة');
                 resetBtn(btn); return;
             }
 
-            // 3. حذف القرعات القديمة
-            const { data: oldDraws } = await db.from('draws').select('id');
-            if (oldDraws?.length > 0) {
-                const ids = oldDraws.map(d => d.id);
-                await db.from('assignments').delete().in('draw_id', ids);
-                await db.from('draws').delete().in('id', ids);
+            // 4. حذف القرعات الأقدم من شهرين (الاحتفاظ بآخر 2 فقط)
+            const { data: allDraws } = await db
+                .from('draws').select('id')
+                .order('created_at', { ascending: true });
+
+            if (allDraws && allDraws.length >= 2) {
+                // احذف كل شيء ماعدا آخر قرعتين
+                const toDelete = allDraws.slice(0, allDraws.length - 1).map(d => d.id);
+                if (toDelete.length > 0) {
+                    await db.from('assignments').delete().in('draw_id', toDelete);
+                    await db.from('draws').delete().in('id', toDelete);
+                }
             }
 
-            // 4. إنشاء قرعة جديدة
+            // 5. إنشاء قرعة جديدة
             const now = new Date();
             const monthName = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
             const { data: newDraw, error: dErr } = await db
@@ -316,7 +347,7 @@
                 resetBtn(btn); return;
             }
 
-            // 5. حفظ التوزيع
+            // 6. حفظ التوزيع
             const newAssignments = members.map((giver, i) => ({
                 draw_id: newDraw.id,
                 giver_id: giver.id,
@@ -347,29 +378,35 @@
     }
 
     // ===== خوارزمية القرعة مع القيود =====
-    function makeDerangement(arr, sameeraConstraint = false) {
-        for (let attempt = 0; attempt < 500; attempt++) {
+    function makeDerangement(arr, sameeraConstraint = false, fawazConstraint = false, recentPairs = []) {
+        for (let attempt = 0; attempt < 1000; attempt++) {
             const shuffled = [...arr].sort(() => Math.random() - 0.5);
 
-            // قيد أساسي: لا أحد يُهدي نفسه
-            if (!shuffled.every((item, i) => item.id !== arr[i].id)) continue;
+            // القيد الأساسي: لا أحد يُهدي نفسه
+            if (shuffled.some((item, i) => item.id === arr[i].id)) continue;
 
-            // قيد دائم: فواز لا يُهدي نواف
-            const fawazIdx = arr.findIndex(m => m.name === 'فواز');
-            const nawafMember = arr.find(m => m.name === 'نواف');
-            if (fawazIdx !== -1 && nawafMember && shuffled[fawazIdx]?.id === nawafMember.id) continue;
+            // بناء خريطة: من يُهدي من
+            const giverToReceiver = {};
+            arr.forEach((giver, i) => {
+                giverToReceiver[giver.name] = shuffled[i].name;
+            });
 
-            // قيد اختياري: سميرة تُهدى فقط من طارق أو فواز
+            // ✅ قيد اختياري: فواز لا يُهدي نواف
+            if (fawazConstraint && giverToReceiver['فواز'] === 'نواف') continue;
+
+            // ✅ قيد اختياري: سميرة تُهدى فقط من طارق أو فواز
             if (sameeraConstraint) {
-                const sameeraMember = arr.find(m => m.name === 'سميرة');
-                if (sameeraMember) {
-                    // من الذي سيُهدي سميرة؟ (أي عضو في arr[i] يكون receiver سميرة هو shuffled[i])
-                    const giverOfSameera = arr.find((giver, i) => shuffled[i]?.id === sameeraMember.id);
-                    if (!giverOfSameera) continue;
-                    const allowedGivers = ['طارق', 'فواز'];
-                    if (!allowedGivers.includes(giverOfSameera.name)) continue;
-                }
+                const giverOfSameera = Object.keys(giverToReceiver)
+                    .find(giver => giverToReceiver[giver] === 'سميرة');
+                if (!giverOfSameera) continue;
+                if (!['طارق', 'فواز'].includes(giverOfSameera)) continue;
             }
+
+            // ✅ قيد التاريخ: لا تكرار نفس الزوج من آخر شهرين
+            const hasRepeat = recentPairs.some(pair =>
+                giverToReceiver[pair.giver] === pair.receiver
+            );
+            if (hasRepeat) continue;
 
             return shuffled;
         }
