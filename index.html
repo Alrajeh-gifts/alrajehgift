@@ -3,97 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>هدايا العيد 🌙</title>
-    
+    <title>هدايا العائلة 🎁</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#09090b">
     <link rel="manifest" id="manifest-link">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
-        /* ---------------------------------------------------------
-           ✨ التصميم الفخم (Midnight Pro Glass UI)
-        --------------------------------------------------------- */
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        :root {
-            --bg: #09090b; 
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #4f46e5;
-            --ai-glow: rgba(168, 85, 247, 0.4);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-        }
-
+        :root { --bg: #09090b; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); --accent: #4f46e5; --text-main: #f8fafc; --text-sub: #94a3b8; }
         html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text-main); overflow-x: hidden; }
-        
-        body {
-            display: flex; flex-direction: column; align-items: center;
-            padding: max(2.5rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom));
-            min-height: 100dvh; position: relative;
-        }
-
-        /* تأثير الخلفية الهادئ */
+        body { display: flex; flex-direction: column; align-items: center; padding: max(2.5rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom)); min-height: 100dvh; position: relative; }
         .lbg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.12; background: var(--accent); }
         .b1 { width: 500px; height: 500px; top: -10%; right: -10%; animation: float 20s infinite alternate; }
         .b2 { width: 400px; height: 400px; bottom: -5%; left: -5%; animation: float 15s infinite alternate-reverse; }
         @keyframes float { to { transform: translate(30px, 30px); } }
-
-        /* البطاقات الزجاجية */
         .wrap { width: 100%; max-width: 23rem; z-index: 10; display: flex; flex-direction: column; gap: 1.2rem; flex: 1; justify-content: center; }
-        .card { 
-            background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border); border-radius: 2rem; padding: 1.8rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative;
-        }
-
+        .card { background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid var(--border); border-radius: 2rem; padding: 1.8rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; }
         .inner { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.2rem; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
-
-        /* المساعد الذكي */
-        .ai-btn {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
-            border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc;
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
-        }
-
-        /* الأزرار والحقول */
-        .btn { 
-            background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; 
-            border-radius: 1.2rem; padding: 1.1rem; font-weight: 900; font-size: 1.1rem;
-            cursor: pointer; width: 100%; transition: 0.3s; display: flex; flex-direction: column; align-items: center; 
-        }
+        .ai-btn { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; box-shadow: 0 0 20px rgba(168, 85, 247, 0.1); }
+        .btn { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; border-radius: 1.2rem; padding: 1.1rem; font-weight: 900; font-size: 1.1rem; cursor: pointer; width: 100%; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .btn:active:not(:disabled) { transform: scale(0.96); }
         .btn:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.6; }
-
-        .inp { 
-            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 1.2rem;
-            padding: 1.1rem; color: white; text-align: center; font-size: 1.1rem; outline: none; transition: 0.3s;
-        }
-
+        .inp { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 1.2rem; padding: 1.1rem; color: white; text-align: center; font-size: 1.1rem; outline: none; transition: 0.3s; }
         .chip { background: var(--glass); border: 1px solid var(--border); border-radius: 1rem; padding: 0.8rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-align: center; }
         .chip.on { background: var(--accent); color: white; border-color: var(--accent); }
-
         .cap { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 0.5rem; }
         .hide { display: none !important; }
         .fi { animation: fadeIn 0.6s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
         .spin { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: sp 0.8s linear infinite; }
         @keyframes sp { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-
-<div class="lbg">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-</div>
+<div class="lbg"><div class="blob b1"></div><div class="blob b2"></div></div>
 
 <div id="s-login" class="wrap fi">
     <div class="text-center mb-6">
@@ -103,279 +50,180 @@
     </div>
     <div class="card">
         <input type="password" id="inp-code" class="inp mb-4" placeholder="تاريخ ميلادك بالهجري">
-        <button class="btn" onclick="login()" id="btn-login">
-            <span id="txt-login">دخول القرعة ←</span>
-        </button>
+        <button class="btn" onclick="login()" id="btn-login"><span id="txt-login">دخول القرعة ←</span></button>
     </div>
 </div>
 
 <div id="s-member" class="wrap hide fi">
     <div class="card text-center">
         <h2 id="el-welcome" class="text-xl font-black mb-6"></h2>
-
         <div id="zone-result" class="hide">
             <div class="inner mb-6">
                 <p class="cap">🎯 ستُهدي هذا العيد لـ</p>
                 <div id="el-target" class="text-5xl font-black text-indigo-400 mb-6"></div>
-                
                 <button onclick="askAI()" id="btn-ai" class="ai-btn w-full py-3 rounded-2xl text-[10px] font-bold mb-4 flex items-center justify-center gap-2">
                     <span>✨ استشر المساعد الذكي لاختيار هدية لـ <span id="target-short"></span></span>
                 </button>
-                <div id="ai-response" class="hide mb-4 p-4 rounded-xl text-right text-[11px] leading-relaxed border border-purple-500/20 bg-purple-500/5">
-                    <div id="ai-text"></div>
-                </div>
-
-                <div id="row-budget" class="hide flex justify-center gap-2 mb-4">
-                    <span class="text-xs font-bold text-slate-400">💰 الميزانية:</span>
-                    <span id="el-budget" class="font-black text-indigo-300"></span>
-                </div>
-
-                <button onclick="toggleWishes()" class="w-full py-2 border border-white/10 rounded-xl text-[9px] font-bold bg-white/5 text-slate-500 uppercase tracking-widest">
-                    قائمة الرغبات اليدوية
-                </button>
+                <div id="ai-response" class="hide mb-4 p-4 rounded-xl text-right text-[11px] leading-relaxed border border-purple-500/20 bg-purple-500/5"><div id="ai-text"></div></div>
+                <div id="row-budget" class="hide flex justify-center gap-2 mb-4"><span class="text-xs font-bold text-slate-400">💰 الميزانية:</span><span id="el-budget" class="font-black text-indigo-300"></span></div>
+                <button onclick="toggleWishes()" class="w-full py-2 border border-white/10 rounded-xl text-[9px] font-bold bg-white/5 text-slate-500 uppercase tracking-widest">قائمة الرغبات اليدوية</button>
                 <div id="box-wishes" class="hide flex flex-wrap justify-center gap-2 mt-4"></div>
             </div>
-
-            <button id="btn-deliver" onclick="markDelivered()" class="btn" disabled>
-                <span id="ttl-deliver">🔒 يُفتح يوم العيد</span>
-                <span id="sub-deliver" class="text-[10px] opacity-60">جاري الحساب...</span>
-            </button>
+            <button id="btn-deliver" onclick="markDelivered()" class="btn" disabled><span id="ttl-deliver">🔒 يُفتح يوم العيد</span><span id="sub-deliver" class="text-[10px] opacity-60">جاري الحساب...</span></button>
             <div id="msg-delivered" class="hide inner text-green-400 font-bold">✅ تم تأكيد التسليم بنجاح!</div>
         </div>
-
         <div id="zone-nodraw" class="hide py-10 text-slate-400 font-bold">القرعة لم تُجرَ بعد ⏳</div>
     </div>
-
     <div class="card">
         <h3 class="font-black mb-1">🌟 أمنياتي الشخصية</h3>
         <p class="text-[10px] text-slate-400 mb-4">اختر ما تفضله ليراه من سيهديك</p>
         <div id="grid-wishes" class="grid grid-cols-2 gap-2 mb-4"></div>
         <input type="text" id="inp-custom" class="inp text-sm py-3 mb-4" placeholder="أمنية أخرى؟ اكتبها هنا...">
-        <button class="btn py-3 text-sm" onclick="saveWishes()">
-            <span id="txt-save">💾 حفظ اختياراتي</span>
-        </button>
+        <button class="btn py-3 text-sm" onclick="saveWishes()"><span id="txt-save">💾 حفظ اختياراتي</span></button>
     </div>
-
     <button onclick="logout()" class="text-[10px] font-bold text-slate-500 py-4">← تسجيل خروج آمن</button>
 </div>
 
 <div id="s-admin" class="wrap hide fi">
     <div class="card text-center">
-        <div class="text-4xl mb-2">👑</div>
-        <h2 class="text-xl font-black mb-6">لوحة المشرف</h2>
-
+        <div class="text-4xl mb-2">👑</div><h2 class="text-xl font-black mb-6">لوحة المشرف</h2>
         <div class="inner text-right mb-6 flex flex-col gap-4">
             <p class="cap">⚙️ قيود السحب الذكية</p>
-            <div class="flex justify-between items-center text-sm font-bold">
-                <span>فواز لا يهدي نواف</span>
-                <input type="checkbox" id="tog-fawaz" checked class="w-5 h-5 accent-indigo-500">
-            </div>
-            <div class="flex justify-between items-center text-sm font-bold">
-                <span>سميرة تستلم من طارق/فواز فقط</span>
-                <input type="checkbox" id="tog-sameera" checked class="w-5 h-5 accent-indigo-500">
-            </div>
+            <div class="flex justify-between items-center text-sm font-bold"><span>فواز لا يهدي نواف</span><input type="checkbox" id="tog-fawaz" checked class="w-5 h-5 accent-indigo-500"></div>
+            <div class="flex justify-between items-center text-sm font-bold"><span>سميرة تستلم من طارق/فواز فقط</span><input type="checkbox" id="tog-sameera" checked class="w-5 h-5 accent-indigo-500"></div>
         </div>
-
-        <div class="text-right mb-6">
-            <label class="cap block">💰 ميزانية القرعة</label>
-            <input type="text" id="inp-budget" class="inp text-base" placeholder="مثال: 500 ريال">
-        </div>
-
-        <button class="btn text-lg" onclick="runDraw()" id="btn-draw">
-            <span id="txt-draw">🎲 إجراء القرعة الآن</span>
-        </button>
+        <div class="text-right mb-6"><label class="cap block">💰 ميزانية القرعة</label><input type="text" id="inp-budget" class="inp text-base" placeholder="مثال: 500 ريال"></div>
+        <button class="btn text-lg" onclick="runDraw()" id="btn-draw"><span id="txt-draw">🎲 إجراء القرعة الآن</span></button>
     </div>
-
-    <div id="sec-assigns" class="card hide mt-4">
-        <h3 class="text-center font-black mb-4 pb-2 border-b border-white/10">📋 نتائج السحب الحالي</h3>
-        <div id="list-assigns" class="flex flex-col gap-2"></div>
-    </div>
-
+    <div id="sec-assigns" class="card hide mt-4"><h3 class="text-center font-black mb-4 pb-2 border-b border-white/10">📋 نتائج السحب الحالي</h3><div id="list-assigns" class="flex flex-col gap-2"></div></div>
     <button onclick="logout()" class="text-[10px] font-bold text-slate-500 py-4 mx-auto">← خروج المشرف</button>
 </div>
-
 <canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:999;display:none"></canvas>
 
 <script>
-/* ---------------------------------------------------------
-   ⚙️ محرك النظام (Logic & AI Engine)
---------------------------------------------------------- */
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v15_final';
+const STORE = 'rajeh_v16_ai_fix';
 
 let me = null, assignId = null, rxWishes = [];
 const $ = id => document.getElementById(id);
 
-window.onload = () => {
-    const s = localStorage.getItem(STORE);
-    if(s) { $("inp-code").value = s; login(true); }
-};
-
+window.onload = () => { const s = localStorage.getItem(STORE); if(s) { $("inp-code").value = s; login(true); } };
 function haptic(p) { try { navigator.vibrate?.(p); } catch(e){} }
 
 async function login(auto = false) {
-    if(!auto) haptic(40);
-    const code = $("inp-code").value.trim();
-    if(!code) return;
+    const code = $("inp-code").value.trim(); if(!code) return;
     $("txt-login").innerHTML = '<div class="spin mx-auto"></div>';
-    
     const { data: u, error } = await db.from('users').select('*').eq('code', code).single();
-    if(error || !u) {
-        if(!auto) alert("الرمز السري غير صحيح!");
-        localStorage.removeItem(STORE);
-        $("txt-login").innerText = "دخول القرعة ←";
-        return;
-    }
-    localStorage.setItem(STORE, code);
-    me = u;
-    u.role === 'admin' ? loadAdmin() : loadMember(u);
+    if(error || !u) { if(!auto) alert("الرمز السري غير صحيح!"); localStorage.removeItem(STORE); $("txt-login").innerText = "دخول القرعة ←"; return; }
+    localStorage.setItem(STORE, code); me = u; u.role === 'admin' ? loadAdmin() : loadMember(u);
 }
 
-function logout() {
-    if(confirm("تأكيد تسجيل الخروج؟")) { localStorage.removeItem(STORE); location.reload(); }
-}
+function logout() { if(confirm("تأكيد تسجيل الخروج؟")) { localStorage.removeItem(STORE); location.reload(); } }
 
 async function loadMember(u) {
-    $("s-login").classList.add('hide');
-    $("s-member").classList.remove('hide');
+    $("s-login").classList.add('hide'); $("s-member").classList.remove('hide');
     const welcome = $("el-welcome");
-    if(u.name === 'سميرة') {
-        welcome.innerHTML = "يا هلا بست الحبايب أمنا سميرة ❤️👑";
-        welcome.style.color = "#fbbf24";
-    } else {
-        welcome.innerText = "يا هلا، " + u.name;
-    }
+    if(u.name === 'سميرة') { welcome.innerHTML = "يا هلا بست الحبايب أمنا سميرة ❤️👑"; welcome.style.color = "#fbbf24"; }
+    else welcome.innerText = "يا هلا، " + u.name;
 
     buildWishesGrid(u.wishes || '');
     const { data: draw } = await db.from('draws').select('*').order('created_at', {ascending: false}).limit(1).maybeSingle();
     if(!draw) { $("zone-nodraw").classList.remove('hide'); return; }
     if(draw.budget) { $("el-budget").innerText = draw.budget; $("row-budget").classList.remove('hide'); }
 
-    const { data: asgn } = await db.from('assignments')
-        .select('*, receiver:users!receiver_id(name, wishes)')
-        .eq('giver_id', u.id).eq('draw_id', draw.id).maybeSingle();
-
+    const { data: asgn } = await db.from('assignments').select('*, receiver:users!receiver_id(name, wishes)').eq('giver_id', u.id).eq('draw_id', draw.id).maybeSingle();
     if(asgn) {
-        assignId = asgn.id;
-        $("el-target").innerText = asgn.receiver.name;
-        $("target-short").innerText = asgn.receiver.name;
+        assignId = asgn.id; $("el-target").innerText = asgn.receiver.name; $("target-short").innerText = asgn.receiver.name;
         rxWishes = (asgn.receiver.wishes || '').split(',').filter(Boolean);
         $("zone-result").classList.remove('hide');
-        if(asgn.is_delivered) {
-            $("btn-deliver").classList.add('hide');
-            $("msg-delivered").classList.remove('hide');
-        } else {
-            $("btn-deliver").classList.remove('hide');
-            startCountdown();
-        }
-    } else { $("zone-nodraw").classList.remove('hide'); }
+        asgn.is_delivered ? ($("btn-deliver").classList.add('hide'), $("msg-delivered").classList.remove('hide')) : ($("btn-deliver").classList.remove('hide'), startCountdown());
+    } else $("zone-nodraw").classList.remove('hide');
 }
 
 function startCountdown() {
     const eid = new Date("2026-03-20T00:00:00").getTime();
     const tick = () => {
-        const diff = eid - Date.now();
-        const btn = $("btn-deliver");
-        if(diff <= 0) {
-            btn.disabled = false;
-            $("ttl-deliver").innerText = "📦 تأكيد تسليم الهدية";
-            $("sub-deliver").innerText = "متاح الآن، اضغط لتسجيل التسليم";
-            return;
-        }
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        btn.disabled = true;
-        $("sub-deliver").innerText = `باقي: ${d} يوم و ${h} ساعة`;
+        const diff = eid - Date.now(); const btn = $("btn-deliver");
+        if(diff <= 0) { btn.disabled = false; $("ttl-deliver").innerText = "📦 تأكيد تسليم الهدية"; $("sub-deliver").innerText = "متاح الآن، اضغط للتأكيد"; return; }
+        const d = Math.floor(diff / 86400000); const h = Math.floor((diff % 86400000) / 3600000);
+        btn.disabled = true; $("sub-deliver").innerText = `باقي: ${d} يوم و ${h} ساعة`;
         setTimeout(tick, 60000);
-    };
-    tick();
+    }; tick();
 }
 
 const W_OPTIONS = ['عطور وعناية', 'ملابس وأناقة', 'إلكترونيات', 'قهوة وحلويات', 'ساعة فخمة', 'كتب وقراءة'];
 function buildWishesGrid(saved) {
     const arr = saved.split(',');
-    $("grid-wishes").innerHTML = W_OPTIONS.map(opt => `
-        <button onclick="this.classList.toggle('on')" class="chip ${arr.includes(opt)?'on':''}">
-            ${opt}
-        </button>
-    `).join('');
+    $("grid-wishes").innerHTML = W_OPTIONS.map(opt => `<button onclick="this.classList.toggle('on')" class="chip ${arr.includes(opt)?'on':''}">${opt}</button>`).join('');
 }
 
 async function saveWishes() {
-    haptic(40);
     $("txt-save").innerHTML = '<div class="spin mx-auto"></div>';
     const sel = [...document.querySelectorAll('.chip.on')].map(c => c.innerText.trim());
-    const custom = $("inp-custom").value.trim();
-    if(custom) sel.push(custom);
+    const custom = $("inp-custom").value.trim(); if(custom) sel.push(custom);
     const { error } = await db.from('users').update({ wishes: sel.join(',') }).eq('id', me.id);
-    if(!error) alert("تم حفظ أمنياتك بنجاح! ✅");
-    $("txt-save").innerText = "💾 حفظ اختياراتي";
+    if(!error) alert("تم حفظ أمنياتك بنجاح! ✅"); $("txt-save").innerText = "💾 حفظ اختياراتي";
 }
 
 function toggleWishes() {
     const box = $("box-wishes"); box.classList.toggle('hide');
-    box.innerHTML = rxWishes.length 
-        ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('')
-        : '<p class="text-[10px] text-slate-500 italic">لم يحدد هذا العضو رغباته بعد</p>';
+    box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد هذا العضو رغباته بعد</p>';
 }
 
+// محرك الذكاء الاصطناعي العبقري (V16 Fixed)
 async function askAI() {
     const aiBox = $("ai-response"); const aiText = $("ai-text"); const btn = $("btn-ai");
-    haptic(40); aiBox.classList.remove('hide'); btn.disabled = true;
-    aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> المساعد يحلل رغبات الشخص...';
+    aiBox.classList.remove('hide'); btn.disabled = true;
+    aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> جاري تحليل رغبات الشخص بدقة...';
     
     setTimeout(() => {
         let ideas = ""; const target = $("el-target").innerText;
+        // الربط الذكي لكل التصنيفات
         if(rxWishes.includes('عطور وعناية')) ideas += "• بما أنه يحب العطور، أنصحك بـ (عطر شتوي بتركيبة العود) أو طقم عناية متكامل.<br>";
-        if(rxWishes.includes('إلكترونيات')) ideas += "• لمحبي التقنية، (سماعة لاسلكية عازلة للضوضاء) أو (باور بانك سريع) ستكون هدية مذهلة.<br>";
-        if(rxWishes.includes('قهوة وحلويات')) ideas += "• سيفرح بـ (مطحنة قهوة مختصة) أو بوكس شوكولاتة فاخرة.<br>";
-        if(ideas === "") ideas = "• بما أن رغباته غير واضحة، الهدايا الكلاسيكية مثل (الساعات الفاخرة) أو (المحافظ الجلدية) هي الخيار الأضمن دائماً!";
+        if(rxWishes.includes('ملابس وأناقة')) ideas += "• للأناقة، (بشت فاخر)، (ثوب مطرز)، أو (وشاح كشمير) ستكون خيارات ملكية.<br>";
+        if(rxWishes.includes('إلكترونيات')) ideas += "• تقنياً، (سماعة لاسلكية عازلة) أو (منصة شحن لاسلكية) ستنال إعجابه.<br>";
+        if(rxWishes.includes('قهوة وحلويات')) ideas += "• لعشاق القهوة، (بوكس محاصيل مختصة) أو (كوب حافظ للحرارة ذكي).<br>";
+        if(rxWishes.includes('ساعة فخمة')) ideas += "• الساعة هدية العمر؛ اختر (ساعة كلاسيكية بجلد طبيعي) أو (ساعة ذكية أحدث إصدار).<br>";
+        if(rxWishes.includes('كتب وقراءة')) ideas += "• لمحبي القراءة، (جهاز كيندل) أو (مجموعة كتب موقعة) مع فاصل كتاب معدني.<br>";
+        
+        // إذا لم يختر شيئاً، أو كتب رغبة يدوية غير مدرجة
+        if(ideas === "") {
+             if(rxWishes.length > 0) {
+                 ideas = `• الشخص كتب رغبات خاصة: (${rxWishes.join(' - ')}). أنصحك بالتركيز عليها بدقة فهي مفتاحه للسعادة!`;
+             } else {
+                 ideas = "• بما أن رغباته غير واضحة، الهدايا الكلاسيكية الفاخرة مثل (الأقلام الماركة) أو (المحافظ الجلدية) هي الخيار الأضمن!";
+             }
+        }
         
         aiText.innerHTML = `<div class="font-bold mb-2 text-purple-400">💡 مقترحات ذكية لـ ${target}:</div><div class="text-slate-300">${ideas}</div>`;
         btn.disabled = false;
-    }, 1800);
+    }, 1500);
 }
 
-async function markDelivered() {
-    if(!confirm("تأكيد تسليم الهدية؟")) return;
-    const { error } = await db.from('assignments').update({ is_delivered: true }).eq('id', assignId);
-    if(!error) { fireConfetti(); $("btn-deliver").classList.add('hide'); $("msg-delivered").classList.remove('hide'); }
-}
+async function markDelivered() { if(!confirm("تأكيد تسليم الهدية؟")) return; const { error } = await db.from('assignments').update({ is_delivered: true }).eq('id', assignId); if(!error) { $("btn-deliver").classList.add('hide'); $("msg-delivered").classList.remove('hide'); } }
 
 async function loadAdmin() {
     $("s-login").classList.add('hide'); $("s-admin").classList.remove('hide');
     const { data: lastDraw } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(1).maybeSingle();
     if(!lastDraw) return;
     const { data: asgns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').eq('draw_id', lastDraw.id);
-    if(asgns) {
-        $("sec-assigns").classList.remove('hide');
-        $("list-assigns").innerHTML = asgns.map(a => `<div class="inner flex justify-between items-center text-xs"><span class="font-black text-indigo-400 w-1/3 text-right">${a.giver.name}</span><span class="opacity-40 w-1/3 text-center">${a.is_delivered?'✅':'⏳'}</span><span class="font-black w-1/3 text-left">${a.receiver.name}</span></div>`).join('');
-    }
+    if(asgns) { $("sec-assigns").classList.remove('hide'); $("list-assigns").innerHTML = asgns.map(a => `<div class="inner flex justify-between items-center text-xs"><span class="font-black text-indigo-400 w-1/3 text-right">${a.giver.name}</span><span class="opacity-40 w-1/3 text-center">${a.is_delivered?'✅':'⏳'}</span><span class="font-black w-1/3 text-left">${a.receiver.name}</span></div>`).join(''); }
 }
 
 async function runDraw() {
-    if(!confirm("إجراء قرعة جديدة وحذف السابقة؟")) return;
-    $("txt-draw").innerHTML = '<div class="spin mx-auto"></div>';
+    if(!confirm("إجراء قرعة جديدة؟")) return; $("txt-draw").innerHTML = '<div class="spin mx-auto"></div>';
     const { data: users } = await db.from('users').select('*').eq('role', 'member');
     const { data: past } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(3);
-    let pastPairs = [];
-    if(past?.length) {
-        const { data: pa } = await db.from('assignments').select('giver_id, receiver_id').in('draw_id', past.map(d=>d.id));
-        pastPairs = pa.map(p => p.giver_id + '-' + p.receiver_id);
-    }
+    let pastPairs = []; if(past?.length) { const { data: pa } = await db.from('assignments').select('giver_id, receiver_id').in('draw_id', past.map(d=>d.id)); pastPairs = pa.map(p => p.giver_id + '-' + p.receiver_id); }
     const fC = $("tog-fawaz").checked; const sC = $("tog-sameera").checked;
     let result = null;
     for(let i=0; i<5000; i++) {
-        let sh = [...users].sort(() => Math.random() - 0.5);
-        if(sh.some((u, idx) => u.id === users[idx].id)) continue;
+        let sh = [...users].sort(() => Math.random() - 0.5); if(sh.some((u, idx) => u.id === users[idx].id)) continue;
         let map = {}; users.forEach((u, idx) => map[u.name] = sh[idx].name);
         if(fC && map['فواز'] === 'نواف') continue;
-        if(sC) {
-            const giver = Object.keys(map).find(k => map[k] === 'سميرة');
-            if(giver && !['طارق', 'فواز'].includes(giver)) continue;
-        }
+        if(sC) { const giver = Object.keys(map).find(k => map[k] === 'سميرة'); if(giver && !['طارق', 'فواز'].includes(giver)) continue; }
         if(users.some((u, idx) => pastPairs.includes(u.id + '-' + sh[idx].id))) continue;
         result = sh; break;
     }
@@ -384,19 +232,7 @@ async function runDraw() {
     await db.from('assignments').insert(users.map((u, idx) => ({ draw_id: d.id, giver_id: u.id, receiver_id: result[idx].id })));
     alert("تمت القرعة بنجاح! 🎉"); location.reload();
 }
-
-function fireConfetti() {
-    const cv = $("confetti"); const ctx = cv.getContext('2d');
-    cv.width = window.innerWidth; cv.height = window.innerHeight; cv.style.display = 'block';
-    const p = Array.from({length: 150}, () => ({ x: Math.random()*cv.width, y: -20, vx: (Math.random()-0.5)*10, vy: Math.random()*5+5, c: ['#4f46e5','#818cf8','#ffffff'][Math.floor(Math.random()*3)] }));
-    let f = 0;
-    (function draw(){
-        ctx.clearRect(0,0,cv.width,cv.height);
-        p.forEach(i => { ctx.fillStyle = i.c; ctx.fillRect(i.x, i.y, 6, 6); i.x += i.vx; i.y += i.vy; });
-        if(++f < 180) requestAnimationFrame(draw); else cv.style.display = 'none';
-    })();
-}
 </script>
-
 </body>
 </html>
+
