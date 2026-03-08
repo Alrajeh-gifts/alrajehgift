@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>هدايا العائلة 🎁</title>
+    <title>هدايا العيد 🎁</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#09090b">
@@ -45,7 +45,7 @@
 <div id="s-login" class="wrap fi">
     <div class="text-center mb-6">
         <div class="text-6xl mb-4">🎁</div>
-        <h1 class="text-3xl font-black">هدايا العائلة</h1>
+        <h1 class="text-3xl font-black">هدايا العيد</h1>
         <p class="cap">نظام القرعة الإلكتروني الذكي • ٢٠٢٦</p>
     </div>
     <div class="card">
@@ -104,7 +104,7 @@
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v16_ai_fix';
+const STORE = 'rajeh_v17_eid_name';
 
 let me = null, assignId = null, rxWishes = [];
 const $ = id => document.getElementById(id);
@@ -172,7 +172,6 @@ function toggleWishes() {
     box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد هذا العضو رغباته بعد</p>';
 }
 
-// محرك الذكاء الاصطناعي العبقري (V16 Fixed)
 async function askAI() {
     const aiBox = $("ai-response"); const aiText = $("ai-text"); const btn = $("btn-ai");
     aiBox.classList.remove('hide'); btn.disabled = true;
@@ -180,7 +179,6 @@ async function askAI() {
     
     setTimeout(() => {
         let ideas = ""; const target = $("el-target").innerText;
-        // الربط الذكي لكل التصنيفات
         if(rxWishes.includes('عطور وعناية')) ideas += "• بما أنه يحب العطور، أنصحك بـ (عطر شتوي بتركيبة العود) أو طقم عناية متكامل.<br>";
         if(rxWishes.includes('ملابس وأناقة')) ideas += "• للأناقة، (بشت فاخر)، (ثوب مطرز)، أو (وشاح كشمير) ستكون خيارات ملكية.<br>";
         if(rxWishes.includes('إلكترونيات')) ideas += "• تقنياً، (سماعة لاسلكية عازلة) أو (منصة شحن لاسلكية) ستنال إعجابه.<br>";
@@ -188,15 +186,10 @@ async function askAI() {
         if(rxWishes.includes('ساعة فخمة')) ideas += "• الساعة هدية العمر؛ اختر (ساعة كلاسيكية بجلد طبيعي) أو (ساعة ذكية أحدث إصدار).<br>";
         if(rxWishes.includes('كتب وقراءة')) ideas += "• لمحبي القراءة، (جهاز كيندل) أو (مجموعة كتب موقعة) مع فاصل كتاب معدني.<br>";
         
-        // إذا لم يختر شيئاً، أو كتب رغبة يدوية غير مدرجة
         if(ideas === "") {
-             if(rxWishes.length > 0) {
-                 ideas = `• الشخص كتب رغبات خاصة: (${rxWishes.join(' - ')}). أنصحك بالتركيز عليها بدقة فهي مفتاحه للسعادة!`;
-             } else {
-                 ideas = "• بما أن رغباته غير واضحة، الهدايا الكلاسيكية الفاخرة مثل (الأقلام الماركة) أو (المحافظ الجلدية) هي الخيار الأضمن!";
-             }
+             if(rxWishes.length > 0) { ideas = `• الشخص كتب رغبات خاصة: (${rxWishes.join(' - ')}). أنصحك بالتركيز عليها بدقة فهي مفتاحه للسعادة!`; } 
+             else { ideas = "• بما أن رغباته غير واضحة، الهدايا الكلاسيكية الفاخرة مثل (الأقلام الماركة) أو (المحافظ الجلدية) هي الخيار الأضمن!"; }
         }
-        
         aiText.innerHTML = `<div class="font-bold mb-2 text-purple-400">💡 مقترحات ذكية لـ ${target}:</div><div class="text-slate-300">${ideas}</div>`;
         btn.disabled = false;
     }, 1500);
@@ -235,4 +228,3 @@ async function runDraw() {
 </script>
 </body>
 </html>
-
