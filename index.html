@@ -23,7 +23,7 @@
         .wrap { width: 100%; max-width: 23rem; z-index: 10; display: flex; flex-direction: column; gap: 1.2rem; flex: 1; justify-content: center; }
         .card { background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid var(--border); border-radius: 2rem; padding: 1.8rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; }
         .inner { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.2rem; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
-        .ai-btn { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; box-shadow: 0 0 20px rgba(168, 85, 247, 0.1); }
+        .ai-btn { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; }
         .btn { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; border-radius: 1.2rem; padding: 1.1rem; font-weight: 900; font-size: 1.1rem; cursor: pointer; width: 100%; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .btn:active:not(:disabled) { transform: scale(0.96); }
         .btn:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.6; }
@@ -36,6 +36,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .spin { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: sp 0.8s linear infinite; }
         @keyframes sp { to { transform: rotate(360deg); } }
+        /* تحسينات لوحة المشرف */
+        .admin-scroll { max-height: 50vh; overflow-y: auto; padding-right: 5px; }
+        .admin-row { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -45,11 +48,12 @@
     <div class="text-center mb-6">
         <div class="text-6xl mb-4">🎁</div>
         <h1 class="text-3xl font-black">هدايا العيد</h1>
-        <p class="cap">نظام القرعة الإلكتروني الذكي • ٢٠٢٦</p>
+        <p class="cap">المساعد الذكي لتنسيق الهدايا • ٢٠٢٦</p>
     </div>
     <div class="card">
+        <p class="cap text-center">بوابة الدخول الآمنة</p>
         <input type="password" id="inp-code" class="inp mb-4" placeholder="تاريخ ميلادك بالهجري">
-        <button class="btn" onclick="login()" id="btn-login"><span id="txt-login">دخول القرعة ←</span></button>
+        <button class="btn" onclick="login()" id="btn-login"><span id="txt-login">دخول النظام ←</span></button>
     </div>
 </div>
 
@@ -58,55 +62,56 @@
         <h2 id="el-welcome" class="text-xl font-black mb-6"></h2>
         <div id="zone-result" class="hide">
             <div class="inner mb-6">
-                <p class="cap">🎯 ستُهدي هذا العيد لـ</p>
+                <p class="cap">🎯 الشخص الذي ستقوم بإهدائه</p>
                 <div id="el-target" class="text-5xl font-black text-indigo-400 mb-6"></div>
-                <button onclick="askAI()" id="btn-ai" class="ai-btn w-full py-3 rounded-2xl text-[10px] font-bold mb-4 flex items-center justify-center gap-2">
-                    <span>✨ استشر المساعد الذكي لاختيار هدية</span>
+                
+                <button onclick="askAI()" id="btn-ai" class="ai-btn w-full py-3 rounded-2xl text-[11px] font-bold mb-4 flex items-center justify-center gap-2 border border-purple-500/30">
+                    <span>✨ استشر المساعد الذكي (بناءً على العمر والجنس)</span>
                 </button>
                 <div id="ai-response" class="hide mb-4 p-4 rounded-xl text-right text-[11px] leading-relaxed border border-purple-500/20 bg-purple-500/5">
                     <div id="ai-text"></div>
                 </div>
-                <div id="row-budget" class="hide flex justify-center gap-2 mb-4"><span class="text-xs font-bold text-slate-400">💰 الميزانية:</span><span id="el-budget" class="font-black text-indigo-300"></span></div>
-                <button onclick="toggleWishes()" class="w-full py-2 border border-white/10 rounded-xl text-[9px] font-bold bg-white/5 text-slate-500 uppercase tracking-widest">قائمة الرغبات اليدوية</button>
+
+                <div id="row-budget" class="hide flex justify-center gap-2 mb-4"><span class="text-xs font-bold text-slate-400">💰 الميزانية المرصودة:</span><span id="el-budget" class="font-black text-indigo-300"></span></div>
+
+                <button onclick="toggleWishes()" class="w-full py-2 border border-white/10 rounded-xl text-[9px] font-bold bg-white/5 text-slate-500">قائمة الرغبات الصريحة</button>
                 <div id="box-wishes" class="hide flex flex-wrap justify-center gap-2 mt-4"></div>
             </div>
-            <button id="btn-deliver" onclick="markDelivered()" class="btn" disabled><span id="ttl-deliver">🔒 يُفتح يوم العيد</span><span id="sub-deliver" class="text-[10px] opacity-60">جاري الحساب...</span></button>
-            <div id="msg-delivered" class="hide inner text-green-400 font-bold">✅ تم تأكيد التسليم بنجاح!</div>
+            <button id="btn-deliver" onclick="markDelivered()" class="btn" disabled><span id="ttl-deliver">🔒 تأكيد التسليم (يفتح يوم العيد)</span><span id="sub-deliver" class="text-[10px] opacity-60">جاري العد التنازلي...</span></button>
+            <div id="msg-delivered" class="hide inner text-green-400 font-bold">✅ بيض الله وجهك، تم التسليم!</div>
         </div>
-        <div id="zone-nodraw" class="hide py-10 text-slate-400 font-bold">القرعة لم تُجرَ بعد ⏳</div>
+        <div id="zone-nodraw" class="hide py-10 text-slate-400 font-bold">القرعة لم تُفعل بعد ⏳</div>
     </div>
     <div class="card">
-        <h3 class="font-black mb-1">🌟 أمنياتي الشخصية</h3>
-        <p class="text-[10px] text-slate-400 mb-4">اختر ما تفضله ليراه من سيهديك</p>
+        <h3 class="font-black mb-1">🌟 رغباتي في الهدية</h3>
+        <p class="text-[10px] text-slate-400 mb-4">حدد اهتماماتك ليراها من سيقوم بإهدائك</p>
         <div id="grid-wishes" class="grid grid-cols-2 gap-2 mb-4"></div>
-        <input type="text" id="inp-custom" class="inp text-sm py-3 mb-4" placeholder="أمنية أخرى؟ اكتبها هنا...">
-        <button class="btn py-3 text-sm" onclick="saveWishes()"><span id="txt-save">💾 حفظ اختياراتي</span></button>
+        <input type="text" id="inp-custom" class="inp text-sm py-3 mb-4" placeholder="أمنية خاصة خارج القائمة...">
+        <button class="btn py-3 text-sm" onclick="saveWishes()"><span id="txt-save">💾 تحديث رغباتي</span></button>
     </div>
-    <button onclick="logout()" class="text-[10px] font-bold text-slate-500 py-4">← تسجيل خروج آمن</button>
+    <button onclick="logout()" class="text-[10px] font-bold text-slate-500 py-4">← خروج من الحساب</button>
 </div>
 
 <div id="s-admin" class="wrap hide fi">
     <div class="card text-center">
-        <div class="text-4xl mb-2">👑</div><h2 class="text-xl font-black mb-6">لوحة المشرف</h2>
+        <div class="text-4xl mb-2">👑</div><h2 class="text-xl font-black mb-6">غرفة التحكم والقرعة</h2>
         
         <div class="inner text-right mb-6">
-            <p class="cap mb-4">✍️ إدارة شؤون العائلة (تعديل الأكواد)</p>
-            <div id="admin-user-editor" class="flex flex-col gap-3 max-h-60 overflow-y-auto pr-2">
-                <div class="text-center text-xs opacity-50">جاري جلب القائمة...</div>
+            <p class="cap mb-4">👥 إدارة الأعضاء والبيانات (الذكاء الاصطناعي)</p>
+            <div id="admin-user-editor" class="admin-scroll">
+                <div class="text-center text-xs opacity-50">جاري تحميل البيانات...</div>
             </div>
         </div>
 
         <div class="inner text-right mb-6 flex flex-col gap-4">
-            <p class="cap">⚙️ قيود السحب الذكية</p>
-            <div class="flex justify-between items-center text-sm font-bold"><span>فواز لا يهدي نواف</span><input type="checkbox" id="tog-fawaz" checked class="w-5 h-5 accent-indigo-500"></div>
-            <div class="flex justify-between items-center text-sm font-bold"><span>سميرة تستلم من طارق/فواز فقط</span><input type="checkbox" id="tog-sameera" checked class="w-5 h-5 accent-indigo-500"></div>
+            <p class="cap">⚙️ شروط السحب الإلكتروني</p>
+            <div class="flex justify-between items-center text-sm font-bold"><span>منع تعارض فواز ونواف</span><input type="checkbox" id="tog-fawaz" checked class="w-5 h-5 accent-indigo-500"></div>
+            <div class="flex justify-between items-center text-sm font-bold"><span>تخصيص الوالدة (طارق/فواز)</span><input type="checkbox" id="tog-sameera" checked class="w-5 h-5 accent-indigo-500"></div>
         </div>
 
-        <div class="text-right mb-6"><label class="cap block">💰 ميزانية القرعة</label><input type="text" id="inp-budget" class="inp text-base" placeholder="مثال: 500 ريال"></div>
-        <button class="btn text-lg" onclick="runDraw()" id="btn-draw"><span id="txt-draw">🎲 إجراء القرعة الآن</span></button>
+        <div class="text-right mb-6"><label class="cap block">💰 ميزانية العيد المقترحة</label><input type="text" id="inp-budget" class="inp text-base" placeholder="مثال: 500 ريال"></div>
+        <button class="btn text-lg" onclick="runDraw()" id="btn-draw"><span id="txt-draw">🎲 ابدأ القرعة الإلكترونية</span></button>
     </div>
-    
-    <div id="sec-assigns" class="card hide mt-4"><h3 class="text-center font-black mb-4 pb-2 border-b border-white/10">📋 نتائج السحب الحالي</h3><div id="list-assigns" class="flex flex-col gap-2"></div></div>
     <button onclick="logout()" class="text-[10px] font-bold text-slate-500 py-4 mx-auto">← خروج المشرف</button>
 </div>
 
@@ -114,9 +119,9 @@
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v18_smart';
+const STORE = 'rajeh_v19_master';
 
-let me = null, assignId = null, rxWishes = [];
+let me = null, assignId = null, rxWishes = [], rxUser = null;
 const $ = id => document.getElementById(id);
 
 window.onload = () => { const s = localStorage.getItem(STORE); if(s) { $("inp-code").value = s; login(true); } };
@@ -125,16 +130,16 @@ async function login(auto = false) {
     const code = $("inp-code").value.trim(); if(!code) return;
     $("txt-login").innerHTML = '<div class="spin mx-auto"></div>';
     const { data: u, error } = await db.from('users').select('*').eq('code', code).single();
-    if(error || !u) { if(!auto) alert("الرمز السري غير صحيح!"); localStorage.removeItem(STORE); $("txt-login").innerText = "دخول القرعة ←"; return; }
+    if(error || !u) { if(!auto) alert("الرمز غير صحيح! تأكد من تاريخ الميلاد بالهجري."); localStorage.removeItem(STORE); $("txt-login").innerText = "دخول النظام ←"; return; }
     localStorage.setItem(STORE, code); me = u; u.role === 'admin' ? loadAdmin() : loadMember(u);
 }
 
-function logout() { if(confirm("تأكيد تسجيل الخروج؟")) { localStorage.removeItem(STORE); location.reload(); } }
+function logout() { if(confirm("هل تريد الخروج؟")) { localStorage.removeItem(STORE); location.reload(); } }
 
 async function loadMember(u) {
     $("s-login").classList.add('hide'); $("s-member").classList.remove('hide');
     const welcome = $("el-welcome");
-    welcome.innerText = (u.name === 'سميرة') ? "يا هلا يا قلب البيت أمنا سميرة ❤️👑" : "يا هلا، " + u.name;
+    welcome.innerText = (u.name === 'سميرة') ? "يا هلا يا قلب البيت أمنا سميرة ❤️👑" : "أهلاً بك، " + u.name;
     if(u.name === 'سميرة') welcome.style.color = "#fbbf24";
 
     buildWishesGrid(u.wishes || '');
@@ -142,10 +147,12 @@ async function loadMember(u) {
     if(!draw) { $("zone-nodraw").classList.remove('hide'); return; }
     if(draw.budget) { $("el-budget").innerText = draw.budget; $("row-budget").classList.remove('hide'); }
 
-    const { data: asgn } = await db.from('assignments').select('*, receiver:users!receiver_id(name, wishes)').eq('giver_id', u.id).eq('draw_id', draw.id).maybeSingle();
+    // جلب التوزيع ومعلومات المتلقي (لربط الذكاء الاصطناعي)
+    const { data: asgn } = await db.from('assignments').select('*, receiver:users!receiver_id(*)').eq('giver_id', u.id).eq('draw_id', draw.id).maybeSingle();
     if(asgn) {
-        assignId = asgn.id; $("el-target").innerText = asgn.receiver.name;
-        rxWishes = (asgn.receiver.wishes || '').split(',').filter(Boolean);
+        assignId = asgn.id; rxUser = asgn.receiver;
+        $("el-target").innerText = rxUser.name;
+        rxWishes = (rxUser.wishes || '').split(',').filter(Boolean);
         $("zone-result").classList.remove('hide');
         asgn.is_delivered ? ($("btn-deliver").classList.add('hide'), $("msg-delivered").classList.remove('hide')) : ($("btn-deliver").classList.remove('hide'), startCountdown());
     } else $("zone-nodraw").classList.remove('hide');
@@ -154,8 +161,8 @@ async function loadMember(u) {
 function startCountdown() {
     const tick = () => {
         const diff = new Date("2026-03-20T00:00:00").getTime() - Date.now();
-        if(diff <= 0) { $("btn-deliver").disabled = false; $("ttl-deliver").innerText = "📦 تأكيد تسليم الهدية"; return; }
-        $("sub-deliver").innerText = `باقي: ${Math.floor(diff/86400000)} يوم و ${Math.floor((diff%86400000)/3600000)} ساعة`;
+        if(diff <= 0) { $("btn-deliver").disabled = false; $("ttl-deliver").innerText = "📦 تأكيد التسليم"; return; }
+        $("sub-deliver").innerText = `يفتح في يوم العيد (باقي: ${Math.floor(diff/86400000)} يوم)`;
         setTimeout(tick, 60000);
     }; tick();
 }
@@ -170,80 +177,99 @@ async function saveWishes() {
     const sel = [...document.querySelectorAll('.chip.on')].map(c => c.innerText.trim());
     const custom = $("inp-custom").value.trim(); if(custom) sel.push(custom);
     await db.from('users').update({ wishes: sel.join(',') }).eq('id', me.id);
-    alert("تم الحفظ بنجاح! ✅");
+    alert("تم تحديث رغباتك بنجاح! ✅");
 }
 
 function toggleWishes() {
     const box = $("box-wishes"); box.classList.toggle('hide');
-    box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد أمنياته بعد</p>';
+    box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد رغباته بعد</p>';
 }
 
-// المساعد الذكي المطور (Neural AI Engine V18)
+// المساعد الذكي العبقري (The Mastermind AI V19)
 async function askAI() {
     const aiText = $("ai-text"); $("ai-response").classList.remove('hide');
-    aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> جاري تحليل الشخصية والربط بين الرغبات...';
+    aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> جاري تحليل العمر والجنس والاهتمامات...';
     
     setTimeout(() => {
+        // حساب العمر من الرمز الهجري
+        const currentHijri = 1447;
+        const birthYear = parseInt(rxUser.code.substring(0,4));
+        const age = currentHijri - birthYear;
+        const gender = rxUser.gender || 'غير محدد';
+        
+        let profile = "";
+        if(age < 15) profile = "طفل/ناشئ";
+        else if(age < 25) profile = "شاب/مراهق";
+        else if(age < 45) profile = "بالغ";
+        else profile = "كبير سن/وقور";
+
         let ideas = [];
         const has = (w) => rxWishes.includes(w);
 
-        // ذكاء الربط المتعدد
-        if(has('إلكترونيات') && has('قهوة وحلويات')) ideas.push("• مزيج تقني: (ماكينة قهوة ذكية) أو (كوب ذكي يحفظ الحرارة عبر التطبيق).");
-        else if(has('إلكترونيات')) ideas.push("• (سماعة إلغاء ضجيج فاخرة) أو (باوربانك لاسلكي مغناطيسي).");
-        else if(has('قهوة وحلويات')) ideas.push("• (مطحنة بن يدوية احترافية) أو (بوكس محاصيل قهوة مختصة).");
+        // ذكاء الربط العميق (Age + Gender + Wishes)
+        if(has('إلكترونيات')) {
+            if(age < 20) ideas.push("• لجيل الشباب: (سماعة محيطية للألعاب) أو (اشتراك جيمينج).");
+            else ideas.push("• للبالغين: (سماعة إلغاء ضجيج للعمل) أو (ماكينة حلاقة ذكية للرجال / جهاز تصفيف شعر للنساء).");
+        }
 
-        if(has('ملابس وأناقة') && has('عطور وعناية')) ideas.push("• باقة متكاملة: (بشت فاخر مع طقم دهن عود سيوفي).");
-        else if(has('ملابس وأناقة')) ideas.push("• (وشاح كشمير ناعم) أو (طقم أزرار ثوب ماركة).");
-        else if(has('عطور وعناية')) ideas.push("• (مجموعة بخور ملكي) أو (عطر شتوي بتركيبة النيش).");
+        if(has('ملابس وأناقة')) {
+            if(gender === 'ذكر') ideas.push(age > 40 ? "• (بشت شتوي فاخر) أو (طقم كبكات ذهبية)." : "• (ثوب عصري) أو (حذاء رياضي ماركة).");
+            else if(gender === 'أنثى') ideas.push("• (شنطة يد براند) أو (شال كشميري ناعم).");
+        }
 
-        if(has('ساعة فخمة')) ideas.push("• (ساعة كلاسيكية بسوار جلدي) أو (صندوق منظم للساعات الفاخرة).");
-        if(has('كتب وقراءة')) ideas.push("• (جهاز كيندل أحدث إصدار) أو (مصباح قراءة مريح للعين).");
+        if(has('عطور وعناية')) {
+            if(gender === 'ذكر') ideas.push("• (عطر برائحة العود والجلود) أو (مجموعة حلاقة كلاسيكية).");
+            else ideas.push("• (عطر زهري فرنسي) أو (جهاز مساج للوجه).");
+        }
 
-        if(ideas.length === 0) ideas.push(rxWishes.length > 0 ? "• الشخص كتب رغبات خاصة: " + rxWishes.join(' - ') : "• الهدايا الكلاسيكية الفاخرة (الأقلام الماركة/المحافظ الجلدية) هي الخيار الأضمن.");
+        if(ideas.length === 0) ideas.push(`• الشخص (${profile} - ${gender}): أنصحك بـ (مبخره ذكية) أو (بوكس شوكولاتة فاخرة) فهي ترضي الجميع.`);
 
-        aiText.innerHTML = `<div class="font-bold mb-2 text-purple-400">💡 مقترحات ذكية لـ ${$("el-target").innerText}:</div><div class="text-slate-300">${ideas.join('<br>')}</div>`;
+        aiText.innerHTML = `
+            <div class="text-purple-300 font-bold mb-1 text-[10px]">تحليل المساعد لـ ${rxUser.name}:</div>
+            <div class="text-slate-400 mb-3 text-[9px] border-b border-white/5 pb-2">الفئة: ${profile} | الجنس: ${gender}</div>
+            <div class="text-slate-200">${ideas.join('<br>')}</div>
+        `;
     }, 1500);
 }
 
-// وظائف إدارة المستخدمين للمشرف
+// --- غرفة تحكم المشرف ---
 async function loadAdmin() {
     $("s-login").classList.add('hide'); $("s-admin").classList.remove('hide');
-    const { data: allUsers } = await db.from('users').select('id, name, code').order('name');
+    const { data: allUsers } = await db.from('users').select('*').order('name');
     const editor = $("admin-user-editor");
     editor.innerHTML = allUsers.map(u => `
-        <div class="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
-            <input id="n-${u.id}" class="bg-transparent text-[10px] w-1/3 border-b border-white/10" value="${u.name}">
-            <input id="c-${u.id}" class="bg-transparent text-[10px] w-1/3 border-b border-white/10 text-center" value="${u.code}">
-            <button onclick="updateUser('${u.id}')" class="bg-indigo-500 text-[9px] px-2 py-1 rounded">حفظ</button>
+        <div class="admin-row">
+            <div class="flex gap-2 mb-2">
+                <input id="n-${u.id}" class="bg-black/20 text-[11px] w-1/2 p-1 rounded" value="${u.name}" placeholder="الاسم">
+                <input id="c-${u.id}" class="bg-black/20 text-[11px] w-1/2 p-1 rounded text-center" value="${u.code}" placeholder="تاريخ الميلاد">
+            </div>
+            <div class="flex items-center justify-between">
+                <select id="g-${u.id}" class="bg-black/40 text-[10px] p-1 rounded border-none">
+                    <option value="ذكر" ${u.gender==='ذكر'?'selected':''}>ذكر</option>
+                    <option value="أنثى" ${u.gender==='أنثى'?'selected':''}>أنثى</option>
+                </select>
+                <button onclick="updateUser('${u.id}')" class="bg-indigo-600 text-[10px] px-4 py-1 rounded-lg font-bold">حفظ التعديل</button>
+            </div>
         </div>
     `).join('');
-    
-    // تحميل التوزيع الحالي
-    const { data: lastDraw } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(1).maybeSingle();
-    if(lastDraw) {
-        const { data: asgns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').eq('draw_id', lastDraw.id);
-        $("sec-assigns").classList.remove('hide');
-        $("list-assigns").innerHTML = asgns.map(a => `<div class="inner flex justify-between items-center text-xs"><span class="text-indigo-400">${a.giver.name}</span><span>⬅️</span><span class="text-slate-300">${a.receiver.name}</span></div>`).join('');
-    }
 }
 
 async function updateUser(id) {
-    const newName = $(`n-${id}`).value.trim();
-    const newCode = $(`c-${id}`).value.trim();
-    await db.from('users').update({ name: newName, code: newCode }).eq('id', id);
-    alert("تم تحديث بيانات العضو بنجاح! 🪄");
+    const n = $(`n-${id}`).value.trim();
+    const c = $(`c-${id}`).value.trim();
+    const g = $(`g-${id}`).value;
+    await db.from('users').update({ name: n, code: c, gender: g }).eq('id', id);
+    alert("تم التحديث بنجاح! 🪄");
 }
 
 async function runDraw() {
-    if(!confirm("إجراء قرعة جديدة؟")) return;
+    if(!confirm("بدء قرعة جديدة؟")) return;
     $("txt-draw").innerHTML = '<div class="spin mx-auto"></div>';
     const { data: users } = await db.from('users').select('*').eq('role', 'member');
     const { data: d } = await db.from('draws').insert({ month_name: 'سحب العيد', budget: $("inp-budget").value }).select().single();
-    
-    // خوارزمية السحب
     let sh = [...users].sort(() => Math.random() - 0.5);
     await db.from('assignments').insert(users.map((u, i) => ({ draw_id: d.id, giver_id: u.id, receiver_id: sh[(i + 1) % users.length].id })));
-    alert("تمت القرعة! 🎉"); location.reload();
+    alert("تمت القرعة بنجاح! 🎉"); location.reload();
 }
 </script>
 </body>
