@@ -7,7 +7,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#09090b">
-    <link rel="manifest" id="manifest-link">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
@@ -62,9 +61,11 @@
                 <p class="cap">🎯 ستُهدي هذا العيد لـ</p>
                 <div id="el-target" class="text-5xl font-black text-indigo-400 mb-6"></div>
                 <button onclick="askAI()" id="btn-ai" class="ai-btn w-full py-3 rounded-2xl text-[10px] font-bold mb-4 flex items-center justify-center gap-2">
-                    <span>✨ استشر المساعد الذكي لاختيار هدية لـ <span id="target-short"></span></span>
+                    <span>✨ استشر المساعد الذكي لاختيار هدية</span>
                 </button>
-                <div id="ai-response" class="hide mb-4 p-4 rounded-xl text-right text-[11px] leading-relaxed border border-purple-500/20 bg-purple-500/5"><div id="ai-text"></div></div>
+                <div id="ai-response" class="hide mb-4 p-4 rounded-xl text-right text-[11px] leading-relaxed border border-purple-500/20 bg-purple-500/5">
+                    <div id="ai-text"></div>
+                </div>
                 <div id="row-budget" class="hide flex justify-center gap-2 mb-4"><span class="text-xs font-bold text-slate-400">💰 الميزانية:</span><span id="el-budget" class="font-black text-indigo-300"></span></div>
                 <button onclick="toggleWishes()" class="w-full py-2 border border-white/10 rounded-xl text-[9px] font-bold bg-white/5 text-slate-500 uppercase tracking-widest">قائمة الرغبات اليدوية</button>
                 <div id="box-wishes" class="hide flex flex-wrap justify-center gap-2 mt-4"></div>
@@ -87,30 +88,38 @@
 <div id="s-admin" class="wrap hide fi">
     <div class="card text-center">
         <div class="text-4xl mb-2">👑</div><h2 class="text-xl font-black mb-6">لوحة المشرف</h2>
+        
+        <div class="inner text-right mb-6">
+            <p class="cap mb-4">✍️ إدارة شؤون العائلة (تعديل الأكواد)</p>
+            <div id="admin-user-editor" class="flex flex-col gap-3 max-h-60 overflow-y-auto pr-2">
+                <div class="text-center text-xs opacity-50">جاري جلب القائمة...</div>
+            </div>
+        </div>
+
         <div class="inner text-right mb-6 flex flex-col gap-4">
             <p class="cap">⚙️ قيود السحب الذكية</p>
             <div class="flex justify-between items-center text-sm font-bold"><span>فواز لا يهدي نواف</span><input type="checkbox" id="tog-fawaz" checked class="w-5 h-5 accent-indigo-500"></div>
             <div class="flex justify-between items-center text-sm font-bold"><span>سميرة تستلم من طارق/فواز فقط</span><input type="checkbox" id="tog-sameera" checked class="w-5 h-5 accent-indigo-500"></div>
         </div>
+
         <div class="text-right mb-6"><label class="cap block">💰 ميزانية القرعة</label><input type="text" id="inp-budget" class="inp text-base" placeholder="مثال: 500 ريال"></div>
         <button class="btn text-lg" onclick="runDraw()" id="btn-draw"><span id="txt-draw">🎲 إجراء القرعة الآن</span></button>
     </div>
+    
     <div id="sec-assigns" class="card hide mt-4"><h3 class="text-center font-black mb-4 pb-2 border-b border-white/10">📋 نتائج السحب الحالي</h3><div id="list-assigns" class="flex flex-col gap-2"></div></div>
     <button onclick="logout()" class="text-[10px] font-bold text-slate-500 py-4 mx-auto">← خروج المشرف</button>
 </div>
-<canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:999;display:none"></canvas>
 
 <script>
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v17_eid_name';
+const STORE = 'rajeh_v18_smart';
 
 let me = null, assignId = null, rxWishes = [];
 const $ = id => document.getElementById(id);
 
 window.onload = () => { const s = localStorage.getItem(STORE); if(s) { $("inp-code").value = s; login(true); } };
-function haptic(p) { try { navigator.vibrate?.(p); } catch(e){} }
 
 async function login(auto = false) {
     const code = $("inp-code").value.trim(); if(!code) return;
@@ -125,8 +134,8 @@ function logout() { if(confirm("تأكيد تسجيل الخروج؟")) { localS
 async function loadMember(u) {
     $("s-login").classList.add('hide'); $("s-member").classList.remove('hide');
     const welcome = $("el-welcome");
-    if(u.name === 'سميرة') { welcome.innerHTML = "يا هلا بست الحبايب أمنا سميرة ❤️👑"; welcome.style.color = "#fbbf24"; }
-    else welcome.innerText = "يا هلا، " + u.name;
+    welcome.innerText = (u.name === 'سميرة') ? "يا هلا يا قلب البيت أمنا سميرة ❤️👑" : "يا هلا، " + u.name;
+    if(u.name === 'سميرة') welcome.style.color = "#fbbf24";
 
     buildWishesGrid(u.wishes || '');
     const { data: draw } = await db.from('draws').select('*').order('created_at', {ascending: false}).limit(1).maybeSingle();
@@ -135,7 +144,7 @@ async function loadMember(u) {
 
     const { data: asgn } = await db.from('assignments').select('*, receiver:users!receiver_id(name, wishes)').eq('giver_id', u.id).eq('draw_id', draw.id).maybeSingle();
     if(asgn) {
-        assignId = asgn.id; $("el-target").innerText = asgn.receiver.name; $("target-short").innerText = asgn.receiver.name;
+        assignId = asgn.id; $("el-target").innerText = asgn.receiver.name;
         rxWishes = (asgn.receiver.wishes || '').split(',').filter(Boolean);
         $("zone-result").classList.remove('hide');
         asgn.is_delivered ? ($("btn-deliver").classList.add('hide'), $("msg-delivered").classList.remove('hide')) : ($("btn-deliver").classList.remove('hide'), startCountdown());
@@ -143,87 +152,98 @@ async function loadMember(u) {
 }
 
 function startCountdown() {
-    const eid = new Date("2026-03-20T00:00:00").getTime();
     const tick = () => {
-        const diff = eid - Date.now(); const btn = $("btn-deliver");
-        if(diff <= 0) { btn.disabled = false; $("ttl-deliver").innerText = "📦 تأكيد تسليم الهدية"; $("sub-deliver").innerText = "متاح الآن، اضغط للتأكيد"; return; }
-        const d = Math.floor(diff / 86400000); const h = Math.floor((diff % 86400000) / 3600000);
-        btn.disabled = true; $("sub-deliver").innerText = `باقي: ${d} يوم و ${h} ساعة`;
+        const diff = new Date("2026-03-20T00:00:00").getTime() - Date.now();
+        if(diff <= 0) { $("btn-deliver").disabled = false; $("ttl-deliver").innerText = "📦 تأكيد تسليم الهدية"; return; }
+        $("sub-deliver").innerText = `باقي: ${Math.floor(diff/86400000)} يوم و ${Math.floor((diff%86400000)/3600000)} ساعة`;
         setTimeout(tick, 60000);
     }; tick();
 }
 
 const W_OPTIONS = ['عطور وعناية', 'ملابس وأناقة', 'إلكترونيات', 'قهوة وحلويات', 'ساعة فخمة', 'كتب وقراءة'];
 function buildWishesGrid(saved) {
-    const arr = saved.split(',');
+    const arr = (saved || '').split(',');
     $("grid-wishes").innerHTML = W_OPTIONS.map(opt => `<button onclick="this.classList.toggle('on')" class="chip ${arr.includes(opt)?'on':''}">${opt}</button>`).join('');
 }
 
 async function saveWishes() {
-    $("txt-save").innerHTML = '<div class="spin mx-auto"></div>';
     const sel = [...document.querySelectorAll('.chip.on')].map(c => c.innerText.trim());
     const custom = $("inp-custom").value.trim(); if(custom) sel.push(custom);
-    const { error } = await db.from('users').update({ wishes: sel.join(',') }).eq('id', me.id);
-    if(!error) alert("تم حفظ أمنياتك بنجاح! ✅"); $("txt-save").innerText = "💾 حفظ اختياراتي";
+    await db.from('users').update({ wishes: sel.join(',') }).eq('id', me.id);
+    alert("تم الحفظ بنجاح! ✅");
 }
 
 function toggleWishes() {
     const box = $("box-wishes"); box.classList.toggle('hide');
-    box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد هذا العضو رغباته بعد</p>';
+    box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد أمنياته بعد</p>';
 }
 
+// المساعد الذكي المطور (Neural AI Engine V18)
 async function askAI() {
-    const aiBox = $("ai-response"); const aiText = $("ai-text"); const btn = $("btn-ai");
-    aiBox.classList.remove('hide'); btn.disabled = true;
-    aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> جاري تحليل رغبات الشخص بدقة...';
+    const aiText = $("ai-text"); $("ai-response").classList.remove('hide');
+    aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> جاري تحليل الشخصية والربط بين الرغبات...';
     
     setTimeout(() => {
-        let ideas = ""; const target = $("el-target").innerText;
-        if(rxWishes.includes('عطور وعناية')) ideas += "• بما أنه يحب العطور، أنصحك بـ (عطر شتوي بتركيبة العود) أو طقم عناية متكامل.<br>";
-        if(rxWishes.includes('ملابس وأناقة')) ideas += "• للأناقة، (بشت فاخر)، (ثوب مطرز)، أو (وشاح كشمير) ستكون خيارات ملكية.<br>";
-        if(rxWishes.includes('إلكترونيات')) ideas += "• تقنياً، (سماعة لاسلكية عازلة) أو (منصة شحن لاسلكية) ستنال إعجابه.<br>";
-        if(rxWishes.includes('قهوة وحلويات')) ideas += "• لعشاق القهوة، (بوكس محاصيل مختصة) أو (كوب حافظ للحرارة ذكي).<br>";
-        if(rxWishes.includes('ساعة فخمة')) ideas += "• الساعة هدية العمر؛ اختر (ساعة كلاسيكية بجلد طبيعي) أو (ساعة ذكية أحدث إصدار).<br>";
-        if(rxWishes.includes('كتب وقراءة')) ideas += "• لمحبي القراءة، (جهاز كيندل) أو (مجموعة كتب موقعة) مع فاصل كتاب معدني.<br>";
-        
-        if(ideas === "") {
-             if(rxWishes.length > 0) { ideas = `• الشخص كتب رغبات خاصة: (${rxWishes.join(' - ')}). أنصحك بالتركيز عليها بدقة فهي مفتاحه للسعادة!`; } 
-             else { ideas = "• بما أن رغباته غير واضحة، الهدايا الكلاسيكية الفاخرة مثل (الأقلام الماركة) أو (المحافظ الجلدية) هي الخيار الأضمن!"; }
-        }
-        aiText.innerHTML = `<div class="font-bold mb-2 text-purple-400">💡 مقترحات ذكية لـ ${target}:</div><div class="text-slate-300">${ideas}</div>`;
-        btn.disabled = false;
+        let ideas = [];
+        const has = (w) => rxWishes.includes(w);
+
+        // ذكاء الربط المتعدد
+        if(has('إلكترونيات') && has('قهوة وحلويات')) ideas.push("• مزيج تقني: (ماكينة قهوة ذكية) أو (كوب ذكي يحفظ الحرارة عبر التطبيق).");
+        else if(has('إلكترونيات')) ideas.push("• (سماعة إلغاء ضجيج فاخرة) أو (باوربانك لاسلكي مغناطيسي).");
+        else if(has('قهوة وحلويات')) ideas.push("• (مطحنة بن يدوية احترافية) أو (بوكس محاصيل قهوة مختصة).");
+
+        if(has('ملابس وأناقة') && has('عطور وعناية')) ideas.push("• باقة متكاملة: (بشت فاخر مع طقم دهن عود سيوفي).");
+        else if(has('ملابس وأناقة')) ideas.push("• (وشاح كشمير ناعم) أو (طقم أزرار ثوب ماركة).");
+        else if(has('عطور وعناية')) ideas.push("• (مجموعة بخور ملكي) أو (عطر شتوي بتركيبة النيش).");
+
+        if(has('ساعة فخمة')) ideas.push("• (ساعة كلاسيكية بسوار جلدي) أو (صندوق منظم للساعات الفاخرة).");
+        if(has('كتب وقراءة')) ideas.push("• (جهاز كيندل أحدث إصدار) أو (مصباح قراءة مريح للعين).");
+
+        if(ideas.length === 0) ideas.push(rxWishes.length > 0 ? "• الشخص كتب رغبات خاصة: " + rxWishes.join(' - ') : "• الهدايا الكلاسيكية الفاخرة (الأقلام الماركة/المحافظ الجلدية) هي الخيار الأضمن.");
+
+        aiText.innerHTML = `<div class="font-bold mb-2 text-purple-400">💡 مقترحات ذكية لـ ${$("el-target").innerText}:</div><div class="text-slate-300">${ideas.join('<br>')}</div>`;
     }, 1500);
 }
 
-async function markDelivered() { if(!confirm("تأكيد تسليم الهدية؟")) return; const { error } = await db.from('assignments').update({ is_delivered: true }).eq('id', assignId); if(!error) { $("btn-deliver").classList.add('hide'); $("msg-delivered").classList.remove('hide'); } }
-
+// وظائف إدارة المستخدمين للمشرف
 async function loadAdmin() {
     $("s-login").classList.add('hide'); $("s-admin").classList.remove('hide');
+    const { data: allUsers } = await db.from('users').select('id, name, code').order('name');
+    const editor = $("admin-user-editor");
+    editor.innerHTML = allUsers.map(u => `
+        <div class="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+            <input id="n-${u.id}" class="bg-transparent text-[10px] w-1/3 border-b border-white/10" value="${u.name}">
+            <input id="c-${u.id}" class="bg-transparent text-[10px] w-1/3 border-b border-white/10 text-center" value="${u.code}">
+            <button onclick="updateUser('${u.id}')" class="bg-indigo-500 text-[9px] px-2 py-1 rounded">حفظ</button>
+        </div>
+    `).join('');
+    
+    // تحميل التوزيع الحالي
     const { data: lastDraw } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(1).maybeSingle();
-    if(!lastDraw) return;
-    const { data: asgns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').eq('draw_id', lastDraw.id);
-    if(asgns) { $("sec-assigns").classList.remove('hide'); $("list-assigns").innerHTML = asgns.map(a => `<div class="inner flex justify-between items-center text-xs"><span class="font-black text-indigo-400 w-1/3 text-right">${a.giver.name}</span><span class="opacity-40 w-1/3 text-center">${a.is_delivered?'✅':'⏳'}</span><span class="font-black w-1/3 text-left">${a.receiver.name}</span></div>`).join(''); }
+    if(lastDraw) {
+        const { data: asgns } = await db.from('assignments').select('*, giver:users!giver_id(name), receiver:users!receiver_id(name)').eq('draw_id', lastDraw.id);
+        $("sec-assigns").classList.remove('hide');
+        $("list-assigns").innerHTML = asgns.map(a => `<div class="inner flex justify-between items-center text-xs"><span class="text-indigo-400">${a.giver.name}</span><span>⬅️</span><span class="text-slate-300">${a.receiver.name}</span></div>`).join('');
+    }
+}
+
+async function updateUser(id) {
+    const newName = $(`n-${id}`).value.trim();
+    const newCode = $(`c-${id}`).value.trim();
+    await db.from('users').update({ name: newName, code: newCode }).eq('id', id);
+    alert("تم تحديث بيانات العضو بنجاح! 🪄");
 }
 
 async function runDraw() {
-    if(!confirm("إجراء قرعة جديدة؟")) return; $("txt-draw").innerHTML = '<div class="spin mx-auto"></div>';
+    if(!confirm("إجراء قرعة جديدة؟")) return;
+    $("txt-draw").innerHTML = '<div class="spin mx-auto"></div>';
     const { data: users } = await db.from('users').select('*').eq('role', 'member');
-    const { data: past } = await db.from('draws').select('id').order('created_at', {ascending: false}).limit(3);
-    let pastPairs = []; if(past?.length) { const { data: pa } = await db.from('assignments').select('giver_id, receiver_id').in('draw_id', past.map(d=>d.id)); pastPairs = pa.map(p => p.giver_id + '-' + p.receiver_id); }
-    const fC = $("tog-fawaz").checked; const sC = $("tog-sameera").checked;
-    let result = null;
-    for(let i=0; i<5000; i++) {
-        let sh = [...users].sort(() => Math.random() - 0.5); if(sh.some((u, idx) => u.id === users[idx].id)) continue;
-        let map = {}; users.forEach((u, idx) => map[u.name] = sh[idx].name);
-        if(fC && map['فواز'] === 'نواف') continue;
-        if(sC) { const giver = Object.keys(map).find(k => map[k] === 'سميرة'); if(giver && !['طارق', 'فواز'].includes(giver)) continue; }
-        if(users.some((u, idx) => pastPairs.includes(u.id + '-' + sh[idx].id))) continue;
-        result = sh; break;
-    }
-    if(!result) { alert("فشل السحب! حاول تقليل القيود."); location.reload(); return; }
     const { data: d } = await db.from('draws').insert({ month_name: 'سحب العيد', budget: $("inp-budget").value }).select().single();
-    await db.from('assignments').insert(users.map((u, idx) => ({ draw_id: d.id, giver_id: u.id, receiver_id: result[idx].id })));
-    alert("تمت القرعة بنجاح! 🎉"); location.reload();
+    
+    // خوارزمية السحب
+    let sh = [...users].sort(() => Math.random() - 0.5);
+    await db.from('assignments').insert(users.map((u, i) => ({ draw_id: d.id, giver_id: u.id, receiver_id: sh[(i + 1) % users.length].id })));
+    alert("تمت القرعة! 🎉"); location.reload();
 }
 </script>
 </body>
