@@ -99,11 +99,11 @@
         
         <div class="inner text-right mb-6">
             <p class="cap mb-3 flex items-center justify-between">
-                <span>🤖 الشات الذكي للإدارة (متصل)</span>
+                <span>🤖 الشات الذكي للإدارة (متصل بـ Gemini Pro)</span>
             </p>
             <div id="admin-chat-box" class="chat-scroll bg-black/40 border border-purple-500/20 rounded-xl p-3 mb-3 flex flex-col gap-2 text-[11px] min-h-[150px]">
                 <div class="text-purple-200 bg-purple-900/40 p-2 rounded-lg self-start border border-purple-500/20 max-w-[90%]">
-                    أهلاً بك يا فواز! أنا الآن متصل بمحرك ذكاء اصطناعي حقيقي. لست مقيداً بأي ردود جاهزة. اسألني أي شيء في بالك! 🧠
+                    أهلاً بك يا فواز! أنا الآن متصل بمحرك Gemini Pro المستقر. لست مقيداً بأي ردود جاهزة. اسألني أي شيء في بالك! 🧠
                 </div>
             </div>
             <div class="flex gap-2">
@@ -140,7 +140,7 @@ const GEMINI_API_KEY = 'AIzaSyBASOvWxLdqqUzNNWi8S813L-NCtO1SXxw';
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v23_ai_fix';
+const STORE = 'rajeh_v24_gemini_pro';
 
 let me = null, assignId = null, rxWishes = [], rxUser = null;
 const $ = id => document.getElementById(id);
@@ -206,11 +206,12 @@ function toggleWishes() {
 }
 
 // ==========================================
-// 🧠 محرك جوجل للذكاء الاصطناعي (مطور مع كشف أخطاء)
+// 🧠 محرك جوجل للذكاء الاصطناعي (تم استخدام gemini-pro المستقر)
 // ==========================================
 async function callGemini(prompt) {
     if(!GEMINI_API_KEY) throw new Error("لم يتم وضع مفتاح API بعد!");
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // تم التغيير إلى gemini-pro لحل مشكلة عدم العثور على النموذج
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
     
     const response = await fetch(url, {
         method: 'POST',
@@ -249,7 +250,7 @@ async function askAI() {
 
         aiText.innerHTML = `<div class="text-purple-300 font-bold mb-2 text-[11px]">تحليل المساعد الذكي لـ ${rxUser.name} (العمر: ${age}):</div><div class="text-slate-200 leading-relaxed text-[10px]">${reply}</div>`;
     } catch (e) {
-        aiText.innerHTML = `<div class="text-red-400 bg-red-900/40 p-2 rounded-lg text-xs">❌ عذراً، جوجل رفضت الطلب والسبب:<br><span class="opacity-70">${e.message}</span></div>`;
+        aiText.innerHTML = `<div class="text-red-400 bg-red-900/40 p-2 rounded-lg text-xs">❌ عذراً، خطأ من خوادم الذكاء الاصطناعي:<br><span class="opacity-70">${e.message}</span></div>`;
     }
     btn.disabled = false;
 }
@@ -268,7 +269,7 @@ async function sendAdminChat() {
 
     try {
         const prompt = `أنت مساعد ذكي ومرح داخل تطبيق "هدايا العيد" لعائلة سعودية. مدير النظام (فواز) يطرح عليك سؤالاً: "${msg}". 
-        أجب عليه بأسلوب احترافي، مباشر، وودي، وتحدث بلهجة خليجية محببة. ولا تكن مقيداً بأي ردود سابقة، أجب كذكاء اصطناعي حر.`;
+        أجب عليه بأسلوب احترافي، مباشر، وودي، وتحدث بلهجة خليجية محببة. ولا تكن مقيداً بأي ردود سابقة، أجب كذكاء اصطناعي حر وذكي.`;
         
         let reply = await callGemini(prompt);
         reply = reply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<span class="text-indigo-300 font-bold">$1</span>');
@@ -277,7 +278,7 @@ async function sendAdminChat() {
         box.innerHTML += `<div class="text-purple-200 bg-purple-900/40 p-2 rounded-lg self-start border border-purple-500/20 max-w-[85%] leading-relaxed">${reply}</div>`;
     } catch (e) {
         $(typingId).remove();
-        box.innerHTML += `<div class="text-red-400 bg-red-900/40 p-2 rounded-lg self-start text-xs max-w-[90%]">❌ عذراً، جوجل رفضت الطلب والسبب:<br><span class="opacity-70">${e.message}</span></div>`;
+        box.innerHTML += `<div class="text-red-400 bg-red-900/40 p-2 rounded-lg self-start text-xs max-w-[90%]">❌ عذراً، خطأ في الاتصال:<br><span class="opacity-70">${e.message}</span></div>`;
     }
     box.scrollTop = box.scrollHeight;
 }
