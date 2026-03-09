@@ -37,8 +37,12 @@
         .spin { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: sp 0.8s linear infinite; }
         @keyframes sp { to { transform: rotate(360deg); } }
         /* تحسينات لوحة المشرف */
-        .admin-scroll { max-height: 50vh; overflow-y: auto; padding-right: 5px; }
+        .admin-scroll { max-height: 30vh; overflow-y: auto; padding-right: 5px; }
         .admin-row { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 8px; }
+        /* تصميم الشات */
+        .chat-scroll { max-height: 200px; overflow-y: auto; scroll-behavior: smooth; }
+        .chat-scroll::-webkit-scrollbar { width: 4px; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -66,7 +70,7 @@
                 <div id="el-target" class="text-5xl font-black text-indigo-400 mb-6"></div>
                 
                 <button onclick="askAI()" id="btn-ai" class="ai-btn w-full py-3 rounded-2xl text-[11px] font-bold mb-4 flex items-center justify-center gap-2 border border-purple-500/30">
-                    <span>✨ استشر المساعد الذكي (بناءً على العمر والجنس)</span>
+                    <span>✨ استشر المساعد الذكي (تحليل العمر والجنس)</span>
                 </button>
                 <div id="ai-response" class="hide mb-4 p-4 rounded-xl text-right text-[11px] leading-relaxed border border-purple-500/20 bg-purple-500/5">
                     <div id="ai-text"></div>
@@ -97,7 +101,23 @@
         <div class="text-4xl mb-2">👑</div><h2 class="text-xl font-black mb-6">غرفة التحكم والقرعة</h2>
         
         <div class="inner text-right mb-6">
-            <p class="cap mb-4">👥 إدارة الأعضاء والبيانات (الذكاء الاصطناعي)</p>
+            <p class="cap mb-3 flex items-center justify-between">
+                <span>🤖 الشات الذكي للإدارة</span>
+                <span class="text-[9px] text-purple-400 bg-purple-900/30 px-2 py-1 rounded">مستشار المشرف</span>
+            </p>
+            <div id="admin-chat-box" class="chat-scroll bg-black/40 border border-purple-500/20 rounded-xl p-3 mb-3 flex flex-col gap-2 text-[11px] min-h-[120px]">
+                <div class="text-purple-200 bg-purple-900/40 p-2 rounded-lg self-start border border-purple-500/20 max-w-[90%]">
+                    أهلاً بك يا مدير النظام! 👑 أنا مستشارك الذكي. اسألني عن (الميزانية)، (رغبات العائلة)، أو (القرعة).
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="inp-admin-chat" class="inp text-[11px] py-2 !text-right bg-black/50" placeholder="اسألني هنا..." onkeydown="if(event.key==='Enter') sendAdminChat()">
+                <button onclick="sendAdminChat()" class="bg-purple-600 text-white px-4 rounded-xl font-bold text-[11px] hover:bg-purple-500 transition">إرسال</button>
+            </div>
+        </div>
+
+        <div class="inner text-right mb-6">
+            <p class="cap mb-4">👥 إدارة الأعضاء والبيانات</p>
             <div id="admin-user-editor" class="admin-scroll">
                 <div class="text-center text-xs opacity-50">جاري تحميل البيانات...</div>
             </div>
@@ -119,7 +139,7 @@
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v19_master';
+const STORE = 'rajeh_v20_admin_chat';
 
 let me = null, assignId = null, rxWishes = [], rxUser = null;
 const $ = id => document.getElementById(id);
@@ -147,7 +167,6 @@ async function loadMember(u) {
     if(!draw) { $("zone-nodraw").classList.remove('hide'); return; }
     if(draw.budget) { $("el-budget").innerText = draw.budget; $("row-budget").classList.remove('hide'); }
 
-    // جلب التوزيع ومعلومات المتلقي (لربط الذكاء الاصطناعي)
     const { data: asgn } = await db.from('assignments').select('*, receiver:users!receiver_id(*)').eq('giver_id', u.id).eq('draw_id', draw.id).maybeSingle();
     if(asgn) {
         assignId = asgn.id; rxUser = asgn.receiver;
@@ -185,51 +204,63 @@ function toggleWishes() {
     box.innerHTML = rxWishes.length ? rxWishes.map(w => `<span class="inner py-1 px-3 text-[10px] font-bold text-indigo-300">${w}</span>`).join('') : '<p class="text-[10px] text-slate-500 italic">لم يحدد رغباته بعد</p>';
 }
 
-// المساعد الذكي العبقري (The Mastermind AI V19)
+// المساعد الذكي للأعضاء (V19 AI)
 async function askAI() {
     const aiText = $("ai-text"); $("ai-response").classList.remove('hide');
     aiText.innerHTML = '<div class="spin mx-auto mb-2"></div> جاري تحليل العمر والجنس والاهتمامات...';
     
     setTimeout(() => {
-        // حساب العمر من الرمز الهجري
         const currentHijri = 1447;
         const birthYear = parseInt(rxUser.code.substring(0,4));
         const age = currentHijri - birthYear;
         const gender = rxUser.gender || 'غير محدد';
         
         let profile = "";
-        if(age < 15) profile = "طفل/ناشئ";
-        else if(age < 25) profile = "شاب/مراهق";
-        else if(age < 45) profile = "بالغ";
-        else profile = "كبير سن/وقور";
+        if(age < 15) profile = "طفل/ناشئ"; else if(age < 25) profile = "شاب/مراهق"; else if(age < 45) profile = "بالغ"; else profile = "كبير سن/وقور";
 
-        let ideas = [];
-        const has = (w) => rxWishes.includes(w);
+        let ideas = []; const has = (w) => rxWishes.includes(w);
 
-        // ذكاء الربط العميق (Age + Gender + Wishes)
-        if(has('إلكترونيات')) {
-            if(age < 20) ideas.push("• لجيل الشباب: (سماعة محيطية للألعاب) أو (اشتراك جيمينج).");
-            else ideas.push("• للبالغين: (سماعة إلغاء ضجيج للعمل) أو (ماكينة حلاقة ذكية للرجال / جهاز تصفيف شعر للنساء).");
-        }
+        if(has('إلكترونيات')) ideas.push(age < 20 ? "• للشباب: (سماعة محيطية للألعاب) أو (اشتراك جيمينج)." : "• (سماعة إلغاء ضجيج للعمل) أو (باور بانك لاسلكي).");
+        if(has('ملابس وأناقة')) ideas.push(gender === 'ذكر' ? (age > 40 ? "• (بشت شتوي فاخر) أو (طقم كبكات)." : "• (ثوب عصري) أو (حذاء رياضي).") : "• (شنطة يد براند) أو (شال كشميري).");
+        if(has('عطور وعناية')) ideas.push(gender === 'ذكر' ? "• (عطر برائحة العود) أو (مجموعة حلاقة كلاسيكية)." : "• (عطر زهري فرنسي) أو (مجموعة عناية بالبشرة).");
 
-        if(has('ملابس وأناقة')) {
-            if(gender === 'ذكر') ideas.push(age > 40 ? "• (بشت شتوي فاخر) أو (طقم كبكات ذهبية)." : "• (ثوب عصري) أو (حذاء رياضي ماركة).");
-            else if(gender === 'أنثى') ideas.push("• (شنطة يد براند) أو (شال كشميري ناعم).");
-        }
+        if(ideas.length === 0) ideas.push(`• الشخص (${profile} - ${gender}): أنصحك بـ (مبخره ذكية) أو (بوكس شوكولاتة فاخرة).`);
 
-        if(has('عطور وعناية')) {
-            if(gender === 'ذكر') ideas.push("• (عطر برائحة العود والجلود) أو (مجموعة حلاقة كلاسيكية).");
-            else ideas.push("• (عطر زهري فرنسي) أو (جهاز مساج للوجه).");
-        }
-
-        if(ideas.length === 0) ideas.push(`• الشخص (${profile} - ${gender}): أنصحك بـ (مبخره ذكية) أو (بوكس شوكولاتة فاخرة) فهي ترضي الجميع.`);
-
-        aiText.innerHTML = `
-            <div class="text-purple-300 font-bold mb-1 text-[10px]">تحليل المساعد لـ ${rxUser.name}:</div>
-            <div class="text-slate-400 mb-3 text-[9px] border-b border-white/5 pb-2">الفئة: ${profile} | الجنس: ${gender}</div>
-            <div class="text-slate-200">${ideas.join('<br>')}</div>
-        `;
+        aiText.innerHTML = `<div class="text-purple-300 font-bold mb-1 text-[10px]">تحليل المساعد لـ ${rxUser.name}:</div><div class="text-slate-400 mb-3 text-[9px] border-b border-white/5 pb-2">الفئة: ${profile} | الجنس: ${gender}</div><div class="text-slate-200">${ideas.join('<br>')}</div>`;
     }, 1500);
+}
+
+// --- شات المشرف الذكي (Admin AI Chat) ---
+function sendAdminChat() {
+    const inp = $("inp-admin-chat");
+    const msg = inp.value.trim();
+    if(!msg) return;
+
+    const box = $("admin-chat-box");
+    
+    // إضافة رسالة المشرف
+    box.innerHTML += `<div class="text-white bg-indigo-600/60 p-2 rounded-lg self-end border border-indigo-500/50 max-w-[85%] text-right">${msg}</div>`;
+    inp.value = '';
+    box.scrollTop = box.scrollHeight;
+
+    // محاكاة التفكير
+    const typingId = 'typing-' + Date.now();
+    box.innerHTML += `<div id="${typingId}" class="text-purple-300 bg-purple-900/40 p-2 rounded-lg self-start border border-purple-500/20 max-w-[85%]"><div class="spin inline-block w-3 h-3 border-2"></div> يحلل...</div>`;
+    box.scrollTop = box.scrollHeight;
+
+    setTimeout(() => {
+        const typingEl = $(typingId); if(typingEl) typingEl.remove();
+
+        let reply = "بصفتي مستشارك، أنصحك بالتأكد من اكتمال تواريخ الميلاد والجنس لجميع الأعضاء لضمان عمل ذكاء النظام بكفاءة عالية.";
+        
+        if(msg.includes('ميزاني') || msg.includes('كم')) reply = "💡 بالنسبة للميزانية، أنصح بأن تتراوح بين 200 إلى 500 ريال. هذا الرقم مناسب جداً ولا يرهق ميزانية الشباب، وفي نفس الوقت يجلب هدية قيمة.";
+        else if(msg.includes('قرع') || msg.includes('سحب')) reply = "🎲 خوارزمية القرعة جاهزة. تذكر أنه تم تفعيل قيد (فواز لا يهدي نواف) و (سميرة تُهدى من طارق/فواز). يمكنك بدء السحب من الزر بالأسفل بكل أمان.";
+        else if(msg.includes('رغبات') || msg.includes('هدايا') || msg.includes('تحليل')) reply = "📊 بعد تحليلي للبيانات، يغلب على العائلة طابع اختيار (الإلكترونيات) للشباب، و(العطور) لكبار السن. النظام مستعد لتقديم مقترحات ذكية لكل فرد بناءً على عمره وجنسه!";
+        else if(msg.includes('اهلا') || msg.includes('سلام')) reply = "وعليكم السلام يا مدير! 👑 أنا تحت أمرك، كيف يمكنني مساعدتك في تنظيم فعالية العيد اليوم؟";
+
+        box.innerHTML += `<div class="text-purple-200 bg-purple-900/40 p-2 rounded-lg self-start border border-purple-500/20 max-w-[85%] leading-relaxed">${reply}</div>`;
+        box.scrollTop = box.scrollHeight;
+    }, 1200);
 }
 
 // --- غرفة تحكم المشرف ---
@@ -240,24 +271,22 @@ async function loadAdmin() {
     editor.innerHTML = allUsers.map(u => `
         <div class="admin-row">
             <div class="flex gap-2 mb-2">
-                <input id="n-${u.id}" class="bg-black/20 text-[11px] w-1/2 p-1 rounded" value="${u.name}" placeholder="الاسم">
-                <input id="c-${u.id}" class="bg-black/20 text-[11px] w-1/2 p-1 rounded text-center" value="${u.code}" placeholder="تاريخ الميلاد">
+                <input id="n-${u.id}" class="bg-black/20 text-[11px] w-1/2 p-1 rounded border border-white/10" value="${u.name}" placeholder="الاسم">
+                <input id="c-${u.id}" class="bg-black/20 text-[11px] w-1/2 p-1 rounded text-center border border-white/10" value="${u.code}" placeholder="تاريخ الميلاد">
             </div>
             <div class="flex items-center justify-between">
-                <select id="g-${u.id}" class="bg-black/40 text-[10px] p-1 rounded border-none">
+                <select id="g-${u.id}" class="bg-black/40 text-[10px] p-1 rounded border border-white/10 text-slate-300">
                     <option value="ذكر" ${u.gender==='ذكر'?'selected':''}>ذكر</option>
                     <option value="أنثى" ${u.gender==='أنثى'?'selected':''}>أنثى</option>
                 </select>
-                <button onclick="updateUser('${u.id}')" class="bg-indigo-600 text-[10px] px-4 py-1 rounded-lg font-bold">حفظ التعديل</button>
+                <button onclick="updateUser('${u.id}')" class="bg-indigo-600 text-[10px] px-4 py-1 rounded-lg font-bold hover:bg-indigo-500">حفظ التعديل</button>
             </div>
         </div>
     `).join('');
 }
 
 async function updateUser(id) {
-    const n = $(`n-${id}`).value.trim();
-    const c = $(`c-${id}`).value.trim();
-    const g = $(`g-${id}`).value;
+    const n = $(`n-${id}`).value.trim(); const c = $(`c-${id}`).value.trim(); const g = $(`g-${id}`).value;
     await db.from('users').update({ name: n, code: c, gender: g }).eq('id', id);
     alert("تم التحديث بنجاح! 🪄");
 }
