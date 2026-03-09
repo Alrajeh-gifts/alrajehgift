@@ -99,11 +99,11 @@
         
         <div class="inner text-right mb-6">
             <p class="cap mb-3 flex items-center justify-between">
-                <span>🤖 الشات الذكي للإدارة (متصل بـ Gemini Pro)</span>
+                <span>🤖 الشات الذكي للإدارة (متصل)</span>
             </p>
             <div id="admin-chat-box" class="chat-scroll bg-black/40 border border-purple-500/20 rounded-xl p-3 mb-3 flex flex-col gap-2 text-[11px] min-h-[150px]">
                 <div class="text-purple-200 bg-purple-900/40 p-2 rounded-lg self-start border border-purple-500/20 max-w-[90%]">
-                    أهلاً بك يا فواز! أنا الآن متصل بمحرك Gemini Pro المستقر. لست مقيداً بأي ردود جاهزة. اسألني أي شيء في بالك! 🧠
+                    أهلاً بك يا فواز! تم تفعيل "الذكاء المزدوج" بنجاح. أنا جاهز للإجابة على أي سؤال. 🧠
                 </div>
             </div>
             <div class="flex gap-2">
@@ -140,7 +140,7 @@ const GEMINI_API_KEY = 'AIzaSyBASOvWxLdqqUzNNWi8S813L-NCtO1SXxw';
 const SURL = 'https://oprethkloexyrhagmdod.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wcmV0aGtsb2V4eXJoYWdtZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTI1MjAsImV4cCI6MjA4ODM4ODUyMH0.crUKNWb8iWJHwe9mp59KcALS4LSuy0dqZn4xEsW04Gc';
 const db = supabase.createClient(SURL, SKEY);
-const STORE = 'rajeh_v24_gemini_pro';
+const STORE = 'rajeh_v25_dual_ai';
 
 let me = null, assignId = null, rxWishes = [], rxUser = null;
 const $ = id => document.getElementById(id);
@@ -206,19 +206,30 @@ function toggleWishes() {
 }
 
 // ==========================================
-// 🧠 محرك جوجل للذكاء الاصطناعي (تم استخدام gemini-pro المستقر)
+// 🧠 محرك جوجل للذكاء الاصطناعي (نظام مزدوج مضاد للأعطال)
 // ==========================================
 async function callGemini(prompt) {
     if(!GEMINI_API_KEY) throw new Error("لم يتم وضع مفتاح API بعد!");
-    // تم التغيير إلى gemini-pro لحل مشكلة عدم العثور على النموذج
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
     
-    const response = await fetch(url, {
+    // المحاولة الأولى: أحدث موديل ومستقر (v1)
+    let url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    let response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
     
+    // المحاولة الثانية (Fallback): إذا فشل الأول، ننتقل للموديل الأساسي المدعوم في كل الحسابات
+    if (!response.ok) {
+        url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${GEMINI_API_KEY}`;
+        response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+    }
+
     const data = await response.json();
     
     if (!response.ok) {
